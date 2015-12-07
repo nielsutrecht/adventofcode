@@ -1,3 +1,5 @@
+package com.nibado.projects.adventscala
+
 class Day01 extends Day {
   override def run(): Unit = {
 
@@ -18,6 +20,6 @@ class Day01 extends Day {
     }
 
     printAnswer(1, "One", instructions.sum)
-    printAnswer(1, "Two", findIndex) //1797
+    printAnswer(1, "Two", findIndex)
   }
 }

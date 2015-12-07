@@ -1,3 +1,8 @@
+package com.nibado.projects.adventscala
+
+/**
+  * Created by nielsdommerholt on 07/12/15.
+  */
 trait Day extends Runnable {
   def getResourceAsString(file: String): String = {
     return scala.io.Source.fromInputStream(getClass.getResourceAsStream(file)).mkString
