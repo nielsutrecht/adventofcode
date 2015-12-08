@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AdventOfCode {
     public static void main(String... argv) {
-        List<Runnable> solutions = Arrays.asList(new Day01(), new Day02(), new Day03(), new Day04(), new Day05(), new Day06(), new Day07());
+        List<Runnable> solutions = Arrays.asList(new Day01(), new Day02(), new Day03(), new Day04(), new Day05(), new Day06(), new Day07(), new Day08());
 
         solutions.forEach(Runnable::run);
     }
