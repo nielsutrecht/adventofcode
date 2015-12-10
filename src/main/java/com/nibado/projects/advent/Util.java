@@ -40,6 +40,6 @@ public class Util {
     }
 
     public static void printAnswer(int day, String sub, Object answer) {
-        System.out.printf(Locale.ROOT, "Day %s / %s: %s\n", day, sub, answer);
+        System.out.printf(Locale.ROOT, "Day %2s / %s: %10s\n", day, sub, answer);
     }
 }
