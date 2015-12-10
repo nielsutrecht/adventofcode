@@ -45,13 +45,4 @@ public class Day10 implements Runnable {
     public static void main(String... argv) {
         new Day10().run();
     }
-
-    public static class Tuple {
-        public final char c;
-        public final int count;
-        public Tuple(char c, int count) {
-            this.c = c;
-            this.count = count;
-        }
-    }
 }
