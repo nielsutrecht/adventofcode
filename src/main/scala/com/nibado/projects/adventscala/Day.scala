@@ -10,6 +10,6 @@ trait Day extends Runnable {
   }
 
   def printAnswer(day: Int, section: String, result: Any): Unit = {
-    print("Day " + day + " / " + section + ": " + result + "\n")
+    printf("Day %2s / %s: %10s\n", day, section, result)
   }
 }
