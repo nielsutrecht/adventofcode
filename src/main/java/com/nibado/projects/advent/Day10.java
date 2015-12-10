@@ -1,9 +1,5 @@
 package com.nibado.projects.advent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
 
@@ -26,20 +22,18 @@ public class Day10 implements Runnable {
     }
 
     private static String next(String input) {
-        List<String> splitted = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
 
-        for(char c : input.toCharArray()) {
-            if(builder.length() > 0 && c != builder.charAt(0)) {
-                splitted.add(builder.toString());
-                builder.setLength(0);
+        for(int i = 0, count = 0;i < input.length();) {
+            while(i + count < input.length() && input.charAt(i) == input.charAt(i + count)) {
+                count++;
             }
-            builder.append(c);
+            builder.append(count).append(input.charAt(i));
+            i += count;
+            count = 0;
         }
 
-        splitted.add(builder.toString());
-
-        return splitted.stream().map(s -> s.length() + Character.toString(s.charAt(0))).collect(Collectors.joining());
+        return builder.toString();
     }
 
     public static void main(String... argv) {
