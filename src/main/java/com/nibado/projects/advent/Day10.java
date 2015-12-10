@@ -2,6 +2,7 @@ package com.nibado.projects.advent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
@@ -38,14 +39,19 @@ public class Day10 implements Runnable {
 
         splitted.add(builder.toString());
 
-        builder.setLength(0);
-
-        splitted.stream().map(s -> s.length() + Character.toString(s.charAt(0))).forEach(builder::append);
-
-        return builder.toString();
+        return splitted.stream().map(s -> s.length() + Character.toString(s.charAt(0))).collect(Collectors.joining());
     }
 
     public static void main(String... argv) {
         new Day10().run();
+    }
+
+    public static class Tuple {
+        public final char c;
+        public final int count;
+        public Tuple(char c, int count) {
+            this.c = c;
+            this.count = count;
+        }
     }
 }
