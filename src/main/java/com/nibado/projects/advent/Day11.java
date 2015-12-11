@@ -19,7 +19,7 @@ public class Day11 implements Runnable {
         do {
             increment(password);
         }
-        while(!isValid(password));
+        while(!hasStraight(password, 3) || containsIllegal(password) || countPairs(password) < 2);
     }
 
     public static void increment(char[] password) {
@@ -32,14 +32,6 @@ public class Day11 implements Runnable {
                 break;
             }
         }
-    }
-
-    public static boolean isValid(char[] password) {
-        if(password.length != 8) {
-            throw new IllegalArgumentException("Invalid length: " + password.length);
-        }
-
-        return hasStraight(password, 3) && !containsIllegal(password) && countPairs(password) >= 2;
     }
 
     public static boolean hasStraight(char[] password, int length) {
