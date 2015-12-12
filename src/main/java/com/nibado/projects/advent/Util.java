@@ -1,5 +1,8 @@
 package com.nibado.projects.advent;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,6 +40,15 @@ public class Util {
         }
 
         return list;
+    }
+
+    public static JsonNode readResourceAsJson(String resource) {
+        try {
+            return new ObjectMapper().readTree(Util.class.getResourceAsStream(resource));
+        }
+        catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void printAnswer(int day, String sub, Object answer) {
