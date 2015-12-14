@@ -1,34 +1,44 @@
 package com.nibado.projects.advent;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
+import static java.lang.Integer.compare;
 import static java.lang.Integer.parseInt;
 
 public class Day14 implements Runnable {
     private static final Pattern INPUT = Pattern.compile("(?<n>[A-Za-z]+) can fly (?<s>[0-9]+) km/s for (?<d>[0-9]+) seconds, but then must rest for (?<r>[0-9]+) seconds\\.");
+    private static final int SECONDS = 2503;
 
     @Override
     public void run() {
         List<Reindeer> reindeer = readResource("/day14.txt").stream().map(Reindeer::of).collect(Collectors.toList());
 
-        Reindeer comet = new Reindeer("Comet", 14, 10, 127);
+        int winner1 = reindeer.stream().map(r -> new AbstractMap.SimpleEntry<>(r, r.simulate(SECONDS))).max((a, b) -> compare(a.getValue(), b.getValue())).get().getValue();
+        printAnswer(14, "One", winner1);
 
-        for(int i = 0;i < 1000;i++) {
-            comet.tick();
+        List<AbstractMap.SimpleEntry<Reindeer, AtomicInteger>> scores = readResource("/day14.txt").stream().map(Reindeer::of).map(r -> new AbstractMap.SimpleEntry<>(r, new AtomicInteger())).collect(Collectors.toList());
+
+        for(int i = 0;i < SECONDS;i++) {
+            scores.forEach(e -> e.getKey().tick());
+
+            List<AbstractMap.SimpleEntry<Reindeer, AtomicInteger>> sorted = scores.stream().sorted((a, b) -> compare(b.getKey().distance, a.getKey().distance)).collect(Collectors.toList());
+
+            for (AbstractMap.SimpleEntry<Reindeer, AtomicInteger> e : sorted) {
+                if (e.getKey().distance != sorted.get(0).getKey().distance) {
+                    break;
+                }
+                e.getValue().incrementAndGet();
+            }
         }
 
-        //System.out.println(comet.getDistance());
-
-        int winner1 = reindeer.stream().map(r -> new AbstractMap.SimpleEntry<>(r, r.simulate2(2503))).max((a, b) -> Integer.compare(a.getValue(), b.getValue())).get().getValue();
-        printAnswer(14, "One", winner1); //2660
+        int winner2 = scores.stream().max((a, b) -> compare(a.getValue().get(), b.getValue().get())).get().getValue().get();
+        printAnswer(14, "Two", winner2);
     }
 
     public static void main(String... argv) {
@@ -41,10 +51,9 @@ public class Day14 implements Runnable {
         public final int duration;
         public final int rest;
 
-        private int distance;
+        public int distance;
         private boolean resting;
         private int counter = Integer.MIN_VALUE;
-        private int second = 0;
 
         private Reindeer(String name, int speed, int duration, int rest) {
             this.name = name;
@@ -63,7 +72,6 @@ public class Day14 implements Runnable {
         }
 
         public void tick() {
-            second++;
             if(counter == Integer.MIN_VALUE) {
                 resting = false;
                 counter = duration;
@@ -72,42 +80,14 @@ public class Day14 implements Runnable {
             counter--;
             distance += resting ? 0 : speed;
             if(counter <= 0) {
-                System.out.printf("%4s %8s switch\n", second, name);
                 resting = !resting;
                 counter = resting ? rest: duration;
             }
-
-
-
-            System.out.printf("%4s %8s%1s %s\n", second, name, resting ? " " : "+", distance);
-        }
-
-        public int getDistance() {
-            return distance;
-        }
-
-        public int simulate2(int seconds) {
-            for(int i = 0;i < seconds;i++) {
-                tick();
-            }
-
-            return distance;
         }
 
         public int simulate(int seconds) {
-            int distance = 0;
-            int dur = duration;
-            boolean resting = false;
-            for(int i = 1;i <= seconds;) {
-                dur--;
-                if(dur >= 0) {
-                    distance += resting ? 0 : speed;
-                    i++;
-                }
-                else {
-                    resting = !resting;
-                    dur = resting ? rest: duration;
-                }
+            for(int i = 0;i < seconds;i++) {
+                tick();
             }
 
             return distance;
