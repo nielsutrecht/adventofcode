@@ -52,7 +52,7 @@ public class Day09 implements Runnable {
         return distance;
     }
 
-    private List<List<String>> permutations(Collection<String> names) {
+    public static List<List<String>> permutations(Collection<String> names) {
         List<List<String>> permutations = new ArrayList<>();
 
         permutations(new ArrayList<>(), new ArrayList<>(names), permutations);
@@ -60,7 +60,7 @@ public class Day09 implements Runnable {
         return permutations;
     }
 
-    private void permutations(List<String> head, List<String> tail, List<List<String>> permutations) {
+    public static void permutations(List<String> head, List<String> tail, List<List<String>> permutations) {
         if(tail.size() == 0) {
             permutations.add(head);
             return;
