@@ -29,7 +29,7 @@ public class Day15 implements Runnable {
     }
 
     public static int sumAll(List<Ingredient> list, List<Integer> amounts) {
-        return sum(list, amounts, i -> i.capacity) * sum(list, amounts, i -> i.durability) *sum(list, amounts, i -> i.flavor) *sum(list, amounts, i -> i.texture);
+        return sum(list, amounts, i -> i.capacity) * sum(list, amounts, i -> i.durability) * sum(list, amounts, i -> i.flavor) * sum(list, amounts, i -> i.texture);
     }
 
     public static int sum(List<Ingredient> list, List<Integer> amounts, Function<Ingredient, Integer> property) {
@@ -45,7 +45,8 @@ public class Day15 implements Runnable {
         for(int i = 0;i <= target;i++) {
             List<Integer> newList = new ArrayList<>(list);
             newList.set(index, i);
-            if(index < list.size() - 1) {
+
+            if(index < list.size() - 1 && newList.subList(0, index).stream().collect(Collectors.summingInt(v -> v)) <= target) {
                 combinations(target, index + 1, results, newList);
             }
             if(index == list.size() - 1 && newList.stream().collect(Collectors.summingInt(v -> v)) == target) {
