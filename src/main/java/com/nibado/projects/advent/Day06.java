@@ -35,11 +35,11 @@ public class Day06 implements Runnable {
 
         BitSet boolLamps = new BitSet(WIDTH * HEIGHT);
         actions.forEach(a -> a.apply(boolLamps));
-        printAnswer(6, "One", boolLamps.stream().count());
+        printAnswer(boolLamps.stream().count());
 
         int[] intLamps = new int[WIDTH * HEIGHT];
         actions.forEach(a -> a.apply(intLamps));
-        printAnswer(6, "Two", Arrays.stream(intLamps).sum());
+        printAnswer(Arrays.stream(intLamps).sum());
     }
 
     public static void main(String... argv) {

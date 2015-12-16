@@ -14,8 +14,8 @@ public class Day16 implements Runnable {
         List<Sue> sues = readResource("/day16.txt").stream().map(Sue::of).collect(Collectors.toList());
         Sue target = new Sue().add("children", 3).add("cats", 7).add("samoyeds", 2).add("pomeranians", 3).add("akitas", 0).add("vizslas", 0).add("goldfish", 5).add("trees", 3).add("cars", 2).add("perfumes", 1);
 
-        printAnswer(16, "One", sues.stream().filter(s -> s.matches(target, 1)).findFirst().get().num);
-        printAnswer(16, "Two", sues.stream().filter(s -> s.matches(target, 2)).findFirst().get().num);
+        printAnswer(sues.stream().filter(s -> s.matches(target, 1)).findFirst().get().num);
+        printAnswer(sues.stream().filter(s -> s.matches(target, 2)).findFirst().get().num);
     }
 
     public static void main(String... argv) {

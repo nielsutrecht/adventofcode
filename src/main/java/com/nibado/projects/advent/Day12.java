@@ -15,8 +15,8 @@ public class Day12 implements Runnable {
     public void run() {
         JsonNode input = readResourceAsJson("/day12.txt");
 
-        printAnswer(12, "One", sumTree(input, n -> false));
-        printAnswer(12, "Two", sumTree(input, n -> hasValue(n, "red")));
+        printAnswer(sumTree(input, n -> false));
+        printAnswer(sumTree(input, n -> hasValue(n, "red")));
     }
 
     public int sumTree(JsonNode node, Function<JsonNode, Boolean> filter) {

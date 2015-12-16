@@ -31,8 +31,8 @@ public class Day09 implements Runnable {
 
         Set<Integer> distances = permutations(cities).stream().map(this::distance).collect(Collectors.toSet());
 
-        printAnswer(9, "One", distances.stream().min(Integer::compare).get());
-        printAnswer(9, "Two", distances.stream().max(Integer::compare).get());
+        printAnswer(distances.stream().min(Integer::compare).get());
+        printAnswer(distances.stream().max(Integer::compare).get());
     }
 
     private int distance(List<String> names) {

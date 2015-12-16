@@ -23,9 +23,9 @@ public class Day15 implements Runnable {
         combinations(100, 0, combinations, counts);
 
         int answer1 = combinations.stream().map(amounts -> sumAll(ingredients, amounts)).max(Integer::compare).get();
-        printAnswer(15, "One", answer1);
+        printAnswer(answer1);
         int answer2 = combinations.stream().filter(amounts -> sum(ingredients, amounts, i -> i.calories) == 500).map(amounts -> sumAll(ingredients, amounts)).max(Integer::compare).get();
-        printAnswer(15, "Two", answer2);
+        printAnswer(answer2);
     }
 
     public static int sumAll(List<Ingredient> list, List<Integer> amounts) {

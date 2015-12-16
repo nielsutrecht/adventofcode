@@ -17,11 +17,11 @@ public class Day02 implements Runnable {
         int surfaceSum =
                 dimensions.stream().collect(Collectors.summingInt(Day02::surfaceArea));
 
-        printAnswer(2, "One", surfaceSum);
+        printAnswer(surfaceSum);
 
         int ribbonSum = dimensions.stream().collect(Collectors.summingInt(Day02::ribbonLength));
 
-        printAnswer(2, "Two", ribbonSum);
+        printAnswer(ribbonSum);
     }
 
     public static void main(String... argv) {

@@ -23,7 +23,7 @@ public class Day01 implements Runnable {
             }
         }
 
-        printAnswer(1, "One", floor);
+        printAnswer(floor);
 
         int i;
         floor = 0;
@@ -39,6 +39,6 @@ public class Day01 implements Runnable {
             }
         }
 
-        printAnswer(1, "Two", i + 1);
+        printAnswer(i + 1);
     }
 }

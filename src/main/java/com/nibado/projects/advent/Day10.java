@@ -9,8 +9,8 @@ public class Day10 implements Runnable {
     public void run() {
         String input = readResourceAsString("/day10.txt");
 
-        printAnswer(10, "One", apply(40, input));
-        printAnswer(10, "Two", apply(50, input));
+        printAnswer(apply(40, input));
+        printAnswer(apply(50, input));
     }
 
     private static int apply(int times, String input) {

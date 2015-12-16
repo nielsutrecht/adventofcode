@@ -33,13 +33,13 @@ public class Day13 implements Runnable {
 
         List<List<String>> permutations = Day09.permutations(names);
 
-        printAnswer(13, "One", permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
+        printAnswer(permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
 
         names.add("FooBob");
 
         permutations = Day09.permutations(names);
 
-        printAnswer(13, "Two", permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
+        printAnswer(permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
 
     }
 

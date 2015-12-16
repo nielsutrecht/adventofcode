@@ -26,13 +26,13 @@ public class Day07 implements Runnable {
         input.stream().forEach(factory::add);
 
         int value = factory.get("a").solve();
-        printAnswer(7, "One", value);
+        printAnswer(value);
 
         factory = new GateFactory();
         input.stream().forEach(factory::add);
 
         factory.get("b").value = value;
-        printAnswer(7, "Two", factory.get("a").solve());
+        printAnswer(factory.get("a").solve());
     }
 
     public static class GateFactory {

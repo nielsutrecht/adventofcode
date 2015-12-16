@@ -50,9 +50,9 @@ public class Day04 implements Runnable {
     public void run() {
         setInput("iwrupvqb");
         int result = find(5);
-        printAnswer(4, "One", result);
+        printAnswer(result);
 
         result =  find(6);
-        printAnswer(4, "Two", result);
+        printAnswer(result);
     }
 }

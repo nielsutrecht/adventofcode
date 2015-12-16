@@ -25,7 +25,7 @@ public class Day03 implements Runnable {
             visited.add(current);
         }
 
-        printAnswer(3, "One", visited.size());
+        printAnswer(visited.size());
 
         Point santa = new Point();
         Point robot = new Point();
@@ -39,7 +39,7 @@ public class Day03 implements Runnable {
             visited.add(robot);
         }
 
-        printAnswer(3, "Two", visited.size());
+        printAnswer(visited.size());
     }
 
     public static class Point {

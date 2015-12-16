@@ -18,14 +18,14 @@ public class Day05 implements Runnable {
                 .filter(Day05::badCheck)
                 .count();
 
-        printAnswer(5, "One", result1);
+        printAnswer(result1);
 
         int result2 = (int)input.stream()
                 .filter(Day05::doublePairCheck)
                 .filter(Day05::doubleWithBetweenCheck)
                 .count();
 
-        printAnswer(5, "One", result2);
+        printAnswer(result2);
     }
 
     public static void main(String... argv) {

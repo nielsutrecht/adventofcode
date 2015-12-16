@@ -10,9 +10,9 @@ public class Day11 implements Runnable {
         char[] password = readResourceAsString("/day11.txt").toCharArray();
 
         nextValid(password);
-        printAnswer(11, "One", new String(password));
+        printAnswer(new String(password));
         nextValid(password);
-        printAnswer(11, "Two", new String(password));
+        printAnswer(new String(password));
     }
 
     public static void nextValid(char[] password) {

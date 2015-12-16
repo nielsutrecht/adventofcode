@@ -20,7 +20,7 @@ public class Day14 implements Runnable {
         List<Reindeer> reindeer = readResource("/day14.txt").stream().map(Reindeer::of).collect(Collectors.toList());
 
         int winner1 = reindeer.stream().map(r -> new AbstractMap.SimpleEntry<>(r, r.simulate(SECONDS))).max((a, b) -> compare(a.getValue(), b.getValue())).get().getValue();
-        printAnswer(14, "One", winner1);
+        printAnswer(winner1);
 
         List<AbstractMap.SimpleEntry<Reindeer, AtomicInteger>> scores = readResource("/day14.txt").stream().map(Reindeer::of).map(r -> new AbstractMap.SimpleEntry<>(r, new AtomicInteger())).collect(Collectors.toList());
 
@@ -38,7 +38,7 @@ public class Day14 implements Runnable {
         }
 
         int winner2 = scores.stream().max((a, b) -> compare(a.getValue().get(), b.getValue().get())).get().getValue().get();
-        printAnswer(14, "Two", winner2);
+        printAnswer(winner2);
     }
 
     public static void main(String... argv) {

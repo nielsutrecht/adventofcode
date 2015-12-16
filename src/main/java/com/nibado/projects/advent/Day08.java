@@ -12,10 +12,10 @@ public class Day08 implements Runnable {
         List<String> list = readResource("/day08.txt");
 
         int result1 = list.stream().collect(Collectors.summingInt(s -> s.length() - (unescape(s).length())));
-        printAnswer(8, "One", result1);
+        printAnswer(result1);
 
         int result2 = list.stream().collect(Collectors.summingInt(s -> escape(s).length() - s.length()));
-        printAnswer(8, "Two", result2);
+        printAnswer(result2);
     }
 
     public String unescape(String input) {
