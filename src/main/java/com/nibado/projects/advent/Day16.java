@@ -34,8 +34,7 @@ public class Day16 implements Runnable {
 
             for(String prop: parts[1].trim().split(",")) {
                 parts = prop.split(": ");
-
-                sue. add(parts[0].trim(), Integer.parseInt(parts[1]));
+                sue.add(parts[0].trim(), Integer.parseInt(parts[1]));
             }
 
             return sue;
@@ -43,7 +42,6 @@ public class Day16 implements Runnable {
 
         public Sue add(String property, int value) {
             properties.put(property, value);
-
             return this;
         }
 
@@ -52,20 +50,16 @@ public class Day16 implements Runnable {
         }
 
         public boolean matches(Sue other, int part) {
-            return matches(other, "akitas") &&
-                    matches(other, "cars") &&
+            return matches(other, "akitas", Mode.EQ) &&
+                    matches(other, "cars", Mode.EQ) &&
                     matches(other, "cats", part == 1 ? Mode.EQ : Mode.GT) &&
-                    matches(other, "children") &&
+                    matches(other, "children", Mode.EQ) &&
                     matches(other, "goldfish", part == 1 ? Mode.EQ : Mode.LT) &&
-                    matches(other, "perfumes") &&
+                    matches(other, "perfumes", Mode.EQ) &&
                     matches(other, "pomeranians", part == 1 ? Mode.EQ : Mode.LT) &&
-                    matches(other, "samoyeds") &&
+                    matches(other, "samoyeds", Mode.EQ) &&
                     matches(other, "trees", part == 1 ? Mode.EQ : Mode.GT) &&
-                    matches(other, "vizslas");
-        }
-
-        private boolean matches(Sue other, String property) {
-            return matches(other, property, Mode.EQ);
+                    matches(other, "vizslas", Mode.EQ);
         }
 
         private boolean matches(Sue other, String property, Mode mode) {
@@ -76,9 +70,8 @@ public class Day16 implements Runnable {
                 case EQ: return get(property) == other.get(property);
                 case LT: return get(property) < other.get(property);
                 case GT: return get(property) > other.get(property);
+                default: throw new IllegalStateException("Should not happen");
             }
-
-            return false;
         }
 
         public enum Mode {
