@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -14,7 +14,7 @@ public class Day13 implements Runnable {
         Set<String> names = new HashSet<>();
         Map<String, Map<String, Integer>> happiness = new HashMap<>();
 
-        readResource("/day13.txt").stream().map(INPUT::matcher).forEach(m -> {
+        readResource("/2015/day13.txt").stream().map(INPUT::matcher).forEach(m -> {
             if(!m.matches()) {
                 throw new RuntimeException("Line in input doesn't match");
             }

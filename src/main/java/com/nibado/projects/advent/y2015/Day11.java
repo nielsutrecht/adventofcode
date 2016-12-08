@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
@@ -7,7 +7,7 @@ public class Day11 implements Runnable {
     private static final char[] ILLEGAL = "ilo".toCharArray();
     @Override
     public void run() {
-        char[] password = readResourceAsString("/day11.txt").toCharArray();
+        char[] password = readResourceAsString("/2015/day11.txt").toCharArray();
 
         nextValid(password);
         printAnswer(new String(password));

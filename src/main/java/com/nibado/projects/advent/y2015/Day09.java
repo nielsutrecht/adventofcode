@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -15,7 +15,7 @@ public class Day09 implements Runnable {
 
     @Override
     public void run() {
-        readResource("/day09.txt").forEach(s -> {
+        readResource("/2015/day09.txt").forEach(s -> {
             Matcher m = PATTERN.matcher(s);
             if(!m.matches()) {
                 System.out.println("No match:" + s);

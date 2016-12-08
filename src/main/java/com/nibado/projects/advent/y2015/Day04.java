@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.security.MessageDigest;
 

@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ import static com.nibado.projects.advent.Util.readResource;
 public class Day02 implements Runnable {
     @Override
     public void run() {
-        List<Dimension> dimensions = readResource("/day02.txt")
+        List<Dimension> dimensions = readResource("/2015/day02.txt")
                 .stream()
                 .map(Dimension::of)
                 .collect(Collectors.toList());

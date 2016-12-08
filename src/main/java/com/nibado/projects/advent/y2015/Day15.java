@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Day15 implements Runnable {
     private static final Pattern PATTERN = Pattern.compile("(?<i>[A-Za-z]+): capacity (?<cap>[-0-9]+), durability (?<dur>[-0-9]+), flavor (?<fla>[-0-9]+), texture (?<tex>[-0-9]+), calories (?<cal>[-0-9]+)");
     @Override
     public void run() {
-        List<Ingredient> ingredients = readResource("/day15.txt").stream().map(Ingredient::of).collect(Collectors.toList());
+        List<Ingredient> ingredients = readResource("/2015/day15.txt").stream().map(Ingredient::of).collect(Collectors.toList());
 
         List<List<Integer>> combinations = new ArrayList<>();
         List<Integer> counts = ingredients.stream().map(i -> 0).collect(Collectors.toList());

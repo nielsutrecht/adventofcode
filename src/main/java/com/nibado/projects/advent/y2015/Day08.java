@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ import static com.nibado.projects.advent.Util.readResource;
 public class Day08 implements Runnable {
     @Override
     public void run() {
-        List<String> list = readResource("/day08.txt");
+        List<String> list = readResource("/2015/day08.txt");
 
         int result1 = list.stream().collect(Collectors.summingInt(s -> s.length() - (unescape(s).length())));
         printAnswer(result1);

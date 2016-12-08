@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import static com.nibado.projects.advent.Util.readResource;
 public class Day16 implements Runnable {
     @Override
     public void run() {
-        List<Sue> sues = readResource("/day16.txt").stream().map(Sue::of).collect(Collectors.toList());
+        List<Sue> sues = readResource("/2015/day16.txt").stream().map(Sue::of).collect(Collectors.toList());
         Sue target = new Sue().add("children", 3).add("cats", 7).add("samoyeds", 2).add("pomeranians", 3).add("akitas", 0).add("vizslas", 0).add("goldfish", 5).add("trees", 3).add("cars", 2).add("perfumes", 1);
 
         printAnswer(sues.stream().filter(s -> s.matches(target, 1)).findFirst().get().num);

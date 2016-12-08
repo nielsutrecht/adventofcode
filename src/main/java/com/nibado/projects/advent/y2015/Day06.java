@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.awt.*;
 import java.util.*;
@@ -31,7 +31,7 @@ public class Day06 implements Runnable {
 
     @Override
     public void run() {
-        List<Action> actions = readResource("/day06.txt").stream().map(Action::from).collect(Collectors.toList());
+        List<Action> actions = readResource("/2015/day06.txt").stream().map(Action::from).collect(Collectors.toList());
 
         BitSet boolLamps = new BitSet(WIDTH * HEIGHT);
         actions.forEach(a -> a.apply(boolLamps));

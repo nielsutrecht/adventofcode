@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
@@ -7,7 +7,7 @@ public class Day10 implements Runnable {
 
     @Override
     public void run() {
-        String input = readResourceAsString("/day10.txt");
+        String input = readResourceAsString("/2015/day10.txt");
 
         printAnswer(apply(40, input));
         printAnswer(apply(50, input));

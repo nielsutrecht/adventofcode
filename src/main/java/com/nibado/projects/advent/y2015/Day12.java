@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -13,7 +13,7 @@ public class Day12 implements Runnable {
 
     @Override
     public void run() {
-        JsonNode input = readResourceAsJson("/day12.txt");
+        JsonNode input = readResourceAsJson("/2015/day12.txt");
 
         printAnswer(sumTree(input, n -> false));
         printAnswer(sumTree(input, n -> hasValue(n, "red")));

@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class Day05 implements Runnable {
 
     @Override
     public void run() {
-        List<String> input = readResource("/day05.txt");
+        List<String> input = readResource("/2015/day05.txt");
         int result1 = (int)input.stream()
                 .filter(Day05::vowelCheck)
                 .filter(Day05::doubleCheck)

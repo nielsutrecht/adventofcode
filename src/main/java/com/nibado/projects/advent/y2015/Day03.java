@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ public class Day03 implements Runnable {
 
     @Override
     public void run() {
-        String input = readResourceAsString("/day03.txt");
+        String input = readResourceAsString("/2015/day03.txt");
 
         Point current = new Point();
         Set<Point> visited = new HashSet<>();

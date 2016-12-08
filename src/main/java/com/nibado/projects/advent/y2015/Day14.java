@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,12 +17,12 @@ public class Day14 implements Runnable {
 
     @Override
     public void run() {
-        List<Reindeer> reindeer = readResource("/day14.txt").stream().map(Reindeer::of).collect(Collectors.toList());
+        List<Reindeer> reindeer = readResource("/2015/day14.txt").stream().map(Reindeer::of).collect(Collectors.toList());
 
         int winner1 = reindeer.stream().map(r -> new AbstractMap.SimpleEntry<>(r, r.simulate(SECONDS))).max((a, b) -> compare(a.getValue(), b.getValue())).get().getValue();
         printAnswer(winner1);
 
-        List<AbstractMap.SimpleEntry<Reindeer, AtomicInteger>> scores = readResource("/day14.txt").stream().map(Reindeer::of).map(r -> new AbstractMap.SimpleEntry<>(r, new AtomicInteger())).collect(Collectors.toList());
+        List<AbstractMap.SimpleEntry<Reindeer, AtomicInteger>> scores = readResource("/2015/day14.txt").stream().map(Reindeer::of).map(r -> new AbstractMap.SimpleEntry<>(r, new AtomicInteger())).collect(Collectors.toList());
 
         for(int i = 0;i < SECONDS;i++) {
             scores.forEach(e -> e.getKey().tick());

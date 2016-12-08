@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Day07 implements Runnable {
 
     @Override
     public void run() {
-        List<String> input = readResource("/day07.txt");
+        List<String> input = readResource("/2015/day07.txt");
 
         GateFactory factory = new GateFactory();
         input.stream().forEach(factory::add);

@@ -1,4 +1,4 @@
-package com.nibado.projects.advent;
+package com.nibado.projects.advent.y2015;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import static com.nibado.projects.advent.Util.readResource;
 public class Day17 implements Runnable {
     @Override
     public void run() {
-        List<Integer> containers = readResource("/day17.txt").stream().map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> containers = readResource("/2015/day17.txt").stream().map(Integer::parseInt).collect(Collectors.toList());
 
         List<List<Integer>> combinations = new ArrayList<>();
         //combinations(150, 0, combinations, )
