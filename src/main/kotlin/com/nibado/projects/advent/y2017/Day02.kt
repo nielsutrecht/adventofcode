@@ -9,11 +9,15 @@ object Day02 : Day {
         val lines = resourceLines(2).map {
             it.split("\t").stream().map { it.toInt() }.toList() }.toList()
 
-        println(lines.map(Day02::delta).sum())
-        println(lines.map(Day02::mod).sum())
+        println(lines.map(Day02::part1).sum())
+        println(lines.map(Day02::part2).sum())
     }
 
-    fun mod(line: List<Int>) : Int {
+    fun part1(line: List<Int>) : Int {
+        return Math.abs(line.min()!! - line.max()!!)
+    }
+
+    fun part2(line: List<Int>) : Int {
         for(a in line) {
             line
                     .filter { a != it && a % it == 0 }
@@ -21,12 +25,5 @@ object Day02 : Day {
         }
 
         throw RuntimeException()
-    }
-
-    fun delta(line: List<Int>) : Int {
-        val min = line.min()!!
-        val max = line.max()!!
-
-        return Math.abs(min - max)
     }
 }
