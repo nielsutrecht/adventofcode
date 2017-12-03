@@ -62,7 +62,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>test-compile</id>
+                        <id>part1-compile</id>
                         <phase>test-compile</phase>
                         <goals>
                             <goal>test-compile</goal>
