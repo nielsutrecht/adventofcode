@@ -3,14 +3,9 @@ package com.nibado.projects.advent.y2017
 import com.nibado.projects.advent.Day
 
 object Day03 : Day {
-    override fun main(args: Array<String>) {
-        val input = 277678
+    val input = 277678
 
-        part1(input)
-        part2(input)
-    }
-
-    fun part1(input: Int) {
+    override fun part1() : Int {
         var remainder = input
         var ring = 0
         while(remainder > 0) {
@@ -37,10 +32,10 @@ object Day03 : Day {
             }
         }
 
-        println(Math.abs(x) + Math.abs(y))
+        return Math.abs(x) + Math.abs(y)
     }
 
-    fun part2(input: Int) {
+    override fun part2() : Int {
         val map = mutableMapOf<Point, Int?>()
         var r = 0
         var current = Point(0,0)
@@ -58,8 +53,7 @@ object Day03 : Day {
                     val sum = current.neighbors().map { map.getOrDefault(it,0)!! }.sum()
 
                     if(sum > input) {
-                        println(sum)
-                        return
+                        return sum
                     } else {
                         map.put(current, sum)
                     }
