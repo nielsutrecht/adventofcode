@@ -9,15 +9,13 @@ object Day04 : Day {
         val lines = resourceLines(4).map {
             it.split(" ").toList() }.toList()
 
-            part1(lines)
-            part2(lines)
+            println(part1(lines))
+            println(part2(lines))
     }
 
-    fun part1(lines: List<List<String>>) {
-        println(lines.filter { it.size == HashSet<String>(it).size }.count())
-    }
+    fun part1(lines: List<List<String>>) =
+        lines.filter { it.size == HashSet<String>(it).size }.count()
 
-    fun part2(lines: List<List<String>>) {
-        println(lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == HashSet<String>(it).size }.count())
-    }
+    fun part2(lines: List<List<String>>) =
+        lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == HashSet<String>(it).size }.count()
 }
