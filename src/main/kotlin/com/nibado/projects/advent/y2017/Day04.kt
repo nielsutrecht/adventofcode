@@ -3,14 +3,15 @@ package com.nibado.projects.advent.y2017
 import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
 import kotlin.streams.toList
-    object Day04 : Day {
-        val lines = resourceLines(4).map {
-            it.split(" ").toList()
-        }.toList()
 
-        override fun part1() =
-                lines.filter { it.size == it.toSet().size }.count()
+object Day04 : Day {
+    val lines = resourceLines(4).map {
+        it.split(" ").toList()
+    }.toList()
 
-        override fun part2() =
-                lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == it.toSet().size }.count()
-    }
+    override fun part1() =
+            lines.filter { it.size == it.toSet().size }.count()
+
+    override fun part2() =
+            lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == it.toSet().size }.count()
+}
