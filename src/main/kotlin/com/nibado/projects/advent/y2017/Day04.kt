@@ -15,8 +15,8 @@ object Day04 : Day {
     }
 
     fun part1(lines: List<List<String>>) =
-            lines.filter { it.size == HashSet<String>(it).size }.count()
+            lines.filter { it.size == it.toSet().size }.count()
 
     fun part2(lines: List<List<String>>) =
-            lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == HashSet<String>(it).size }.count()
+            lines.map { it.map { it.toList().sorted().toString() } }.filter { it.size == it.toSet().size }.count()
 }
