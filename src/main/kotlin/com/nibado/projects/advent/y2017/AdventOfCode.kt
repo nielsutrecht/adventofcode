@@ -6,6 +6,7 @@ fun main(args : Array<String>) {
     val days = listOf(Day01, Day02, Day03, Day04)
 
     if(args.isEmpty()) {
+        println("%s: %8s %8s".format("Day", "Part 1", "Part 2"))
         days.forEach(::run)
     } else {
         val day = args[0].toInt()
@@ -19,5 +20,6 @@ fun main(args : Array<String>) {
 
 fun run(day: Day) {
     val dayName = day.javaClass.simpleName.replace("Day", "")
-    println("$dayName: ${day.part1()} ${day.part2()}")
+
+    println(" %s: %8s %8s".format(dayName, day.part1(), day.part2()))
 }
