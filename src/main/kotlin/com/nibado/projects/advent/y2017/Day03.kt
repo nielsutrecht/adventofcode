@@ -46,7 +46,7 @@ object Day03 : Day {
         var current = Point(0,0)
         map.put(current, 1)
         var count = 0
-        while(count < input) {
+        while(true) {
             var points = ring(r)
             current = Point(r, r)
 
