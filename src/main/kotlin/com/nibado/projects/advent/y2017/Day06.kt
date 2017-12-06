@@ -1,7 +1,6 @@
 package com.nibado.projects.advent.y2017
 
 import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.join
 
 object Day06 : Day {
     val solution = solve(mutableListOf(2, 8, 8, 5, 4, 2, 3, 1, 5, 5, 1, 2, 15, 13, 5, 14))
@@ -10,42 +9,29 @@ object Day06 : Day {
     override fun part2() = solution.loop
 
     fun solve(banks: MutableList<Int>): Solution {
-        val seen: MutableSet<String> = mutableSetOf()
+        val seen: MutableSet<List<Int>> = mutableSetOf()
         var cycle = 0
-        var seenBefore: String? = null
+        var seenBefore: List<Int>? = null
         var firstCycle = 0
 
         while(true) {
-            seen.add(join(banks))
+            seen.add(banks.toList())
 
             cycle++
-            val max = banks.max()
-            var index = 0
+            var (index, value) = banks.withIndex().maxBy {it.value}!!
 
-            for(i in 0 until banks.size) {
-                if(banks[i] == max) {
-                    index = i
-                    break
-                }
-            }
-
-            var value = banks[index]
             banks[index] = 0
 
-            while(value > 0) {
-                index++
-                index %= banks.size
-
-                banks[index]++
-                value--
+            for(i in 0 until value) {
+                banks[++index % banks.size]++
             }
 
-            if(seen.contains(join(banks))) {
+            if(seen.contains(banks)) {
                 if(seenBefore == null) {
                     firstCycle = cycle
-                    seenBefore = join(banks)
+                    seenBefore = banks.toList()
                 } else {
-                    if(seenBefore == join(banks)) {
+                    if(seenBefore == banks) {
                         return Solution(firstCycle, cycle - firstCycle)
                     }
                 }
