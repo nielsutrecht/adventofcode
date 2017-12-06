@@ -1,16 +1,17 @@
 package com.nibado.projects.advent.y2017
 
 import com.nibado.projects.advent.Day
+import java.lang.System.currentTimeMillis
 
-fun main(args : Array<String>) {
-    val days = listOf(Day01, Day02, Day03, Day04, Day05)
+fun main(args: Array<String>) {
+    val days = listOf(Day01, Day02, Day03, Day04, Day05, Day06)
 
-    if(args.isEmpty()) {
-        println("%s: %8s %8s".format("Day", "Part 1", "Part 2"))
+    if (args.isEmpty()) {
+        println("%s: %8s %8s %7s".format("Day", "Part 1", "Part 2", "Time"))
         days.forEach(::run)
     } else {
         val day = args[0].toInt()
-        if(day < 1 || day > days.size) {
+        if (day < 1 || day > days.size) {
             println("Day can't be less than 1 or larger than ${days.size}")
             return
         }
@@ -21,5 +22,9 @@ fun main(args : Array<String>) {
 fun run(day: Day) {
     val dayName = day.javaClass.simpleName.replace("Day", "")
 
-    println(" %s: %8s %8s".format(dayName, day.part1(), day.part2()))
+    val start = currentTimeMillis()
+    val p1 = day.part1()
+    val p2 = day.part2()
+
+    println(" %s: %8s %8s %4s ms".format(dayName, p1, p2, currentTimeMillis() - start))
 }

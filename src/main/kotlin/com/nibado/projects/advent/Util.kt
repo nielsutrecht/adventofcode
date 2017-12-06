@@ -30,3 +30,7 @@ fun stringToDigits(s: String): List<Int> {
 
     return s.toCharArray().map { c -> c - '0' }
 }
+
+fun join(numbers: List<Int>): String {
+    return numbers.joinToString(",")
+}
