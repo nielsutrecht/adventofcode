@@ -3,7 +3,7 @@ package com.nibado.projects.advent.y2017
 import com.nibado.projects.advent.Day
 
 object Day06 : Day {
-    val solution = solve(mutableListOf(2, 8, 8, 5, 4, 2, 3, 1, 5, 5, 1, 2, 15, 13, 5, 14))
+    val solution: Solution by lazy { solve(mutableListOf(2, 8, 8, 5, 4, 2, 3, 1, 5, 5, 1, 2, 15, 13, 5, 14)) }
 
     override fun part1() = solution.firstCycle
     override fun part2() = solution.loop
