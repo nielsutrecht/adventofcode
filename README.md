@@ -16,6 +16,8 @@ going to implement the solutions in Kotlin.
 | 02  | 24    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day02.kt)    |
 | 03  | 103   | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day03.kt)    |
 | 04  | 17    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day04.kt)    |
+| 05  | 32    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day05.kt)    |
+| 06  | 43    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day06.kt)    |
 
 ### 2015 
 * [Java](/src/main/java/com/nibado/projects/advent/y2015/)  
