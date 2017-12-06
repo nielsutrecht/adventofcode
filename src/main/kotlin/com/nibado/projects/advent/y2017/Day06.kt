@@ -41,8 +41,3 @@ object Day06 : Day {
 
     data class Solution(val firstCycle: Int, val loop: Int)
 }
-
-fun main(args: Array<String>) {
-    println(Day06.part1())
-    println(Day06.part2())
-}
