@@ -9,27 +9,24 @@ object Day07 : Day {
     val tree : Tree by lazy { parseTree(resourceLines(7)) }
 
     override fun part1() = tree.name
-    override fun part2() = "2"
+    override fun part2() = walk(tree).toString()
 }
 
-/*
-nzeqmqi inwmb 12216 15378
-nmhmw nzeqmqi 979 1051
-pknpuej nzeqmqi 91 1051
-rfkvap nzeqmqi 655 1060
- */
-
-fun walk(tree: Tree) {
-    //If tree is unbalanced but children are balanced, return the problem child
+fun walk(tree: Tree) : Int {
     if(!tree.balanced()) {
-        tree.children().map { walk(it) }
+        val result = tree.children().map { walk(it) }.max()
         if(tree.children().map { it.balanced() }.count { it } == tree.children().size) {
-            print(tree)
-            tree.children().forEach { print(it) }
+            val groups = tree.children().groupBy { it.sum() }
+            val wrongTree = groups.values.first { it.size == 1 }.first()
+            val correctTree = groups.values.first { it.size > 1 }.first()
 
-            //tree.children().partition { it.sum() }
+            return wrongTree.weight - (wrongTree.sum() - correctTree.sum())
         }
+
+        return result!!
     }
+
+    return Int.MIN_VALUE
 }
 
 fun parseTree(lines: List<String>) : Tree {
@@ -41,15 +38,7 @@ fun parseTree(lines: List<String>) : Tree {
         programs[it.second]!!.parent = programs[it.first]!!
     }
 
-    val root = programs.values.filter { it.parent == null }.first()
-
-    walk(root)
-
-    return root
-}
-
-fun print(tree: Tree) {
-    println("${tree.name} ${tree.parent?.name} ${tree.weight} ${tree.sum()} ${tree.balanced()}")
+    return programs.values.filter { it.parent == null }.first()
 }
 
 fun parse(line: String): ProgramOutput {
@@ -68,7 +57,6 @@ data class Tree (val name: String, val weight: Int, var parent: Tree?) {
     val nodes: MutableMap<String, Tree> = mutableMapOf()
 
     fun children() = nodes.values
-    fun sum() = weight + childSum()
-    fun childSum() : Int = nodes.values.map { it.sum() }.sum()
+    fun sum(): Int = weight + nodes.values.map { it.sum() }.sum()
     fun balanced() = nodes.values.map { it.sum() }.toSet().size == 1
 }
