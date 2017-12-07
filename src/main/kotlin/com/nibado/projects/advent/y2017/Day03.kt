@@ -5,7 +5,7 @@ import com.nibado.projects.advent.Day
 object Day03 : Day {
     val input = 277678
 
-    override fun part1() : Int {
+    override fun part1() : String {
         var remainder = input
         var ring = 0
         while(remainder > 0) {
@@ -32,10 +32,10 @@ object Day03 : Day {
             }
         }
 
-        return Math.abs(x) + Math.abs(y)
+        return (Math.abs(x) + Math.abs(y)).toString()
     }
 
-    override fun part2() : Int {
+    override fun part2() : String {
         val map = mutableMapOf<Point, Int?>()
         var r = 0
         var current = Point(0,0)
@@ -53,7 +53,7 @@ object Day03 : Day {
                     val sum = current.neighbors().map { map.getOrDefault(it,0)!! }.sum()
 
                     if(sum > input) {
-                        return sum
+                        return sum.toString()
                     } else {
                         map.put(current, sum)
                     }

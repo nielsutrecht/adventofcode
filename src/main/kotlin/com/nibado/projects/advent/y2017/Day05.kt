@@ -8,8 +8,8 @@ import com.nibado.projects.advent.resourceLines
             it.toInt()
         }.toList()
 
-        override fun part1() = walk { 1 }
-        override fun part2() = walk { if(it >= 3) -1 else 1 }
+        override fun part1() = walk { 1 }.toString()
+        override fun part2() = walk { if(it >= 3) -1 else 1 }.toString()
 
         fun walk(inc: (Int) -> Int): Int {
             val list = lines.toMutableList()
