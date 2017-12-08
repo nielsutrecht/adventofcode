@@ -3,28 +3,36 @@ package com.nibado.projects.advent
 import java.io.InputStream
 import kotlin.streams.toList
 
-fun resource(day: Int) : InputStream {
-    val name = String.format("/2017/day%02d.txt", day)
+const val CURRENT_YEAR = 2017
 
-    val ins = String::class.java.getResourceAsStream(name)
+fun resource(day: Int) = resource(CURRENT_YEAR, day)
 
-    if(ins == null) {
-        throw IllegalArgumentException("No resource with name " + name)
-    }
+fun resource(year: Int, day: Int) : InputStream {
+    val name = String.format("/%d/day%02d.txt", year, day)
 
-    return ins;
+    return String::class.java.getResourceAsStream(name) ?: throw IllegalArgumentException("No resource with name " + name)
 }
 
 fun resourceString(day: Int) : String {
     return resource(day).bufferedReader().use { it.readText() }
 }
 
+fun resourceString(year: Int, day: Int) : String {
+    return resource(year, day).bufferedReader().use { it.readText() }
+}
+
+fun resourceLines(year: Int, day: Int) : List<String> {
+    return resource(year, day).bufferedReader().lines().toList()
+}
+
 fun resourceLines(day: Int) : List<String> {
     return resource(day).bufferedReader().lines().toList()
 }
 
-fun resourceRegex(day: Int, regex: Regex) : List<List<String>> {
-    val lines = resourceLines(day)
+fun resourceRegex(day: Int, regex: Regex) = resourceRegex(CURRENT_YEAR, day, regex)
+
+fun resourceRegex(year: Int, day: Int, regex: Regex) : List<List<String>> {
+    val lines = resourceLines(year, day)
 
     val misMatch = lines.filter { !regex.matches(it) }
 
