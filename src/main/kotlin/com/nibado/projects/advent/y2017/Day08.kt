@@ -6,30 +6,26 @@ import com.nibado.projects.advent.resourceLines
 object Day08 : Day {
     val regex = Regex("([a-z]{1,5}) (inc|dec) (-?[0-9]+) if ([a-z]{1,5}) (>|<|>=|<=|==|!=) (-?[0-9]+)")
 
-    val registers : Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceLines(8))) }
+    val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceLines(8))) }
 
-    fun solve(instructions: List<Instruction>) : Map<String, Int> {
+    fun solve(instructions: List<Instruction>): Map<String, Int> {
         val registers: MutableMap<String, Int> = mutableMapOf()
         registers["_max"] = 0
 
-        instructions.forEach {
-            if(test(registers, it.testReg, it.eq, it.testVal)) {
-                val regVal = registers.computeIfAbsent(it.reg, {0})
-                when(it.incDec) {
-                    "dec" -> registers[it.reg] = regVal - it.amount
-                    "inc" -> registers[it.reg] = regVal + it.amount
-                }
-                registers["_max"] = Math.max(registers["_max"]!!, registers[it.reg]!!)
+        instructions.filter { test(registers, it.testReg, it.eq, it.testVal) }.forEach {
+            val regVal = registers.computeIfAbsent(it.reg, { 0 })
+            when (it.incDec) {
+                "dec" -> registers[it.reg] = regVal - it.amount
+                "inc" -> registers[it.reg] = regVal + it.amount
             }
-
-
+            registers["_max"] = Math.max(registers["_max"]!!, registers[it.reg]!!)
         }
 
         return registers
     }
 
-    fun test(registers: MutableMap<String, Int>, reg: String, eq: String, testVal: Int) : Boolean {
-        val regVal = registers.computeIfAbsent(reg, {0})
+    fun test(registers: MutableMap<String, Int>, reg: String, eq: String, testVal: Int): Boolean {
+        val regVal = registers.computeIfAbsent(reg, { 0 })
 
         return when (eq) {
             "==" -> regVal == testVal
@@ -38,7 +34,9 @@ object Day08 : Day {
             "<" -> regVal < testVal
             ">=" -> regVal >= testVal
             "<=" -> regVal <= testVal
-            else -> { false }
+            else -> {
+                false
+            }
         }
     }
 
