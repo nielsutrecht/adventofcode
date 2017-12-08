@@ -23,6 +23,19 @@ fun resourceLines(day: Int) : List<String> {
     return resource(day).bufferedReader().lines().toList()
 }
 
+fun resourceRegex(day: Int, regex: Regex) : List<List<String>> {
+    val lines = resourceLines(day)
+
+    val misMatch = lines.filter { !regex.matches(it) }
+
+    if(!misMatch.isEmpty()) {
+        misMatch.forEach { println(it) }
+        println("${misMatch.size} lines don't match regex ${regex.pattern}")
+    }
+
+    return lines.map { regex.matchEntire(it)!!.groupValues }.toList()
+}
+
 fun stringToDigits(s: String): List<Int> {
     if(!s.matches(Regex("[0-9]+"))) {
         throw IllegalArgumentException("s does not match [0-9]+")
