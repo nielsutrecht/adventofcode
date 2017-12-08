@@ -4,7 +4,7 @@ import com.nibado.projects.advent.Day
 import java.lang.System.currentTimeMillis
 
 fun main(args: Array<String>) {
-    val days = listOf(Day01, Day02, Day03)
+    val days = listOf(Day01, Day02, Day03, Day04)
 
     if (args.isEmpty()) {
         println("%s: %8s %8s %7s %7s %7s".format("Day", "Part 1", "Part 2", "Time", "P1", "P2"))
