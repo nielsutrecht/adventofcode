@@ -81,6 +81,9 @@ private fun permutate(head: List<Any>, tail: List<Any>, permutations: MutableLis
 
 fun factorial(num: Int) = (1..num).fold(1, {a, b -> a * b})
 
+fun slices(line: String, len: Int) = (0 .. line.length - len)
+        .map { line.slice(it until it + len) }
+
 fun testRegex(regex: Regex, lines: List<String>) {
     val mismatching = lines.count { !regex.matches(it) }
     lines.filter { !regex.matches(it) }.forEach { println(it) }
