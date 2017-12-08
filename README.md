@@ -18,6 +18,8 @@ going to implement the solutions in Kotlin.
 | 04  | 17    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day04.kt)    |
 | 05  | 32    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day05.kt)    |
 | 06  | 43    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day06.kt)    |
+| 07  | 62    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day07.kt)    |
+| 08  | 42    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day08.kt)    |
 
 #### Day 01
 
@@ -56,6 +58,32 @@ in one go and then storing the result.
 
 I also am using a lazily evaluated solution for the first time for the simple reason of having my benchmark 
 still work. Without the 'solve' would run the moment the Day06 object gets created. 
+
+#### Day 07
+
+Day 7 was a fair bit more challenging. First of all it the input needed some actual parsing. While it is 
+possible to split the input on spaces I personally prefer to use a regex and capture the different groups. 
+That way I can make sure that I have all the input I expect. Other than that it was a matter of building a 
+tree structure and returning the name of the root. Which was a nice surprise since I had to refactor all of 
+my solutions so far to return a String instead of a number :D
+
+Part 2 had me stumped for quite some time. Only when I used the example input instead of my personal input
+I noticed I made a small error. Shortly after I did manage to figure out the correct result when I walked down 
+the tree to the level where the imbalance was. After I submitted the result I still had to do quite a bit
+of work to get that result calculated and returned from my solution.
+
+#### Day 08
+
+Day 8 was quite a bit easier. Again I used regular expressions to parse the input and used it to
+simulate a virtual machine's registers. I refactored the code to a more functional approach away from
+a switch statement to simply looking up comparison functions in a map. The first part was just a matter
+of returning the largest value in the registers.
+ 
+For part two I only had to add a _max register where I kept track of the max value. 
+
+### 2016
+
+* [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2016/)
 
 ### 2015 
 * [Java](/src/main/java/com/nibado/projects/advent/y2015/)  
