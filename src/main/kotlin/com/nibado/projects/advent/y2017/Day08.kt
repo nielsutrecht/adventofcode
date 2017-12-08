@@ -4,7 +4,7 @@ import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
 
 object Day08 : Day {
-    val regex = Regex("([a-z]{1,5}) (inc|dec) (-?[0-9]+) if ([a-z]{1,5}) (>|<|>=|<=|==|!=) (-?[0-9]+)")
+    private val regex = Regex("([a-z]{1,5}) (inc|dec) (-?[0-9]+) if ([a-z]{1,5}) (>|<|>=|<=|==|!=) (-?[0-9]+)")
 
     private val tests: Map<String, (Int, Int) -> Boolean> = mapOf(
             Pair("==", {a, b -> a == b}),
@@ -15,14 +15,13 @@ object Day08 : Day {
             Pair("<=", {a, b -> a <= b})
             )
 
-    val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceLines(8))) }
+    private val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceLines(8))) }
 
-    fun solve(instructions: List<Instruction>): Map<String, Int> {
+    private fun solve(instructions: List<Instruction>): Map<String, Int> {
         val registers: MutableMap<String, Int> = mutableMapOf()
         registers["_max"] = 0
 
         instructions.filter { it.eq(registers.computeIfAbsent(it.testReg, { 0 }), it.testVal) }.forEach {
-        //instructions.filter { test(registers, it.testReg, it.eq, it.testVal) }.forEach {
             val regVal = registers.computeIfAbsent(it.reg, { 0 })
 
             registers[it.reg] = it.op(regVal, it.amount)
@@ -33,7 +32,7 @@ object Day08 : Day {
         return registers
     }
 
-    fun parse(lines: List<String>) = lines
+    private fun parse(lines: List<String>) = lines
             .map { regex.matchEntire(it) }
             .map { it!!.groupValues }
             .map { Instruction(it[1], if (it[2] == "inc") { a, b -> a + b } else { a, b -> a - b }, it[3].toInt(), it[4], tests[it[5]]!!, it[6].toInt()) }
