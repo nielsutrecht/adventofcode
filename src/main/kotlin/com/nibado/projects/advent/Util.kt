@@ -3,6 +3,7 @@ package com.nibado.projects.advent
 import java.io.InputStream
 import kotlin.streams.toList
 
+private val HEX_CHARS = "0123456789abcdef".toCharArray()
 const val CURRENT_YEAR = 2017
 
 fun resource(day: Int) = resource(CURRENT_YEAR, day)
@@ -85,6 +86,20 @@ fun testRegex(regex: Regex, lines: List<String>) {
     lines.filter { !regex.matches(it) }.forEach { println(it) }
 
     println("${lines.size} lines, matching: ${lines.size - mismatching}, not matching: $mismatching")
+}
+
+fun ByteArray.toHex() : String{
+    val result = StringBuffer()
+
+    forEach {
+        val octet = it.toInt()
+        val firstIndex = (octet and 0xF0).ushr(4)
+        val secondIndex = octet and 0x0F
+        result.append(HEX_CHARS[firstIndex])
+        result.append(HEX_CHARS[secondIndex])
+    }
+
+    return result.toString()
 }
 
 fun main(args: Array<String>) {
