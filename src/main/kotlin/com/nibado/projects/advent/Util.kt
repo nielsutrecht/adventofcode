@@ -105,6 +105,14 @@ fun ByteArray.toHex() : String{
     return result.toString()
 }
 
-fun main(args: Array<String>) {
+fun rotate(list: List<Any>, amount: Int) : List<Any> {
+    val amt = amount % list.size
 
+    return list.subList(amt, list.size) + list.subList(0, amt)
+}
+
+fun main(args: Array<String>) {
+    val a = listOf('A', 'B', 'C', 'D', 'E', 'F')
+
+    println(rotate(a, 2))
 }
