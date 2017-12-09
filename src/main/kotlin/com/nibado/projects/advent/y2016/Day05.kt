@@ -26,8 +26,6 @@ object Day05 : Day {
             counter++
         }
 
-        println(counter)
-
         return list
     }
 
@@ -42,4 +40,6 @@ object Day05 : Day {
         return password.toString()
     }
 }
+
+
 

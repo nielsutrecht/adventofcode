@@ -1,6 +1,7 @@
 package com.nibado.projects.advent
 
 import java.io.InputStream
+import java.time.Duration
 import kotlin.streams.toList
 
 private val HEX_CHARS = "0123456789abcdef".toCharArray()
@@ -111,8 +112,17 @@ fun rotate(list: List<Any>, amount: Int) : List<Any> {
     return list.subList(amt, list.size) + list.subList(0, amt)
 }
 
-fun main(args: Array<String>) {
-    val a = listOf('A', 'B', 'C', 'D', 'E', 'F')
+fun formatDuration(ms: Long) : String {
+    val d = Duration.ofMillis(ms)
+    if(ms > 60000) {
+        return String.format("%s m %s s", d.toMinutes(), d.minusMinutes(d.toMinutes()).seconds)
+    } else if(ms > 1000) {
+        return String.format("%s s", d.seconds)
+    } else {
+        return String.format("%s ms", ms)
+    }
+}
 
-    println(rotate(a, 2))
+fun main(args: Array<String>) {
+    println(formatDuration(72806))
 }
