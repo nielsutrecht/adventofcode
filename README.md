@@ -20,6 +20,7 @@ going to implement the solutions in Kotlin.
 | 06  | 43    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day06.kt)    |
 | 07  | 62    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day07.kt)    |
 | 08  | 42    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day08.kt)    |
+| 09  | 63    | [Kotlin](/src/main/kotlin/com/nibado/projects/advent/y2017/Day09.kt)    |
 
 #### Day 01
 
@@ -80,6 +81,16 @@ a switch statement to simply looking up comparison functions in a map. The first
 of returning the largest value in the registers.
  
 For part two I only had to add a _max register where I kept track of the max value. 
+
+#### Day 09
+
+Day 9 was a lot of fun. The whole problem description just screams 'state machine' :) Since I expected we
+would be required in the second part to somehow use the groups in a tree structure I separated the cleaning
+and the scoring. For the cleaning I used a FSM and for the scoring I used a recursive method that digests a 
+queue of characters.
+
+Part 2 was a lot simpler than expected though; I only needed to keep a counter of 'garbage' characters so
+doing the whole problem inside the FSM would've been fine in hindsight. 
 
 ### 2016
 
