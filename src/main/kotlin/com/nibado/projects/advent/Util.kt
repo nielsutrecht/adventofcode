@@ -122,6 +122,8 @@ fun List<Int>.toHex(): String {
     return result.toString()
 }
 
+fun String.isInt() = matches(Regex("-?[0-9]+"))
+
 fun rotate(list: List<Any>, amount: Int): List<Any> {
     val amt = amount % list.size
 
