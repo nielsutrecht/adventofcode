@@ -10,33 +10,22 @@ object Day10 : Day {
     private val lengths = input.split(",").map { it.toInt() }.toList()
     private val chars = input.toCharArray().map { it.toInt() }.toList() + listOf(17, 31, 73, 47, 23)
 
-    override fun part1() : String {
+    override fun part1() = knot(lengths).subList(0, 2).fold(1, {a, b -> a * b}).toString()
+    override fun part2() = (0 .. 15).map { knot(chars, 64).subList(it * 16, it * 16 + 16) }.map { xor(it) }.toHex()
+
+    private fun knot(lengths: List<Int>, iterations: Int = 1) : List<Int> {
         val list = (0 .. 255).toMutableList()
         var current = 0
         var skipSize = 0
 
-        lengths.forEach {
-            reverse(list, current, it)
-            current += it + skipSize
-            skipSize++
-        }
-
-        return (list[0] * list[1]).toString()
-    }
-
-    override fun part2() : String {
-        val list = (0 .. 255).toMutableList()
-        var current = 0
-        var skipSize = 0
-
-        (0 .. 63).forEach {
-            chars.forEach {
+        (0 until iterations).forEach {
+            lengths.forEach {
                 reverse(list, current, it)
                 current += it + skipSize
                 skipSize++
             }
         }
 
-        return (0 .. 15).map { list.subList(it * 16, it * 16 + 16) }.map { xor(it) }.toHex()
+        return list
     }
 }
