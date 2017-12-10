@@ -1,7 +1,7 @@
 package com.nibado.projects.advent
 
 object Runner {
-    private const val RESULT_WIDTH = 12
+    private const val RESULT_WIDTH = 33
     private const val TIME_WIDTH = 9
 
     private val format = "%3s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"

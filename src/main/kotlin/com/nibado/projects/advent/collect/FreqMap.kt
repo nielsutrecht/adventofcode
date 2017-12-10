@@ -1,4 +1,4 @@
-package com.nibado.projects.advent
+package com.nibado.projects.advent.collect
 
 class FreqMap : Map<Char, Int> {
     private val map = mutableMapOf<Char, Int>()

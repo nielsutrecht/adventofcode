@@ -9,36 +9,36 @@ const val CURRENT_YEAR = 2017
 
 fun resource(day: Int) = resource(CURRENT_YEAR, day)
 
-fun resource(year: Int, day: Int) : InputStream {
+fun resource(year: Int, day: Int): InputStream {
     val name = String.format("/%d/day%02d.txt", year, day)
 
     return String::class.java.getResourceAsStream(name) ?: throw IllegalArgumentException("No resource with name " + name)
 }
 
-fun resourceString(day: Int) : String {
+fun resourceString(day: Int): String {
     return resource(day).bufferedReader().use { it.readText() }
 }
 
-fun resourceString(year: Int, day: Int) : String {
+fun resourceString(year: Int, day: Int): String {
     return resource(year, day).bufferedReader().use { it.readText() }
 }
 
-fun resourceLines(year: Int, day: Int) : List<String> {
+fun resourceLines(year: Int, day: Int): List<String> {
     return resource(year, day).bufferedReader().lines().toList()
 }
 
-fun resourceLines(day: Int) : List<String> {
+fun resourceLines(day: Int): List<String> {
     return resource(day).bufferedReader().lines().toList()
 }
 
 fun resourceRegex(day: Int, regex: Regex) = resourceRegex(CURRENT_YEAR, day, regex)
 
-fun resourceRegex(year: Int, day: Int, regex: Regex) : List<List<String>> {
+fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
     val lines = resourceLines(year, day)
 
     val misMatch = lines.filter { !regex.matches(it) }
 
-    if(!misMatch.isEmpty()) {
+    if (!misMatch.isEmpty()) {
         misMatch.forEach { println(it) }
         println("${misMatch.size} lines don't match regex ${regex.pattern}")
     }
@@ -47,7 +47,7 @@ fun resourceRegex(year: Int, day: Int, regex: Regex) : List<List<String>> {
 }
 
 fun stringToDigits(s: String): List<Int> {
-    if(!s.matches(Regex("[0-9]+"))) {
+    if (!s.matches(Regex("[0-9]+"))) {
         throw IllegalArgumentException("s does not match [0-9]+")
     }
 
@@ -58,7 +58,7 @@ fun join(numbers: List<Int>): String {
     return numbers.joinToString(",")
 }
 
-fun permutations(list: List<Any>) : List<List<Any>> {
+fun permutations(list: List<Any>): List<List<Any>> {
     val permutations: MutableList<List<Any>> = mutableListOf()
 
     permutate(list, listOf(), permutations)
@@ -67,22 +67,22 @@ fun permutations(list: List<Any>) : List<List<Any>> {
 }
 
 private fun permutate(head: List<Any>, tail: List<Any>, permutations: MutableList<List<Any>>) {
-    if(head.isEmpty()) {
+    if (head.isEmpty()) {
         permutations += tail
         return
     }
 
-    for(i in 0 until head.size) {
-        val newHead = head.filterIndexed({index, _ -> index != i}).toList()
+    for (i in 0 until head.size) {
+        val newHead = head.filterIndexed({ index, _ -> index != i }).toList()
         val newTail = tail + head[i]
 
         permutate(newHead, newTail, permutations)
     }
 }
 
-fun factorial(num: Int) = (1..num).fold(1, {a, b -> a * b})
+fun factorial(num: Int) = (1..num).fold(1, { a, b -> a * b })
 
-fun slices(line: String, len: Int) = (0 .. line.length - len)
+fun slices(line: String, len: Int) = (0..line.length - len)
         .map { line.slice(it until it + len) }
 
 fun testRegex(regex: Regex, lines: List<String>) {
@@ -92,7 +92,7 @@ fun testRegex(regex: Regex, lines: List<String>) {
     println("${lines.size} lines, matching: ${lines.size - mismatching}, not matching: $mismatching")
 }
 
-fun ByteArray.toHex() : String{
+fun ByteArray.toHex(): String {
     val result = StringBuffer()
 
     forEach {
@@ -106,22 +106,46 @@ fun ByteArray.toHex() : String{
     return result.toString()
 }
 
-fun rotate(list: List<Any>, amount: Int) : List<Any> {
+fun List<Int>.toHex(): String {
+    val result = StringBuffer()
+
+    forEach {
+        if(it > 255) {
+            throw IllegalArgumentException("$it larger than 255")
+        }
+        val firstIndex = (it and 0xF0).ushr(4)
+        val secondIndex = it and 0x0F
+        result.append(HEX_CHARS[firstIndex])
+        result.append(HEX_CHARS[secondIndex])
+    }
+
+    return result.toString()
+}
+
+fun rotate(list: List<Any>, amount: Int): List<Any> {
     val amt = amount % list.size
 
     return list.subList(amt, list.size) + list.subList(0, amt)
 }
 
-fun formatDuration(ms: Long) : String {
+fun formatDuration(ms: Long): String {
     val d = Duration.ofMillis(ms)
-    if(ms > 60000) {
+    if (ms > 60000) {
         return String.format("%s m %s s", d.toMinutes(), d.minusMinutes(d.toMinutes()).seconds)
-    } else if(ms > 1000) {
+    } else if (ms > 1000) {
         return String.format("%s s", d.seconds)
     } else {
         return String.format("%s ms", ms)
     }
 }
+
+fun reverse(list: MutableList<Int>, index: Int, length: Int) {
+    val indices = (index until index + length).map { it % list.size }
+    val subList = list.slice(indices).reversed()
+    indices.forEachIndexed { i, v -> list[v] = subList[i] }
+}
+
+fun xor(list: List<Int>) = list.fold(0, { a, b -> a xor  b })
 
 fun main(args: Array<String>) {
     println(formatDuration(72806))

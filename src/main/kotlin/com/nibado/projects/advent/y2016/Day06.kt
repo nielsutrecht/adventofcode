@@ -1,7 +1,7 @@
 package com.nibado.projects.advent.y2016
 
 import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.FreqMap
+import com.nibado.projects.advent.collect.FreqMap
 import com.nibado.projects.advent.resourceLines
 
 object Day06 : Day {
