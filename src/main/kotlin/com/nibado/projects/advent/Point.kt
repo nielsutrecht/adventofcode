@@ -18,4 +18,9 @@ data class Point(val x: Int, val y: Int) {
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int) =
             x in minX..maxX && y in minY..maxY
+
+    fun neighbors() = (-1 .. 1)
+            .flatMap { x -> (-1 .. 1)
+            .map { y -> Point(x + this.x, y + this.y) } }
+            .filterNot { it == this }
 }
