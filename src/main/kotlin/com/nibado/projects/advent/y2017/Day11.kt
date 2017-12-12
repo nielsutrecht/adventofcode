@@ -6,7 +6,7 @@ import com.nibado.projects.advent.resourceString
 object Day11 : Day {
     private val input = resourceString(11).split(",").map {HexDir.valueOf(it.toUpperCase()) }
     private val solution: Pair<Int, Point> by lazy { input.map { Pair(0, it.p) }
-            .fold(Pair(0, Point(0, 0)), {a, b -> Pair(maxOf(a.first, distance(a.second), distance(b.second)), a.second.add(b.second))}) }
+                .fold(Pair(0, Point(0, 0)), {a, b -> Pair(maxOf(a.first, distance(a.second)), a.second.add(b.second))}) }
 
     override fun part1() = distance(solution.second).toString()
     override fun part2() = solution.first.toString()
