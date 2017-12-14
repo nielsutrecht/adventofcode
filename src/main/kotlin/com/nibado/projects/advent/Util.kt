@@ -153,7 +153,12 @@ fun xor(list: List<Int>) = list.fold(0, { a, b -> a xor  b })
 
 fun toBinary(hex: String) = hex.map { it.toString().toInt(16).toString(2).padStart(4, '0') }.joinToString("")
 
+fun List<Any>.parallelMap(threads: Int, func: (a: Any) -> Any): List<Any> {
+
+    return this.map { func(it) }
+}
+
 fun main(args: Array<String>) {
-    println(formatDuration(72806))
+    (0 .. 32).map { it.toString() }.parallelMap(4, {"" + it + it}).forEach { println(it) }
 }
 
