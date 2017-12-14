@@ -13,7 +13,7 @@ object Day10 : Day {
     override fun part1() = knot(lengths).subList(0, 2).fold(1, {a, b -> a * b}).toString()
     override fun part2() = (0 .. 15).map { knot(chars, 64).subList(it * 16, it * 16 + 16) }.map { xor(it) }.toHex()
 
-    private fun knot(lengths: List<Int>, iterations: Int = 1) : List<Int> {
+    fun knot(lengths: List<Int>, iterations: Int = 1) : List<Int> {
         val list = (0 .. 255).toMutableList()
         var current = 0
         var skipSize = 0

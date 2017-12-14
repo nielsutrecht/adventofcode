@@ -134,8 +134,10 @@ fun formatDuration(ms: Long): String {
     val d = Duration.ofMillis(ms)
     if (ms > 60000) {
         return String.format("%s m %s s", d.toMinutes(), d.minusMinutes(d.toMinutes()).seconds)
-    } else if (ms > 1000) {
+    } else if (ms > 10000) {
         return String.format("%s s", d.seconds)
+    } else if (ms > 1000) {
+        return String.format("%.2f s", ms / 1000.0)
     } else {
         return String.format("%s ms", ms)
     }
@@ -149,6 +151,9 @@ fun reverse(list: MutableList<Int>, index: Int, length: Int) {
 
 fun xor(list: List<Int>) = list.fold(0, { a, b -> a xor  b })
 
+fun toBinary(hex: String) = hex.map { it.toString().toInt(16).toString(2).padStart(4, '0') }.joinToString("")
+
 fun main(args: Array<String>) {
     println(formatDuration(72806))
 }
+

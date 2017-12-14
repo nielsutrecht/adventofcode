@@ -3,6 +3,9 @@ package com.nibado.projects.advent
 import com.nibado.projects.advent.Direction.*
 
 data class Point(val x: Int, val y: Int) {
+    companion object {
+        val NEIGHBORS_HV = listOf(Point(-1, 0), Point(1, 0), Point(0, -1), Point(0, 1))
+    }
     fun add(other: Point) = Point(x + other.x, y + other.y)
     fun add(direction: Direction) = when(direction) {
         NORTH -> Point(x, y - 1)
@@ -18,6 +21,8 @@ data class Point(val x: Int, val y: Int) {
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int) =
             x in minX..maxX && y in minY..maxY
+
+    fun neighborsHv() = NEIGHBORS_HV.map { Point(it.x + this.x, it.y + this.y) }
 
     fun neighbors() = (-1 .. 1)
             .flatMap { x -> (-1 .. 1)
