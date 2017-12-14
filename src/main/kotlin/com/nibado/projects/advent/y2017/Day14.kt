@@ -10,10 +10,9 @@ object Day14 : Day {
     override fun part1() = square.map { it.count { it == '1' } }.sum().toString()
 
     override fun part2(): String {
-        val visited = mutableSetOf<Point>()
         val points = (0 .. 127).flatMap { x -> (0 .. 127 ).map { y -> Point(x, y) } }.toMutableSet()
+        val visited = points.filter { square[it.y][it.x] == '0'}.toMutableSet()
 
-        visited += points.filter { square[it.y][it.x] == '0'}
         points.removeAll(visited)
 
         var count = 0
@@ -25,14 +24,14 @@ object Day14 : Day {
         return count.toString()
     }
 
-    fun fill(visited: MutableSet<Point>, points: MutableSet<Point>, current: Point) {
+    private fun fill(visited: MutableSet<Point>, points: MutableSet<Point>, current: Point) {
         visited += current
         points -= current
 
         current.neighborsHv().filter { points.contains(it) }.forEach { fill(visited, points, it) }
     }
 
-    fun hash(input: String): String {
+    private fun hash(input: String): String {
         val chars = input.toCharArray().map { it.toInt() }.toList() + listOf(17, 31, 73, 47, 23)
 
         return (0..15).map { Day10.knot(chars, 64).subList(it * 16, it * 16 + 16) }.map { xor(it) }.toHex()
