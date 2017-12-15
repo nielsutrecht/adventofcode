@@ -7,12 +7,12 @@ object Day08 : Day {
     private val regex = Regex("([a-z]{1,5}) (inc|dec) (-?[0-9]+) if ([a-z]{1,5}) (>|<|>=|<=|==|!=) (-?[0-9]+)")
 
     private val tests: Map<String, (Int, Int) -> Boolean> = mapOf(
-            Pair("==", { a, b -> a == b }),
-            Pair("!=", { a, b -> a != b }),
-            Pair(">", { a, b -> a > b }),
-            Pair("<", { a, b -> a < b }),
-            Pair(">=", { a, b -> a >= b }),
-            Pair("<=", { a, b -> a <= b })
+            "==" to { a, b -> a == b },
+            "!=" to { a, b -> a != b },
+            ">" to { a, b -> a > b },
+            "<" to { a, b -> a < b },
+            ">=" to { a, b -> a >= b },
+            "<=" to { a, b -> a <= b }
     )
 
     private val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceRegex(8, regex))) }
