@@ -11,5 +11,5 @@ fun main(args: Array<String>) {
 
     val day = if(args.isEmpty()) 0 else args[0].toInt()
 
-    Runner.run(days, day)
+    Runner.run(2016, days, day)
 }
