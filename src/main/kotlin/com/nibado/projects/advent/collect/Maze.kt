@@ -56,40 +56,14 @@ class Maze(val width: Int, val height: Int) {
         return listOf()
     }
 
-    fun aStar(from: Point, to: Point) : List<Point> {
-        assertInBounds(from, to)
-        return aStar(from, to, from, mutableSetOf())
-    }
-
-    private fun aStar(from: Point, to: Point, current: Point, visited: MutableSet<Point>) : List<Point> {
-        if(current == to) {
-            return listOf(current)
-        }
-
-        visited += current
-
-        println("$current ${from.manhattan(current)} ${current.manhattan(to)}")
-
-        val toVisit = neighbors(current)
-                .filterNot { isWall(it) }
-                .filterNot { visited.contains(it) }
-                .map { Pair(it, from.manhattan(current) + current.manhattan(it)) }
-                .sortedBy { it.second }
-
-
-        toVisit.map { it.first }.forEach {
-            val result = aStar(from,    to, it, visited)
-            if(result.isNotEmpty()) {
-                return listOf(current) + result
-            }
-        }
-
-        return listOf()
-    }
+    fun countBy(func: (Float) -> Boolean) = array.count(func)
+    fun countWalls() = countBy { it == IMPASSIBLE }
+    fun count() = countBy { it != IMPASSIBLE }
 
     fun neighbors(point: Point) = point.neighbors().filter { inBound(it) }
 
     fun inBound(point: Point) = point.inBound(width - 1, height - 1)
+    fun inBound(x: Int, y: Int) = Point(x, y).inBound(width - 1, height - 1)
 
     fun print(path: Set<Point> = setOf()) {
         for(y in 0 until height) {

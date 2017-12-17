@@ -26,11 +26,6 @@ class MazeTest {
 
     @Test
     fun aStar() {
-        (0 .. 4).forEach {
-            maze.set(it, 1, true)
-        }
-        val result = maze.aStar(Point(0, 0), Point(5, 5))
 
-        maze.print(result.toSet())
     }
 }
