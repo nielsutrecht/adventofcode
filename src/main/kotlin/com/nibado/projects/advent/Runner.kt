@@ -7,8 +7,8 @@ object Runner {
     private const val RESULT_WIDTH = 33
     private const val TIME_WIDTH = 9
 
-    private val dayOfWeek = DateTimeFormatter.ofPattern("EEE")
-    private val format = "%8s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"
+    private val dayOfWeek = DateTimeFormatter.ofPattern("EE")
+    private val format = "%6s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"
 
     fun run(year: Int, days: List<Day>, day: Int = 0) {
         println(format.format("Day", "Part 1", "Part 2", "Time", "P1", "P2"))

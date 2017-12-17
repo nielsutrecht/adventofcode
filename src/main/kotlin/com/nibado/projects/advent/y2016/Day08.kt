@@ -6,7 +6,7 @@ import java.util.*
 
 object Day08 : Day {
     private val rectRegex = Regex("rect ([0-9]+)x([0-9]+)")
-    private val rotRegex = Regex("rotate (row|column) (y|x)=([0-9]+) by ([0-9]+)")
+    private val rotRegex = Regex("rotateLeft (row|column) (y|x)=([0-9]+) by ([0-9]+)")
     private val input = resourceLines(2016, 8).map { parse(it) }
 
     override fun part1() : String {

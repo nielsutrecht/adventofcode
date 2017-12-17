@@ -124,11 +124,25 @@ fun List<Int>.toHex(): String {
 
 fun String.isInt() = matches(Regex("-?[0-9]+"))
 
-fun rotate(list: List<Any>, amount: Int): List<Any> {
+fun <T> rotateLeft(list: List<T>, amount: Int): List<T> {
     val amt = amount % list.size
 
     return list.subList(amt, list.size) + list.subList(0, amt)
 }
+
+fun <T> rotateRight(list: List<T>, amount: Int): List<T> {
+    val amt = amount % list.size
+
+    return list.subList(list.size - amt, list.size) + list.subList(0, list.size - amt)
+}
+
+fun <T> swap(list: List<T>, a: Int, b: Int): List<T> {
+    list.indices.map { if(it == a) b else if(it == b) a else it }
+
+    return list.slice(list.indices.map { if(it == a) b else if(it == b) a else it })
+}
+
+fun <T> swapByValue(list: List<T>, a: T, b: T) = swap(list, list.indexOf(a), list.indexOf(b))
 
 fun formatDuration(ms: Long): String {
     val d = Duration.ofMillis(ms)
@@ -161,6 +175,9 @@ fun List<Any>.parallelMap(threads: Int, func: (a: Any) -> Any): List<Any> {
 }
 
 fun main(args: Array<String>) {
-    (0 .. 32).map { it.toString() }.parallelMap(4, {"" + it + it}).forEach { println(it) }
+    val list = (0..5).toList()
+
+    println(rotateLeft(list, 20))
+    println(rotateRight(list, 20))
 }
 
