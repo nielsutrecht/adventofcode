@@ -46,6 +46,19 @@ fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
     return lines.map { regex.matchEntire(it)!!.groupValues }.toList()
 }
 
+fun resourceRegex(day: Int, regex: Map<String, Regex>) = resourceRegex(CURRENT_YEAR, day, regex)
+
+fun resourceRegex(year: Int, day: Int, regex: Map<String, Regex>) = resourceLines(year, day).map { matchRegex(it, regex) }
+
+private fun matchRegex(line: String, regex: Map<String, Regex>) : Pair<String, List<String>> {
+    val matches = regex.entries.map { it.key to it.value.matchEntire(line) }.filter { it.second != null }
+    if(matches.size != 1) {
+        throw RuntimeException("Wrong number of matchers for '$line': ${matches.size}")
+    }
+
+    return matches.map { it.first to it.second!!.groupValues }.first()
+}
+
 fun stringToDigits(s: String): List<Int> {
     if (!s.matches(Regex("[0-9]+"))) {
         throw IllegalArgumentException("s does not match [0-9]+")
@@ -172,6 +185,27 @@ fun Int.toBinary() = toString(2).padStart(32, '0')
 fun List<Any>.parallelMap(threads: Int, func: (a: Any) -> Any): List<Any> {
 
     return this.map { func(it) }
+}
+
+fun combine(ranges: List<LongRange>) : List<LongRange> {
+    val list = mutableListOf<LongRange>()
+
+    ranges.forEach { r ->
+        val others: List<LongRange> = list.filter { overlap(r, it) }
+
+        list.removeAll(others)
+        val combined = others + listOf(r)
+        list += combined.map { it.first }.min()!! .. combined.map { it.last }.max()!!
+    }
+
+    return list.sortedBy { it.first }
+}
+
+fun overlap(a: LongRange, b: LongRange) : Boolean {
+    return a.contains(b.first)
+            || a.contains(b.last)
+            || b.contains(a.first)
+            || b.contains(a.last) || a.last + 1 == b.first || b.last + 1 == a.first
 }
 
 fun main(args: Array<String>) {
