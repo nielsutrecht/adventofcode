@@ -4,7 +4,13 @@ import com.nibado.projects.advent.Direction.*
 
 data class Point(val x: Int, val y: Int) {
     companion object {
-        val NEIGHBORS_HV = listOf(Point(-1, 0), Point(1, 0), Point(0, -1), Point(0, 1))
+        val NEIGHBORS = (-1 .. 1)
+                .flatMap { x -> (-1 .. 1).map { y -> Point(x, y) }}
+                .filterNot { it.x == 0 && it.y == 0 }
+
+        val NEIGHBORS_H = listOf(Point(-1, 0), Point(1, 0))
+        val NEIGHBORS_V = listOf(Point(0, -1), Point(0, 1))
+        val NEIGHBORS_HV = NEIGHBORS_H + NEIGHBORS_V
     }
     fun add(other: Point) = Point(x + other.x, y + other.y)
     fun add(direction: Direction) = when(direction) {
@@ -23,9 +29,15 @@ data class Point(val x: Int, val y: Int) {
             x in minX..maxX && y in minY..maxY
 
     fun neighborsHv() = NEIGHBORS_HV.map { Point(it.x + this.x, it.y + this.y) }
+    fun neighborsH() = NEIGHBORS_H.map { Point(it.x + this.x, it.y + this.y) }
+    fun neighborsV() = NEIGHBORS_V.map { Point(it.x + this.x, it.y + this.y) }
+    fun neighbors() = NEIGHBORS.map { Point(it.x + this.x, it.y + this.y) }
 
-    fun neighbors() = (-1 .. 1)
-            .flatMap { x -> (-1 .. 1)
-            .map { y -> Point(x + this.x, y + this.y) } }
-            .filterNot { it == this }
+    fun directionTo(other: Point) = when {
+        other.x == this.x && other.y < this.y -> Direction.NORTH
+        other.x == this.x && other.y > this.y -> Direction.SOUTH
+        other.y == this.y && other.x < this.x -> Direction.WEST
+        other.y == this.y && other.x > this.x -> Direction.EAST
+        else -> throw IllegalArgumentException("No NSEW direction between $this and $other")
+    }
 }
