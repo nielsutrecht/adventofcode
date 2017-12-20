@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter
 object Runner {
     private const val RESULT_WIDTH = 33
     private const val TIME_WIDTH = 9
+    private const val SINGLE_ITER = 1
 
     private val dayOfWeek = DateTimeFormatter.ofPattern("EE")
     private val format = "%6s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"
@@ -19,7 +20,9 @@ object Runner {
                 println("Day can't be less than 1 or larger than ${days.size}")
                 return
             }
-            run(year, days[day - 1])
+            (0 until SINGLE_ITER).forEach {
+                run(year, days[day - 1])
+            }
         }
     }
 

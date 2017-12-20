@@ -20,8 +20,9 @@ object Day20 : Day {
         val list = input.toMutableList()
         (1..500).forEach {
             list.forEachIndexed { i, p -> list[i] = p.next() }
-            val collisions = list.filter { needle -> list.count { needle.collides(it) } > 1 }.toSet()
-            list.removeIf { collisions.contains(it) }
+            val collisions = list.filter { needle -> list.count { needle.collides(it) } > 1 }
+
+            list.removeAll(collisions)
         }
 
         return list.size.toString()
