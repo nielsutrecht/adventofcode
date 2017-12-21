@@ -13,7 +13,7 @@ object Day21 : Day {
     override fun part1() = solve(5)
     override fun part2() = solve(18)
 
-    fun solve(iterations: Int): String {
+    private fun solve(iterations: Int): String {
         var field = Field(3)
         field.write(start, Point(0, 0))
         (1..iterations).forEach {
@@ -36,12 +36,12 @@ object Day21 : Day {
     data class Field(val size: Int) {
         val field = (0 until size).map { "X".repeat(size).toCharArray() }
 
-        fun write(square: Square, p: Point) = square.points().forEach {
+        fun write(square: Square, p: Point) = square.points.forEach {
             val np = p.add(it.x, it.y)
             field[np.y][np.x] = square.square[it.y][it.x]
         }
 
-        fun matches(square: Square, p: Point) = square.points().none {
+        fun matches(square: Square, p: Point) = square.points.none {
             val np = p.add(it.x, it.y)
             field[np.y][np.x] != square.square[it.y][it.x]
         }
@@ -50,14 +50,14 @@ object Day21 : Day {
     }
 
     data class Square(val square: List<String>) {
-        fun points() = (0 until square.size).flatMap { x -> (0 until square.size).map { y -> Point(x, y) } }
-        fun flipV() = Square(square.map { it.reversed() })
-        fun flipH() = if (square.size == 2) Square(listOf(square[1], square[0])) else Square(listOf(square[2], square[1], square[0]))
+        val points = (0 until square.size).flatMap { x -> (0 until square.size).map { y -> Point(x, y) } }
+        private fun flipV() = Square(square.map { it.reversed() })
+        private fun flipH() = if (square.size == 2) Square(listOf(square[1], square[0])) else Square(listOf(square[2], square[1], square[0]))
 
-        fun rot90(): Square {
+        private fun rot90(): Square {
             val chars = square.map { it.toCharArray() }
 
-            points().forEach {
+            points.forEach {
                 val x = square.size - 1 - it.y
                 chars[it.x][x] = square[it.y][it.x]
             }
