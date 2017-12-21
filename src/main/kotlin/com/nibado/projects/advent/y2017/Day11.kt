@@ -1,6 +1,7 @@
 package com.nibado.projects.advent.y2017
 
 import com.nibado.projects.advent.Day
+import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.resourceString
 
 object Day11 : Day {

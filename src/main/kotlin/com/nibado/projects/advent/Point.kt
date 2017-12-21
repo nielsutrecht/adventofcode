@@ -12,6 +12,8 @@ data class Point(val x: Int, val y: Int) {
         val NEIGHBORS_V = listOf(Point(0, -1), Point(0, 1))
         val NEIGHBORS_HV = NEIGHBORS_H + NEIGHBORS_V
     }
+
+    fun add(x: Int, y: Int) = Point(this.x + x, this.y + y)
     fun add(other: Point) = Point(x + other.x, y + other.y)
     fun add(direction: Direction) = when(direction) {
         NORTH -> Point(x, y - 1)
@@ -40,4 +42,6 @@ data class Point(val x: Int, val y: Int) {
         other.y == this.y && other.x > this.x -> Direction.EAST
         else -> throw IllegalArgumentException("No NSEW direction between $this and $other")
     }
+
+    fun rotate90() = Point(-y, x)
 }

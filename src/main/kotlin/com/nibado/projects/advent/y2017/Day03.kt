@@ -63,41 +63,41 @@ object Day03 : Day {
             r++
         }
     }
-}
 
-data class Point(val x: Int, val y: Int) {
-    fun add(other: Point): Point =
-         Point(this.x + other.x, this.y + other.y)
+    data class Point(val x: Int, val y: Int) {
+        fun add(other: Point): Point =
+                Point(this.x + other.x, this.y + other.y)
 
-    fun neighbors() : List<Point> = listOf(
-            Point(-1, -1),
-            Point(0, -1),
-            Point(1, -1),
-            Point(-1, 0),
-            Point(1, 0),
-            Point(-1, 1),
-            Point(0, 1),
-            Point(1, 1)
-    ).map { this.add(it) }
-}
-
-fun ring(ring: Int) : List<Point> {
-    if(ring == 0) {
-        return listOf(Point(0, 0))
+        fun neighbors() : List<Point> = listOf(
+                Point(-1, -1),
+                Point(0, -1),
+                Point(1, -1),
+                Point(-1, 0),
+                Point(1, 0),
+                Point(-1, 1),
+                Point(0, 1),
+                Point(1, 1)
+        ).map { this.add(it) }
     }
 
-    val size = if (ring == 0) 1 else size(ring) - size(ring - 1)
+    fun ring(ring: Int) : List<Point> {
+        if(ring == 0) {
+            return listOf(Point(0, 0))
+        }
 
-    return (0 until size).map { it / (ring * 2) }.map { when(it) {
-        0 -> Point(0, -1)
-        1 -> Point(-1, 0)
-        2 -> Point(0, 1)
-        3 -> Point(1, 0)
-        else -> Point(0, 0)
-    } }.toList()
-}
+        val size = if (ring == 0) 1 else size(ring) - size(ring - 1)
 
-fun size(ring: Int) : Int {
-    val width = ring * 2 + 1
-    return width * width
+        return (0 until size).map { it / (ring * 2) }.map { when(it) {
+            0 -> Point(0, -1)
+            1 -> Point(-1, 0)
+            2 -> Point(0, 1)
+            3 -> Point(1, 0)
+            else -> Point(0, 0)
+        } }.toList()
+    }
+
+    fun size(ring: Int) : Int {
+        val width = ring * 2 + 1
+        return width * width
+    }
 }
