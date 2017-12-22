@@ -9,54 +9,40 @@ object Day22 : Day {
     private val input = resourceLines(22).mapIndexed{ y, s -> s.trim().toCharArray().mapIndexed { x, c -> Point(x, y) to (if(c == '#') State.INFECTED else State.CLEAN)} }.flatMap { it }.toMap()
     private enum class State { CLEAN, WEAKENED, INFECTED, FLAGGED }
 
-    override fun part1() : String {
-        val points = input.toMutableMap()
+    override fun part1() = solve(10000,
+            {s, d -> when(s) {State.INFECTED -> d.cw() else -> d.ccw()}},
+            {when(it) {State.CLEAN -> State.INFECTED else -> State.CLEAN}})
 
-        val min = min(points.keys)
-        val max = max(points.keys)
-
-        var current = Point(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2)
-        var direction = Direction.NORTH
-        var count = 0
-
-        (1 .. 10000).forEach {
-            val infected = points.getOrDefault(current, State.CLEAN) == State.INFECTED
-            direction = if(infected) direction.cw() else direction.ccw()
-            points[current] = if(infected) State.CLEAN else State.INFECTED
-            current = current.add(direction)
-
-            count += if(!infected) 1 else 0
-        }
-
-        return count.toString()
-    }
-
-    override fun part2() : String {
-        val points = input.toMutableMap()
-
-        val min = min(points.keys)
-        val max = max(points.keys)
-
-        var current = Point(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2)
-        var direction = Direction.NORTH
-        var count = 0
-
-        (1 .. 10000000).forEach {
-            val state = points.getOrDefault(current, State.CLEAN)
-            direction = when(state) {
-                State.CLEAN -> direction.ccw()
-                State.INFECTED -> direction.cw()
-                State.FLAGGED -> direction.cw().cw()
-                State.WEAKENED -> direction
-            }
-            points[current] = when(state) {
+    override fun part2() = solve(10000000,
+            {s, d -> when(s) {
+                State.CLEAN -> d.ccw()
+                State.INFECTED -> d.cw()
+                State.FLAGGED -> d.cw().cw()
+                State.WEAKENED -> d
+            }},
+            {when(it) {
                 State.CLEAN -> State.WEAKENED
-                State.WEAKENED -> {
-                    count++
-                    State.INFECTED
-                }
+                State.WEAKENED -> State.INFECTED
                 State.INFECTED -> State.FLAGGED
                 State.FLAGGED -> State.CLEAN
+            }})
+
+    private fun solve(iterations: Int, dir: (State, Direction) -> Direction, state : (State) -> State) : String {
+        val points = input.toMutableMap()
+
+        val min = Point(points.keys.minBy { it.x }!!.x, points.keys.minBy { it.y }!!.y)
+        val max = Point(points.keys.maxBy { it.x }!!.x, points.keys.maxBy { it.y }!!.y)
+
+        var current = Point(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2)
+        var direction = Direction.NORTH
+        var count = 0
+
+        (1 .. iterations).forEach {
+            direction = dir(points[current] ?: State.CLEAN, direction)
+            points[current] = state(points[current] ?: State.CLEAN)
+
+            if(points[current] == State.INFECTED) {
+                count++
             }
 
             current = current.add(direction)
@@ -64,27 +50,4 @@ object Day22 : Day {
 
         return count.toString()
     }
-
-    fun print(points: Map<Point, Boolean>, center: Point) {
-        val min = min(points.keys)
-        val max = max(points.keys)
-
-        for(y in min.y .. max.y) {
-            for(x in min.x .. max.x) {
-                if(center == Point(x, y)) {
-                    print("*")
-                } else {
-                    print(if (points[Point(x, y)]!!) '#' else '.')
-                }
-            }
-            println()
-        }
-    }
-
-    fun min(points: Collection<Point>) = Point(points.minBy { it.x }!!.x, points.minBy { it.y }!!.y)
-    fun max(points: Collection<Point>) = Point(points.maxBy { it.x }!!.x, points.maxBy { it.y }!!.y)
-}
-
-fun main(args: Array<String>) {
-    println(Day22.part2())
 }
