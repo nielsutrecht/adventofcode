@@ -71,28 +71,6 @@ fun join(numbers: List<Int>): String {
     return numbers.joinToString(",")
 }
 
-fun permutations(list: List<Any>): List<List<Any>> {
-    val permutations: MutableList<List<Any>> = mutableListOf()
-
-    permutate(list, listOf(), permutations)
-
-    return permutations
-}
-
-private fun permutate(head: List<Any>, tail: List<Any>, permutations: MutableList<List<Any>>) {
-    if (head.isEmpty()) {
-        permutations += tail
-        return
-    }
-
-    for (i in 0 until head.size) {
-        val newHead = head.filterIndexed({ index, _ -> index != i }).toList()
-        val newTail = tail + head[i]
-
-        permutate(newHead, newTail, permutations)
-    }
-}
-
 fun factorial(num: Int) = (1..num).fold(1, { a, b -> a * b })
 
 fun slices(line: String, len: Int) = (0..line.length - len)
