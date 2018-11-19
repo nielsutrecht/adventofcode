@@ -2,7 +2,7 @@ package com.nibado.projects.advent
 
 import java.io.InputStream
 import java.time.Duration
-import kotlin.streams.toList
+import java.util.stream.Collectors
 
 private val HEX_CHARS = "0123456789abcdef".toCharArray()
 const val CURRENT_YEAR = 2017
@@ -24,11 +24,11 @@ fun resourceString(year: Int, day: Int): String {
 }
 
 fun resourceLines(year: Int, day: Int): List<String> {
-    return resource(year, day).bufferedReader().lines().toList()
+    return resource(year, day).bufferedReader().lines().collect(Collectors.toList())
 }
 
 fun resourceLines(day: Int): List<String> {
-    return resource(day).bufferedReader().lines().toList()
+    return resource(day).bufferedReader().lines().collect(Collectors.toList())
 }
 
 fun resourceRegex(day: Int, regex: Regex) = resourceRegex(CURRENT_YEAR, day, regex)

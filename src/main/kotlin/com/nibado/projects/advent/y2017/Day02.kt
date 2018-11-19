@@ -2,11 +2,10 @@ package com.nibado.projects.advent.y2017
 
 import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
-import kotlin.streams.toList
 
 object Day02 : Day {
-    val lines = resourceLines(2).map {
-        it.split("\t").stream().map { it.toInt() }.toList() }.toList()
+    val lines = resourceLines(2).map { line ->
+        line.split("\t").map { it.toInt() }.toList() }.toList()
 
     override fun part1() = lines.map{ Math.abs(it.min()!! - it.max()!!) }.sum().toString()
 
