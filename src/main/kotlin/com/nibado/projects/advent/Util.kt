@@ -5,18 +5,11 @@ import java.time.Duration
 import java.util.stream.Collectors
 
 private val HEX_CHARS = "0123456789abcdef".toCharArray()
-const val CURRENT_YEAR = 2017
-
-fun resource(day: Int) = resource(CURRENT_YEAR, day)
 
 fun resource(year: Int, day: Int): InputStream {
     val name = String.format("/%d/day%02d.txt", year, day)
 
     return String::class.java.getResourceAsStream(name) ?: throw IllegalArgumentException("No resource with name " + name)
-}
-
-fun resourceString(day: Int): String {
-    return resource(day).bufferedReader().use { it.readText() }
 }
 
 fun resourceString(year: Int, day: Int): String {
@@ -26,12 +19,6 @@ fun resourceString(year: Int, day: Int): String {
 fun resourceLines(year: Int, day: Int): List<String> {
     return resource(year, day).bufferedReader().lines().collect(Collectors.toList())
 }
-
-fun resourceLines(day: Int): List<String> {
-    return resource(day).bufferedReader().lines().collect(Collectors.toList())
-}
-
-fun resourceRegex(day: Int, regex: Regex) = resourceRegex(CURRENT_YEAR, day, regex)
 
 fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
     val lines = resourceLines(year, day)
@@ -45,8 +32,6 @@ fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
 
     return lines.map { regex.matchEntire(it)!!.groupValues }.toList()
 }
-
-fun resourceRegex(day: Int, regex: Map<String, Regex>) = resourceRegex(CURRENT_YEAR, day, regex)
 
 fun resourceRegex(year: Int, day: Int, regex: Map<String, Regex>) = resourceLines(year, day).map { matchRegex(it, regex) }
 

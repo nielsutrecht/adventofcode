@@ -5,7 +5,7 @@ import com.nibado.projects.advent.resourceString
 import java.util.*
 
 object Day09 : Day {
-    private val input: Pair<String, Int> by lazy { Day09.clean((resourceString(9))) }
+    private val input: Pair<String, Int> by lazy { Day09.clean((resourceString(2017, 9))) }
 
     private fun clean(input: String): Pair<String, Int> {
         val builder = StringBuilder(input.length)

@@ -5,7 +5,7 @@ import com.nibado.projects.advent.resourceRegex
 import java.lang.Math.abs
 
 object Day20 : Day {
-    private val input = resourceRegex(20, Regex("p=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>, v=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>, a=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>"))
+    private val input = resourceRegex(2017, 20, Regex("p=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>, v=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>, a=<(-?[0-9]+),(-?[0-9]+),(-?[0-9]+)>"))
             .map { it.subList(1, 10).map { it.toInt() } }
             .map { Particle(it[0], it[1], it[2], it[3], it[4], it[5], it[6], it[7], it[8]) }
 

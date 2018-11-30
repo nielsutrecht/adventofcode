@@ -4,7 +4,7 @@ import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
 
 object Day04 : Day {
-    val lines = resourceLines(4).map {
+    val lines = resourceLines(2017, 4).map {
         it.split(" ").toList()
     }.toList()
 

@@ -15,7 +15,7 @@ object Day08 : Day {
             "<=" to { a, b -> a <= b }
     )
 
-    private val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceRegex(8, regex))) }
+    private val registers: Map<String, Int> by lazy { Day08.solve(Day08.parse(resourceRegex(2017, 8, regex))) }
 
     private fun solve(instructions: List<Instruction>): Map<String, Int> {
         val registers: MutableMap<String, Int> = mutableMapOf()

@@ -3,7 +3,7 @@ package com.nibado.projects.advent.y2017
 import com.nibado.projects.advent.*
 
 object Day16 : Day {
-    val input = resourceString(16).split(",").map { it[0] to it.substring(1).split("/") }
+    val input = resourceString(2017, 16).split(",").map { it[0] to it.substring(1).split("/") }
 
     override fun part1() = solve(1)
     override fun part2() = solve(1_000_000_000)
@@ -14,7 +14,7 @@ object Day16 : Day {
         var target = times
         var i = 0
 
-        while(i < target) {
+        while (i < target) {
             input.forEach {
                 programs = when (it.first) {
                     's' -> rotateRight(programs, it.second.first().toInt())
@@ -24,7 +24,7 @@ object Day16 : Day {
                 }
             }
 
-            if(seen.contains(programs) && target == times) {
+            if (seen.contains(programs) && target == times) {
                 target = target % i + i
             } else {
                 seen += programs.toList()

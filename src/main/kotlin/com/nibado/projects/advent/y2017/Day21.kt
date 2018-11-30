@@ -5,7 +5,7 @@ import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.resourceLines
 
 object Day21 : Day {
-    private val input = resourceLines(21).map { it.split(" => ") }.map { Square(it[0].split("/")) to Square(it[1].split("/")) }
+    private val input = resourceLines(2017, 21).map { it.split(" => ") }.map { Square(it[0].split("/")) to Square(it[1].split("/")) }
     private val two = input.filter { it.first.square.size == 2 }.map { it.first.rotations() to it.second }
     private val three = input.filter { it.first.square.size == 3 }.map { it.first.rotations() to it.second }
     private val start = Square(listOf(".#.", "..#", "###"))

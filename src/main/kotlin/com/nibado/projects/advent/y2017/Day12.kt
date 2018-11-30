@@ -4,16 +4,16 @@ import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceRegex
 
 object Day12 : Day {
-    private val input = resourceRegex(12, Regex("^([0-9]+) <-> ([0-9 ,]+)$")).map { Pair(it[1].toInt(), it[2].split(", ").map { it.toInt() }) }
-    private val solution : Map<Int, Int> by lazy { solve(connections()) }
+    private val input = resourceRegex(2017, 12, Regex("^([0-9]+) <-> ([0-9 ,]+)$")).map { Pair(it[1].toInt(), it[2].split(", ").map { it.toInt() }) }
+    private val solution: Map<Int, Int> by lazy { solve(connections()) }
 
     private fun connections(): Map<Int, Set<Int>> {
         val map = mutableMapOf<Int, MutableSet<Int>>()
 
-        fun get(id: Int) = map.computeIfAbsent(id, { mutableSetOf()})
+        fun get(id: Int) = map.computeIfAbsent(id, { mutableSetOf() })
 
-        input.forEach {
-            a -> a.second.forEach{ b ->
+        input.forEach { a ->
+            a.second.forEach { b ->
                 get(a.first).add(b)
                 get(b).add(a.first)
             }
@@ -26,7 +26,7 @@ object Day12 : Day {
         val visited = mutableSetOf<Int>()
         val groups = mutableMapOf<Int, Int>()
 
-        while(connections.size > visited.size) {
+        while (connections.size > visited.size) {
             val subVisited = mutableSetOf<Int>()
             val group = connections.keys.filterNot { visited.contains(it) }.sorted().first()
 
