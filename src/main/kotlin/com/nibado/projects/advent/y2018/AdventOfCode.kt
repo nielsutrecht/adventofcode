@@ -4,7 +4,7 @@ import com.nibado.projects.advent.Runner
 
 fun main(args: Array<String>) {
     val days = listOf(
-            Day01)
+            Day01, Day02)
 
     val day = if(args.isEmpty()) 0 else args[0].toInt()
 
