@@ -21,8 +21,8 @@ object Day02 : Day {
     }
 
     override fun part2() =
-            ids.flatMap { i -> ids.map { i to it } }
-                    .map { it.first.toCharArray().intersect(it.second.toCharArray().asIterable()) }
-                    .first { it.size == ids[0].length - 1 }
-                    .joinToString(separator = "")
+        ids.flatMap { i -> ids.map { i to it } }
+                .map { it.first.toCharArray().intersect(it.second.toCharArray().asIterable()) }
+                .first { it.size == ids[0].length - 1 }
+                .joinToString(separator = "")
 }
