@@ -15,8 +15,8 @@ object Day03 : Day {
         map
     }
 
-    override fun part1() = pointMap.count { it.value > 1 }.toString()
-    override fun part2() = claims.first { r -> r.points().all { p -> pointMap[p]!! == 1 } }.id.toString()
+    override fun part1() = pointMap.count { it.value > 1 }
+    override fun part2() = claims.first { r -> r.points().all { p -> pointMap[p]!! == 1 } }.id
 
     private fun parse(line: String): Claim {
         val (id, x, y, width, height) = claimRegex.matchEntire(line)?.groupValues?.drop(1)?.map { it.toInt() }

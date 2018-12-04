@@ -6,7 +6,7 @@ import com.nibado.projects.advent.resourceLines
 object Day02 : Day {
     private val ids = resourceLines(2018, 2)
 
-    override fun part1(): String {
+    override fun part1(): Int {
         val maps = ids.map {
             it.toCharArray().asSequence()
                     .groupBy { it }
@@ -17,12 +17,12 @@ object Day02 : Day {
         val countTwo = maps.count { it.entries.any { it.value == 2 } }
         val countThree = maps.count { it.entries.any { it.value == 3 } }
 
-        return (countTwo * countThree).toString()
+        return countTwo * countThree
     }
 
     override fun part2() =
-        ids.flatMap { i -> ids.map { i to it } }
-                .map { it.first.toCharArray().intersect(it.second.toCharArray().asIterable()) }
-                .first { it.size == ids[0].length - 1 }
-                .joinToString(separator = "")
+            ids.flatMap { i -> ids.map { i to it } }
+                    .map { it.first.toCharArray().zip(it.second.toCharArray()).filter { p -> p.first == p.second }.map { p -> p.first } }
+                    .first { it.size == ids[0].length - 1 }
+                    .joinToString(separator = "")
 }

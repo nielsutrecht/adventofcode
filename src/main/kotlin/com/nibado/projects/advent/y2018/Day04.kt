@@ -37,19 +37,19 @@ object Day04 : Day {
         map
     }
 
-    override fun part1() : String {
+    override fun part1() : Int {
         val guard = map.maxBy { it.value.values.sum() }!!
         val minute = guard.value.entries.maxBy { it.value }!!.key
 
-        return (guard.key * minute).toString()
+        return guard.key * minute
     }
 
-    override fun part2() : String {
+    override fun part2() : Int {
         val max = map.map {
             it.key to it.value.maxBy { m -> m.value }!!
         }.maxBy { it.second.value } ?: throw IllegalArgumentException()
 
-        return (max.first * max.second.key).toString()
+        return max.first * max.second.key
     }
 
     data class Event(val time: LocalDateTime, val guard: Int?, val inst: String)

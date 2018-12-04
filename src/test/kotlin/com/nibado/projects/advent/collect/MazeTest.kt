@@ -1,12 +1,12 @@
 package com.nibado.projects.advent.collect
 
 import com.nibado.projects.advent.Point
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class MazeTest {
     lateinit var maze: Maze
-    @Before
+    @BeforeEach
     fun setup() {
         maze = Maze(10, 10)
     }
