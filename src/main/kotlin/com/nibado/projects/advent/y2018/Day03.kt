@@ -5,7 +5,7 @@ import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.resourceLines
 
 object Day03 : Day {
-    private val claimRegex = "#([0-9]+) @ ([0-9]+),([0-9]+): ([0-9]+)x([0-9]+)".toRegex()
+    private val claimRegex = "#(\\d+) @ (\\d+),(\\d+): (\\d+)x(\\d+)".toRegex()
 
     private val claims = resourceLines(2018, 3).map(::parse)
     private val pointMap: Map<Point, Int> by lazy {
