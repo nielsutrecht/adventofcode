@@ -17,19 +17,15 @@ object Day05 : Day {
     private fun react(inp: String) : Int {
         val poly = StringBuilder(inp)
 
-        while(true) {
-            var changes = false
-
-            for(i in (0 until poly.length - 1)) {
-                if(poly[i].toLowerCase() == poly[i + 1].toLowerCase() && poly[i] != poly[i + 1]) {
-                    poly.delete(i, i + 2)
-                    changes = true
-                    break
+        var i = 0
+        while(i < poly.length - 1) {
+            if(Math.abs(poly[i] - poly[i + 1]) == 32) {
+                poly.delete(i, i + 2)
+                if(i > 0) {
+                    i--
                 }
-            }
-
-            if(!changes) {
-                break
+            } else {
+                i++
             }
         }
 
