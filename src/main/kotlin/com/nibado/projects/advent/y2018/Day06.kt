@@ -6,8 +6,8 @@ import com.nibado.projects.advent.Rectangle
 import com.nibado.projects.advent.resourceLines
 
 object Day06 : Day {
-    private val input = resourceLines(2018, 6).map { it.split(", ").map { it.toInt() } }.map { Point(it[0], it[1]) }
-    private val rect = Rectangle(Point(input.minBy { it.x }!!.x - 1, input.minBy { it.y }!!.y - 1), Point(input.maxBy { it.x }!!.x + 1, input.maxBy { it.y }!!.y + 1))
+    private val input = resourceLines(2018, 6).map { Point.parse(it) }
+    private val rect = Rectangle.containing(input)
 
     override fun part1() = rect.points()
             .map { p -> p to nearest(p) }
@@ -18,9 +18,7 @@ object Day06 : Day {
 
     override fun part2() = rect.points().count { distanceSum(it) < 10000 }
 
-    private fun distanceSum(p: Point): Int {
-        return input.map { i -> i to i.manhattan(p) }.sumBy { it.second }
-    }
+    private fun distanceSum(p: Point) = input.map { it.manhattan(p) }.sum()
 
     private fun nearest(p: Point): Point? {
         val (a, b) = input.map { i -> i to i.manhattan(p) }

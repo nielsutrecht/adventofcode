@@ -35,7 +35,7 @@ object Day19 : Day {
                 dir = current.directionTo(next)
                 current = next
             } else {
-                current = current.add(dir)
+                current = current.plus(dir)
             }
         }
 

@@ -49,7 +49,7 @@ object Day02 : Day {
                     else -> { throw IllegalArgumentException(it.toString())}
                 }
 
-                val newPos = pos.add(dir)
+                val newPos = pos.plus(dir)
                 if(newPos.inBound(width - 1, width - 1) && chars[newPos.y][newPos.x] != ' ') {
                     pos = newPos
                 }

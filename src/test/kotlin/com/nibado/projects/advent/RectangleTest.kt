@@ -41,10 +41,18 @@ class RectangleTest {
     fun onEdge() {
         val r = Rectangle.of(Point(0, 0), Point(2, 2))
 
-        assertThat(r.onEdge(Point(1,1))).isFalse()
-        assertThat(r.onEdge(Point(0,1))).isTrue()
-        assertThat(r.onEdge(Point(2,1))).isTrue()
-        assertThat(r.onEdge(Point(1,0))).isTrue()
-        assertThat(r.onEdge(Point(1,2))).isTrue()
+        assertThat(r.onEdge(Point(1, 1))).isFalse()
+        assertThat(r.onEdge(Point(0, 1))).isTrue()
+        assertThat(r.onEdge(Point(2, 1))).isTrue()
+        assertThat(r.onEdge(Point(1, 0))).isTrue()
+        assertThat(r.onEdge(Point(1, 2))).isTrue()
+    }
+
+    @Test
+    fun containing() {
+        val r1 = (0 point 0) rect (1 point 1)
+        val r2 = Rectangle.containing(Point(1, 1), Point(0, 0))
+
+        assertThat(r1).isEqualTo(r2)
     }
 }

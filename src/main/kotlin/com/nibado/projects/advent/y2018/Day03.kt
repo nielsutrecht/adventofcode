@@ -26,7 +26,7 @@ object Day03 : Day {
     }
 
     private data class Claim(val id: Int, val offset: Point, val width: Int, val height: Int) {
-        fun points() = (0 until width).flatMap { x -> (0 until height).map { y -> Point(x, y).add(offset) } }
+        fun points() = (0 until width).flatMap { x -> (0 until height).map { y -> Point(x, y).plus(offset) } }
         fun writeTo(map: MutableMap<Point, Int>) =
             points().forEach { map.compute(it) { _, value -> value?.plus(1) ?: 1} }
     }

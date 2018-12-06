@@ -37,12 +37,12 @@ object Day21 : Day {
         val field = (0 until size).map { "X".repeat(size).toCharArray() }
 
         fun write(square: Square, p: Point) = square.points.forEach {
-            val np = p.add(it.x, it.y)
+            val np = p.plus(it.x, it.y)
             field[np.y][np.x] = square.square[it.y][it.x]
         }
 
         fun matches(square: Square, p: Point) = square.points.none {
-            val np = p.add(it.x, it.y)
+            val np = p.plus(it.x, it.y)
             field[np.y][np.x] != square.square[it.y][it.x]
         }
 

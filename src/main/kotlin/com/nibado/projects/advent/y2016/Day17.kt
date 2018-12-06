@@ -29,7 +29,7 @@ object Day17 : Day {
 
         val md5 = Hash.md5(input + path)
         val next = directions(md5)
-                .map { it.first to current.add(it.second) }
+                .map { it.first to current.plus(it.second) }
                 .filter { it.second.inBound(3,3) }
 
         next.forEach {

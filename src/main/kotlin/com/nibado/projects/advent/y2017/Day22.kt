@@ -60,7 +60,7 @@ object Day22 : Day {
                 count++
             }
 
-            current = current.add(direction)
+            current = current.plus(direction)
         }
 
         return count.toString()

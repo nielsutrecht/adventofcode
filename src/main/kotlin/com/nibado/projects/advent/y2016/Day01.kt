@@ -20,7 +20,7 @@ object Day01 : Day {
             dir = if(it.first == 'L') dir.ccw() else dir.cw()
 
             (0 until it.second).forEach {
-                pos = pos.add(dir)
+                pos = pos.plus(dir)
                 if(firstDouble == null && positions.contains(pos)) {
                     firstDouble = pos
                 }
