@@ -2,9 +2,13 @@ package com.nibado.projects.advent
 
 data class Rectangle(val left: Point, val right: Point) {
 
+    fun points() : Sequence<Point> = (left.x .. right.x).flatMap { x -> (left.y .. right.y).map { y -> Point(x, y) } }.asSequence()
+
     fun area() : Int {
         return Math.abs(right.x - left.x) * Math.abs(right.y - left.y)
     }
+
+    fun onEdge(p: Point) = p.x == left.x || p.y == left.y || p.x == right.x || p.y == right.y
 
     fun intersect(other: Rectangle) : Rectangle? {
         val xL = Math.max(left.x, other.left.x)
@@ -20,6 +24,9 @@ data class Rectangle(val left: Point, val right: Point) {
 
     companion object {
         fun of(point: Point, width: Int, height: Int) =
-                Rectangle(point, point.add(width, height))
+                Rectangle(point, point.add(width - 1, height - 1))
+
+        fun of(left: Point, right: Point) =
+                Rectangle(left, right)
     }
 }

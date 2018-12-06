@@ -9,7 +9,7 @@ object Day05 : Day {
     override fun part1() = react(input)
 
     override fun part2() =
-        input.map { it.toLowerCase() }.toSet()
+            ('a' .. 'z')
                 .map { c -> c to input.filter { it.toLowerCase() != c } }
                 .map { it.first to react(it.second) }
                 .minBy { it.second }!!.second
