@@ -7,6 +7,11 @@ class Benchmark(
         warmup: Duration = Duration.ofSeconds(3),
         benchmark: Duration = Duration.ofSeconds(5)) {
 
+    constructor(day: Day,
+                warmup: Duration = Duration.ofSeconds(3),
+                benchmark: Duration = Duration.ofSeconds(5)) : this(listOf(day), warmup, benchmark)
+
+
     private val warmupTime = warmup.toMillis()
     private val benchmarkTime = benchmark.toMillis()
 
@@ -44,5 +49,10 @@ class Benchmark(
         return (System.currentTimeMillis() - start) to iter
     }
 
-    fun format(cycle: Pair<Long, Int>) = "%.1f".format(cycle.first.toDouble() / cycle.second.toDouble())
+    private fun format(cycle: Pair<Long, Int>) = format(cycle.first.toDouble() / cycle.second.toDouble())
+    private fun format(ms: Double)
+        = when {
+            ms > 1000.0 -> "%.1f s".format(ms / 1000.0)
+            else -> "%.1f ms".format(ms)
+        }
 }
