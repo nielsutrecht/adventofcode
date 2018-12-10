@@ -1,6 +1,11 @@
 package com.nibado.projects.advent
 
 data class Rectangle(val left: Point, val right: Point) {
+    val width: Int
+        get() = right.x - left.x
+
+    val height: Int
+        get() = right.y - left.y
 
     fun points() : Sequence<Point> = (left.x .. right.x).flatMap { x -> (left.y .. right.y).map { y -> Point(x, y) } }.asSequence()
 
