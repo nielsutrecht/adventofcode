@@ -5,7 +5,7 @@ import com.nibado.projects.advent.Runner
 object AoC2018 {
     val days = listOf(
             Day01, Day02, Day03, Day04, Day05,
-            Day06, Day07, Day08)
+            Day06, Day07, Day08, Day09, Day10)
 }
 
 fun main(args: Array<String>) {

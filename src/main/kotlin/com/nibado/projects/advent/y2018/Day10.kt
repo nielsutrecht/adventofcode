@@ -65,10 +65,14 @@ object Day10 : Day {
         return toString(stars) to second
     }
 
-    override fun part1() = solution.first
+    override fun part1() = Day10Ocr.ocr(solution.first)
     override fun part2() = solution.second
 
     data class Star(val loc: Point, val velocity: Point) {
         fun tick() = Star(loc + velocity, velocity)
     }
+}
+
+fun main(args: Array<String>) {
+    println(Day10.part1())
 }
