@@ -15,7 +15,8 @@ class Year2018Test : YearTest(input()) {
                 TestInput(Day07, "JNOIKSYABEQRUVWXGTZFDMHLPC", 1099),
                 TestInput(Day08, 47112, 28237),
                 TestInput(Day09, 375414L, 3168033673L),
-                TestInput(Day10, "GJNKBZEE", 10727)
-        )
+                TestInput(Day10, "GJNKBZEE", 10727),
+                TestInput(Day11, "20,58","233,268,13")
+        ).drop(10)
     }
 }

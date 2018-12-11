@@ -3,6 +3,7 @@ package com.nibado.projects.advent
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import kotlin.system.measureTimeMillis
 
 abstract class YearTest(private val input: List<TestInput>) {
     @TestFactory
@@ -15,14 +16,16 @@ abstract class YearTest(private val input: List<TestInput>) {
         return listOf(
                 DynamicTest.dynamicTest("$year $day part 1") {
                     if (ti.expected1 != null) {
-                        Assertions.assertThat(ti.day.part1()).isEqualTo(ti.expected1)
+                        val time = measureTimeMillis { Assertions.assertThat(ti.day.part1()).isEqualTo(ti.expected1) }
+                        println("P1: $time ms")
                     } else {
                         println(ti.day.part1())
                     }
                 },
                 DynamicTest.dynamicTest("$year $day part 2") {
                     if (ti.expected2 != null) {
-                        Assertions.assertThat(ti.day.part2()).isEqualTo(ti.expected2)
+                        val time = measureTimeMillis { Assertions.assertThat(ti.day.part2()).isEqualTo(ti.expected2) }
+                        println("P1: $time ms")
                     } else {
                         println(ti.day.part2())
                     }
