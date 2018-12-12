@@ -37,21 +37,20 @@ object Day11 : Day {
 
     private fun maxSize(p: Point) = min(300 - p.x, 300 - p.y)
 
-    override fun part1(): String {
-        return (1..298).flatMap { y -> (1..298).map { x -> Point(x, y) } }
+    override fun part1() = (1..298).flatMap { y -> (1..298).map { x -> Point(x, y) } }
                 .maxBy { grid.get(it.x, it.y) }
                 ?.let { "${it.x},${it.y}" }!!
-    }
 
-    override fun part2(): String {
-        return (1..300).flatMap { y -> (1..300).map { x -> Point(x, y) } }
-                .flatMap { p -> (1..maxSize(p)).map { p to it } }
-                .maxBy { grid.get(it.first.x, it.first.y, it.second) }
-                ?.let { "${it.first.x},${it.first.y},${it.second}" }!!
-    }
-}
+//    override fun part2() = (1..300).flatMap { y -> (1..300).map { x -> Point(x, y) } }
+//                .flatMap { p -> (1..maxSize(p)).map { p to it } }
+//                .maxBy { grid.get(it.first.x, it.first.y, it.second) }
+//                ?.let { "${it.first.x},${it.first.y},${it.second}" }!!
 
-fun main(args: Array<String>) {
-    println(Day11.part1())
-    //println(Day11.part2())
+    override fun part2() = (1..300).flatMap { y -> (1..300).map { x -> Point(x, y) } }
+            .flatMap { p -> (1..maxSize(p)).map { p to it } }
+            .parallelStream()
+            .map { it to grid.get(it.first.x, it.first.y, it.second)  }
+            .max { a, b -> a.second.compareTo(b.second) }
+            .map { it.first }.get()
+            ?.let { "${it.first.x},${it.first.y},${it.second}" }!!
 }
