@@ -12,12 +12,12 @@ object Day12 : Day {
     private fun parse(line: String) = regex.matchEntire(line)?.groupValues?.drop(1)
             ?.let { it[0] as CharSequence to it[1].first() } ?: throw IllegalArgumentException()
 
-    private fun next(current: Pair<Int, String>) : Pair<Int, String> {
+    private fun next(current: Pair<Int, String>): Pair<Int, String> {
         val builder = StringBuilder(current.second)
 
         val dotsStart = with(builder) {
-            val dotsStart = 5 - (0 .. 4).takeWhile { this[it] == '.' }.count()
-            val dotsEnd = 5 - (1 .. 5).takeWhile { this[this.length - it] == '.' }.count()
+            val dotsStart = 5 - (0..4).takeWhile { this[it] == '.' }.count()
+            val dotsEnd = 5 - (1..5).takeWhile { this[this.length - it] == '.' }.count()
 
             insert(0, ".".repeat(dotsStart))
             append(".".repeat(dotsEnd))
@@ -25,15 +25,15 @@ object Day12 : Day {
             dotsStart
         }
 
-        return dotsStart + current.first to (sequenceOf ('.', '.') + (2 .. builder.length - 3)
+        return dotsStart + current.first to (sequenceOf('.', '.') + (2..builder.length - 3)
                 .asSequence()
                 .map { instructions.getOrDefault(builder.subSequence(it - 2, it + 3), '.') })
                 .joinToString("")
     }
 
-    private fun simulate(state: Pair<Int, String>, times: Int) : Pair<Int, String> = (1 .. times).fold(state) { a, _ -> next(a)}
+    private fun simulate(state: Pair<Int, String>, times: Int): Pair<Int, String> = (1..times).fold(state) { a, _ -> next(a) }
     private fun count(current: Pair<Int, String>) = current.second.mapIndexed { index, c -> index - current.first to c }
-            .sumBy { if(it.second == '#') it.first else 0 }
+            .sumBy { if (it.second == '#') it.first else 0 }
 
     override fun part1() = count(simulate(0 to initial, 20))
 
