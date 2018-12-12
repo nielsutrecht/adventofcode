@@ -17,7 +17,7 @@ abstract class YearTest(private val input: List<TestInput>) {
                 DynamicTest.dynamicTest("$year $day part 1") {
                     if (ti.expected1 != null) {
                         val time = measureTimeMillis { Assertions.assertThat(ti.day.part1()).isEqualTo(ti.expected1) }
-                        println("P1: $time ms")
+                        println("$year $day p1: $time ms")
                     } else {
                         println(ti.day.part1())
                     }
@@ -25,7 +25,7 @@ abstract class YearTest(private val input: List<TestInput>) {
                 DynamicTest.dynamicTest("$year $day part 2") {
                     if (ti.expected2 != null) {
                         val time = measureTimeMillis { Assertions.assertThat(ti.day.part2()).isEqualTo(ti.expected2) }
-                        println("P1: $time ms")
+                        println("$year $day p2: $time ms")
                     } else {
                         println(ti.day.part2())
                     }
