@@ -15,23 +15,20 @@ object Day12 : Day {
     private fun next(current: Pair<Int, String>) : Pair<Int, String> {
         val builder = StringBuilder(current.second)
 
-        var inserted = 0
+        val dotsStart = with(builder) {
+            val dotsStart = 5 - (0 .. 4).takeWhile { this[it] == '.' }.count()
+            val dotsEnd = 5 - (1 .. 5).takeWhile { this[this.length - it] == '.' }.count()
 
-        while(builder.subSequence(0, 6).contains('#')) {
-            builder.insert(0, '.')
-            inserted++
-        }
-        while(builder.subSequence(builder.length - 6, builder.length).contains('#')) {
-            builder.append('.')
-        }
-        val newState = StringBuilder(builder)
-        for(i in 2 .. builder.length - 3) {
-            val seq = builder.subSequence(i - 2, i + 3)
+            insert(0, ".".repeat(dotsStart))
+            append(".".repeat(dotsEnd))
 
-            newState[i] =  instructions.getOrDefault(seq, '.')
+            dotsStart
         }
 
-        return inserted + current.first to newState.toString()
+        return dotsStart + current.first to (sequenceOf ('.', '.') + (2 .. builder.length - 3)
+                .asSequence()
+                .map { instructions.getOrDefault(builder.subSequence(it - 2, it + 3), '.') })
+                .joinToString("")
     }
 
     private fun simulate(state: Pair<Int, String>, times: Int) : Pair<Int, String> = (1 .. times).fold(state) { a, _ -> next(a)}
