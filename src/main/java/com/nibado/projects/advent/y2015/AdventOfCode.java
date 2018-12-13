@@ -7,7 +7,7 @@ import java.util.List;
 public class AdventOfCode {
     public static void main(String... argv) {
         List<Runnable> solutions = Arrays.asList(
-                new Day01(),
+                new Day01J(),
                 new Day02(),
                 new Day03(),
                 new Day04(),

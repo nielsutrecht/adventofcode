@@ -3,10 +3,10 @@ package com.nibado.projects.advent.y2015;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
 
-public class Day01 implements Runnable {
+public class Day01J implements Runnable {
 
     public static void main(String... argv) {
-        new Day01().run();
+        new Day01J().run();
     }
 
     @Override
