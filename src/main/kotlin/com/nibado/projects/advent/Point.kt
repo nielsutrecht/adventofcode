@@ -2,7 +2,7 @@ package com.nibado.projects.advent
 
 import com.nibado.projects.advent.Direction.*
 
-data class Point(val x: Int, val y: Int) {
+data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun plus(x: Int, y: Int) = Point(this.x + x, this.y + y)
 
     operator fun plus(other: Pair<Int, Int>) = Point(x + other.first, y + other.second)
@@ -13,6 +13,8 @@ data class Point(val x: Int, val y: Int) {
         SOUTH -> Point(x, y + 1)
         WEST -> Point(x - 1, y)
     }
+
+    override fun compareTo(other: Point) = if (y == other.y) x.compareTo(other.x) else y.compareTo(other.y)
 
     fun manhattan(other: Point) = Math.abs(x - other.x) + Math.abs(y - other.y)
     fun manhattan() = manhattan(Point(0, 0))
@@ -36,6 +38,11 @@ data class Point(val x: Int, val y: Int) {
     }
 
     fun rotate90() = Point(-y, x)
+
+    fun down(amount: Int = 1) = copy(y = y + amount)
+    fun up(amount: Int = 1) = copy(y = y - amount)
+    fun left(amount: Int = 1) = copy(x = x - amount)
+    fun right(amount: Int = 1) = copy(x = x + amount)
 
     companion object {
         fun parse(v: String, r: Regex) = tryParse(v, r)

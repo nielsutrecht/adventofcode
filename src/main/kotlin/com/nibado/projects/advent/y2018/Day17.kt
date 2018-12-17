@@ -5,16 +5,19 @@ import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.Rectangle
 import com.nibado.projects.advent.collect.CharMap
 import com.nibado.projects.advent.resourceRegex
+import java.util.*
 import kotlin.math.max
 
 object Day17 : Day {
     private val regex = "(x|y)=([0-9]+), (x|y)=([0-9]+)\\.\\.([0-9]+)".toRegex()
 
-    private val input = resourceRegex(2018, 18, regex)
+    private val input = resourceRegex(2018, 17, regex)
             .map { it.drop(1) }
             .map { (a1, v1, a2, v2a, v2b) -> Scan(a1[0], v1.toInt(), a2[0], IntRange(v2a.toInt(), v2b.toInt())) }
 
-    fun buildMap(): CharMap {
+    private val map : CharMap by lazy { buildMap().also { flow(it) } }
+
+    private fun buildMap(): CharMap {
         val max = input.map { it.rect().right }.reduce { a, p -> Point(max(a.x, p.x), max(a.y, p.y)) }
 
         val map = CharMap(max.x + 1, max.y + 1, '.', '#')
@@ -30,87 +33,78 @@ object Day17 : Day {
         return map
     }
 
-    fun drop(map: CharMap) {
+    private fun flow(map: CharMap) {
         val down = Point(0, 1)
-        var p = Point(500, 0)
+        val consider = Stack<Point>()
 
-        while (true) {
-            p += down
-            val below = p + down
+        consider += Point(500, 0) + down
 
-            if(map.isEq(below, '#')) {
-                map[p] = '~'
-                println("WA: Set $p to ~")
-                break
-            } else if(map.isEq(below, '~')) {
-                val nearestEmpty = nearestEmpty(map, below)
-                if(nearestEmpty != null) {
-                    map[nearestEmpty] = '~'
-                    println("NE: Set $nearestEmpty to ~")
-                } else {
-                    map[p] = '~'
-                    println("NNE: Set $p to ~")
-                }
-                break
+        while (consider.isNotEmpty()) {
+            val cur = consider.pop()
+
+            map[cur] = '|'
+
+            if (!map.inBounds(cur + down)) {
+                continue
+            }
+
+            if (map.canPlace(cur + down)) {
+                consider += cur + down
+                continue
             } else {
-                map[p] = '|'
+                val flow = map.flow(cur)
+                val c = if (flow.contained) '~' else '|'
+                flow.points.forEach { map[it] = c }
+
+                if (flow.contained) {
+                    if (map.inBounds(cur.up())) {
+                        consider += cur.up()
+                    }
+                } else {
+                    consider += flow.points.filter { map.inBounds(it.down()) && map[it.down()] == '.' }
+                }
             }
         }
     }
 
-    fun nearestEmpty(map: CharMap, cur: Point) : Point? {
+    private fun CharMap.flow(p: Point): Flow {
+        val points = mutableListOf<Point>()
 
-        if(map.isEq(cur, '.')) {
-            return cur
-        }
-        var leftWall = false
-        var rightWall = false
-        for(d in (1 .. map.width)) {
-            if(rightWall && leftWall) {
-                return null
-            }
+        points += p
 
-            if(!leftWall) {
-                val left = cur.copy(x = cur.x - d)
-
-                if(map.isEq(left, '#')) {
-                    leftWall = true
-                    continue
+        fun scan(p: Point, dir: Point, points: MutableList<Point>) : Boolean {
+            var cur = p
+            while(true) {
+                cur += dir
+                if(!inBounds(cur)) {
+                    return false
                 }
-
-                if (map.isEq(left, '.')) {
-                    return left
+                if(get(cur) == '#') {
+                    return true
                 }
-            }
-
-            if(!rightWall) {
-                val right = cur.copy(x = cur.x + d)
-                if(map.isEq(right, '#')) {
-                    rightWall = true
-                    continue
-                }
-                if (map.isEq(right, '.')) {
-                    return right
+                val below = cur.down()
+                if(inBounds(below) && get(below) in setOf('#', '~')) {
+                    points += cur
+                } else if(get(below) != '|'){
+                    points += cur
+                    return false
+                } else {
+                    return false
                 }
             }
         }
-        return null
+
+        val wallLeft = scan(p, Point(-1, 0), points)
+        val wallRight = scan(p, Point(1, 0), points)
+
+        return Flow(points, wallLeft && wallRight)
     }
 
-    override fun part1(): Int {
-        val map = buildMap()
+    private fun CharMap.canPlace(p: Point) = inBounds(p) && this[p] == '.'
+    private fun CharMap.minY() = map.points { c -> c == '#' }.minBy { it.y }!!.y
 
-        for(i in 1 .. 18) {
-            drop(map)
-        }
-
-        println(map.toString(Point(494, 0)))
-        return 0
-    }
-
-    override fun part2(): Int {
-        return 0
-    }
+    override fun part1() = map.minY().let { minY -> map.points { it == '~' || it == '|'}.count { it.y >= minY } }
+    override fun part2() = map.minY().let { minY -> map.points { it == '~'}.count { it.y >= minY } }
 
     data class Scan(val axis1: Char, val value1: Int, val axis2: Char, val value2: IntRange) {
         fun rect() =
@@ -120,8 +114,6 @@ object Day17 : Day {
                     Rectangle(Point(value2.start, value1), Point(value2.endInclusive, value1))
                 }
     }
-}
 
-fun main(args: Array<String>) {
-    println(Day17.part1())
+    data class Flow(val points: List<Point>, val contained: Boolean)
 }
