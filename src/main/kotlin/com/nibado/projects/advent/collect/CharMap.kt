@@ -3,8 +3,20 @@ package com.nibado.projects.advent.collect
 import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.Rectangle
 
-class CharMap(val width: Int, val height: Int, fill: Char = ' ', var pen: Char = '#') {
-    private val chars = CharArray(width * height) { fill }
+class CharMap private constructor(
+        val width: Int,
+        val height: Int,
+        var pen: Char = '#',
+        private val chars: CharArray) {
+
+    constructor(width: Int,
+                height: Int,
+                fill: Char = ' ',
+                pen: Char = '#') : this(
+            width,
+            height,
+            pen,
+            CharArray(width * height) { fill })
 
     private fun toIndex(p: Point) = toIndex(p.x, p.y)
     private fun toIndex(x: Int, y: Int) = x + y * width
@@ -75,4 +87,35 @@ class CharMap(val width: Int, val height: Int, fill: Char = ' ', var pen: Char =
     fun inBounds(x: Int, y: Int) = x in 0 until width && y in 0 until height
 
     override fun toString() = toString(Point(0, 0), Point(width - 1, height - 1))
+
+    fun clone() = CharMap(width, height, pen, chars.clone())
+
+    companion object {
+        fun from(lines: List<String>) : CharMap {
+            val input = lines.map { it.trim() }.filterNot { it.isEmpty() }
+
+            if(input.isEmpty()) {
+                throw IllegalArgumentException("List is empty")
+            }
+
+            val height = input.size
+            val width = input.first().length
+
+            if(input.any { it.length != width }) {
+                throw IllegalArgumentException("All lines in input should be width $width")
+            }
+
+            val map = CharMap(width, height)
+
+            input.indices.forEach { y ->
+                input[y].indices.forEach { x ->
+                    map[x, y] = input[y][x]
+                }
+            }
+
+            return map
+        }
+        fun from(s: String) = from(s.split('\n').map { it.trim() })
+        fun withSize(charMap: CharMap) = CharMap(charMap.width, charMap.height)
+    }
 }

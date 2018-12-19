@@ -12,7 +12,7 @@ object Day16 : Day {
             .dropWhile { it.any { !it.matches("[0-9 ]+".toRegex()) } }
             .map { it.first().split(" ").map { it.toInt() } }
 
-    private val opCodes = mapOf(
+    val opCodes = mapOf(
             "addr" to { a: Int, b: Int, c: Int, reg: MutableList<Int> -> reg[c] = reg[a] + reg[b] },
             "addi" to { a: Int, b: Int, c: Int, reg: MutableList<Int> -> reg[c] = reg[a] + b },
             "mulr" to { a: Int, b: Int, c: Int, reg: MutableList<Int> -> reg[c] = reg[a] * reg[b] },
