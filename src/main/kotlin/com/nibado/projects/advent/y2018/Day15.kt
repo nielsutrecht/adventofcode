@@ -2,10 +2,15 @@ package com.nibado.projects.advent.y2018
 
 import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.Point
+import com.nibado.projects.advent.collect.CharMap
 import com.nibado.projects.advent.resourceLines
 
 object Day15 : Day {
     val input = resourceLines(2018, 17)
+
+    fun log(s: String) {
+        //println(s)
+    }
 
     data class Entity(val type: Char, var pos: Point, var hitpoints: Int = 200) {
         val power = 3
@@ -29,31 +34,32 @@ object Day15 : Day {
             val inRange = targetSquares.filter { it.neighborsHv().contains(it) }.sorted()
 
             if(inRange.isEmpty()) {
-                //println(grid.toString(targetSquares.toSet(), '?'))
+                log(grid.toString(targetSquares.toSet(), '?'))
 
                 val paths = targetSquares.map { it to grid.search(pos, it) }
                         .filterNot { it.second.isEmpty() }
 
-                //println(grid.toString(paths.map { it.first }.toSet(), '@'))
+                log(grid.toString(paths.map { it.first }.toSet(), '@'))
 
                 if(paths.isNotEmpty()) {
                     val minDistance = paths.minBy { it.second.size }!!.second.size
 
                     val closest = paths.filter { it.second.size == minDistance }
 
-                    //println(grid.toString(closest.map { it.first }.toSet(), '!'))
+                    log(grid.toString(closest.map { it.first }.toSet(), '!'))
 
 
                     val chosen = closest.sortedBy { it.first }
 
-                    //println(grid.toString(setOf(chosen.first().first), '+'))
+                    log(grid.toString(setOf(chosen.first().first), '+'))
 
                     if(chosen.isNotEmpty()) {
                         val nextStep = chosen.first().second[1]
+
                         grid.move(this, nextStep)
                     }
 
-                    //println(grid.toString())
+                    log(grid.toString())
                 }
 
             }
@@ -80,17 +86,18 @@ object Day15 : Day {
         fun isTarget(entity: Entity) = entity.hitpoints > 0 && entity.type != this.type
     }
 
-    class Grid(val grid: List<CharArray>, val entities: MutableMap<Point, Entity>) {
-        val points = grid.indices.flatMap { y -> grid[y].indices.map { x -> Point(x, y) } }
+    class Grid(val grid: CharMap, val entities: MutableMap<Point, Entity>) {
+        val points = grid.points()
+
         val openPoints = points.filter { get(it) == '.' }.toSet()
 
         override fun toString() = toString(emptySet())
 
         fun toString(other: Set<Point>, otherChar: Char = ' '): String {
-            val build = StringBuilder(grid.size * grid.first().size)
+            val build = StringBuilder(grid.width * grid.height)
 
-            for (y in grid.indices) {
-                for (x in grid[y].indices) {
+            for (y in 0 until grid.height) {
+                for (x in 0 until grid.width) {
                     val p = Point(x, y)
                     val c = if (other.contains(p)) {
                         otherChar
@@ -106,11 +113,11 @@ object Day15 : Day {
             return build.toString()
         }
 
-        fun inBound(p: Point) = p.inBound(grid[0].size - 1, grid.size - 1)
+        fun inBounds(p: Point) = grid.inBounds(p)
 
         fun squaresFor(e: Entity) = e.pos.neighborsHv().filter { openPoints.contains(it) }.filterNot { entities.keys.contains(it) }
         fun entities() = points.mapNotNull { entities[it] }
-        fun get(p: Point) = grid[p.y][p.x]
+        fun get(p: Point) = grid[p]
         fun impassable(p: Point) = entities.keys.contains(p) || get(p) == '#'
 
         fun move(e: Entity, to: Point) {
@@ -131,7 +138,7 @@ object Day15 : Day {
 
                 val next = current.neighborsHv()
                         .sorted()
-                        .filter { inBound(it) }
+                        .filter { inBounds(it) }
                         .filterNot { cameFrom.containsKey(it) }
                         .filterNot { impassable(it) }
 
@@ -170,26 +177,23 @@ object Day15 : Day {
                 .flatten()
                 .map { Entity(it.second, it.first) }
 
-        val grid = input.map { it.toCharArray().map { if (it == 'G' || it == 'E') '.' else it }.toCharArray() }
+        val map = CharMap.from(input.map { it.map { if (it == 'G' || it == 'E') '.' else it }.joinToString("") })
 
-        return Grid(grid, entities.map { it.pos to it }.toMap().toMutableMap())
+        return Grid(map, entities.map { it.pos to it }.toMap().toMutableMap())
     }
 
     override fun part1(): String {
-        val grid = read(Inputs.INPUT_1)
+        val grid = read(Inputs.INPUT_4)
 
         println(grid)
 
-        for(i in 1 .. 1000000) {
-            val cont = grid.entities().all { !it.turn(grid) }
-            if(!cont) {
-                break
+        for(i in 1 .. 3) {
+            for(p in grid.points) {
+                grid.entities[p]?.turn(grid)
             }
-
             println(grid)
-
-            println(i)
         }
+
 
 
         return ""
@@ -205,12 +209,40 @@ fun main(args: Array<String>) {
 }
 
 object Inputs {
+    val INPUT_0 = """
+#######
+#E..G.#
+#...#.#
+#.G.#G#
+#######
+    """.split("\n").filterNot { it.trim().isEmpty() }
+
     val INPUT_1 = """
+#######
+#.E...#
+#.....#
+#...G.#
+#######
+    """.split("\n").filterNot { it.trim().isEmpty() }
+
+    val INPUT_2 = """
 #######
 #G..#E#
 #E#E.E#
 #G.##.#
 #...#E#
 #...E.#
-#######""".split("\n")
+#######""".split("\n").filterNot { it.trim().isEmpty() }
+
+    val INPUT_4 = """
+#########
+#G..G..G#
+#.......#
+#.......#
+#G..E..G#
+#.......#
+#.......#
+#G..G..G#
+#########
+    """.split("\n").filterNot { it.trim().isEmpty() }
 }

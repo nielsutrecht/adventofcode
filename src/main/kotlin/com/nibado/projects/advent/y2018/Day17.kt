@@ -15,7 +15,7 @@ object Day17 : Day {
             .map { it.drop(1) }
             .map { (a1, v1, a2, v2a, v2b) -> Scan(a1[0], v1.toInt(), a2[0], IntRange(v2a.toInt(), v2b.toInt())) }
 
-    private val map : CharMap by lazy { buildMap().also { flow(it) } }
+    val map : CharMap by lazy { buildMap().also { flow(it) } }
 
     private fun buildMap(): CharMap {
         val max = input.map { it.rect().right }.reduce { a, p -> Point(max(a.x, p.x), max(a.y, p.y)) }

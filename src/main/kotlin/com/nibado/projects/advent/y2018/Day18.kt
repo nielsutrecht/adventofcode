@@ -7,7 +7,7 @@ import com.nibado.projects.advent.resourceLines
 object Day18 : Day {
     private val input = resourceLines(2018, 18)
 
-    private fun sim(minutes: Int) : Int {
+    private fun sim(minutes: Int): Int {
         var map = CharMap.from(input)
 
         for (i in 1..minutes) {
