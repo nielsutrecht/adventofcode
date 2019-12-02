@@ -2,7 +2,6 @@ package com.nibado.projects.advent.y2019
 
 import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
-import kotlin.math.floor
 
 object Day01 : Day {
     private val modules = resourceLines(2019, 1).map { it.toInt() }
