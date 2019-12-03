@@ -16,6 +16,7 @@ class Benchmark(
     private val benchmarkTime = benchmark.toMillis()
 
     fun run() {
+        println("Running ${days.size} days.")
         days.forEach(::run)
     }
 

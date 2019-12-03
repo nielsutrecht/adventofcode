@@ -1,10 +1,10 @@
 package com.nibado.projects.advent.y2019
 
+import com.nibado.projects.advent.Reflect
 import com.nibado.projects.advent.Runner
 
 object AoC2019 {
-    val days = listOf(
-            Day01, Day02)
+    val days = Reflect.getDays(2019)
 }
 
 fun main(args: Array<String>) {
