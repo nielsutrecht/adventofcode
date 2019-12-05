@@ -29,18 +29,17 @@ object Day05 : Day {
 
         data class Instruction(val op: Opcode, val params: List<Int>, val modes: List<Boolean>) {
             fun apply(ip: Int, memory: MutableList<Int>, input: MutableList<Int>, output: MutableList<Int>): Int? {
-                fun get(index: Int, immediate: Boolean): Int =
-                    if (immediate) index else memory[index]
+                fun get(param: Int) = if (modes[param]) params[param] else memory[params[param]]
 
                 when (op) {
-                    ADD     -> memory[params[2]] = get(params[0], modes[0]) + get(params[1], modes[1])
-                    MUL     -> memory[params[2]] = get(params[0], modes[0]) * get(params[1], modes[1])
+                    ADD     -> memory[params[2]] = get(0) + get(1)
+                    MUL     -> memory[params[2]] = get(0) * get(1)
                     SAV     -> memory[params[0]] = input.removeAt(0)
-                    OUT     -> output.add(get(params[0], modes[0]))
-                    JIT     -> if (get(params[0], modes[0]) != 0) return get(params[1], modes[1])
-                    JIF     -> if (get(params[0], modes[0]) == 0) return get(params[1], modes[1])
-                    LT      -> memory[params[2]] = if(get(params[0], modes[0]) < get(params[1], modes[1])) 1 else 0
-                    EQ      -> memory[params[2]] = if(get(params[0], modes[0]) == get(params[1], modes[1])) 1 else 0
+                    OUT     -> output.add(get(0))
+                    JIT     -> if (get(0) != 0) return get(1)
+                    JIF     -> if (get(0) == 0) return get(1)
+                    LT      -> memory[params[2]] = if(get(0) < get(1)) 1 else 0
+                    EQ      -> memory[params[2]] = if(get(0) == get(1)) 1 else 0
                     TERM    -> return null
                 }
 
