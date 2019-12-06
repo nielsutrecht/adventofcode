@@ -29,7 +29,7 @@ object Day05 : Day {
 
         data class Instruction(val op: Opcode, val params: List<Int>, val modes: List<Boolean>) {
             fun apply(ip: Int, memory: MutableList<Int>, input: MutableList<Int>, output: MutableList<Int>): Int? {
-                fun get(param: Int) = if (modes[param]) params[param] else memory[params[param]]
+                fun get(param: Int)  = if (modes[param]) params[param] else memory[params[param]]
 
                 when (op) {
                     ADD     -> memory[params[2]] = get(0) + get(1)
