@@ -1,5 +1,7 @@
 package com.nibado.projects.advent
 
+import java.lang.IllegalArgumentException
+
 enum class Direction {
     NORTH,
     EAST,
@@ -18,5 +20,21 @@ enum class Direction {
         WEST -> SOUTH
         SOUTH -> EAST
         EAST -> NORTH
+    }
+
+    companion object {
+        fun from(s: String) : Direction = from(s.first())
+        fun from(char: Char) : Direction = when(char.toUpperCase()) {
+            'N' -> NORTH
+            'S' -> SOUTH
+            'E' -> EAST
+            'W' -> WEST
+
+            'R' -> EAST
+            'L' -> WEST
+            'U' -> NORTH
+            'D' -> SOUTH
+            else -> throw IllegalArgumentException("Can't map $char to Direction")
+        }
     }
 }
