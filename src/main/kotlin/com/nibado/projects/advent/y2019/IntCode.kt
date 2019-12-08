@@ -1,5 +1,6 @@
 package com.nibado.projects.advent.y2019
 
+import com.nibado.projects.advent.toBlockingQueue
 import com.nibado.projects.advent.y2019.IntCode.Opcode.*
 import java.util.concurrent.BlockingQueue
 
@@ -11,13 +12,16 @@ class IntCode(
     var terminated = false
     var ip = 0
 
+    constructor(memory: List<Int>, input: List<Int> = emptyList(), output: List<Int> = emptyList())
+            : this(memory.toMutableList(), input.toBlockingQueue(), output.toBlockingQueue())
+
     fun run() {
         while (!terminated) {
             step()
         }
     }
 
-    fun step() {
+    private fun step() {
         if (terminated) {
             return
         }

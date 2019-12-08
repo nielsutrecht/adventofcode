@@ -2,6 +2,7 @@ package com.nibado.projects.advent
 
 import java.io.InputStream
 import java.time.Duration
+import java.util.concurrent.LinkedBlockingQueue
 import java.util.stream.Collectors
 
 private val HEX_CHARS = "0123456789abcdef".toCharArray()
@@ -149,6 +150,8 @@ fun List<Any>.parallelMap(threads: Int, func: (a: Any) -> Any): List<Any> {
 
     return this.map { func(it) }
 }
+
+fun <T> List<T>.toBlockingQueue() = LinkedBlockingQueue<T>().also { q -> forEach { i -> q.put(i) } }
 
 fun combine(ranges: List<LongRange>) : List<LongRange> {
     val list = mutableListOf<LongRange>()

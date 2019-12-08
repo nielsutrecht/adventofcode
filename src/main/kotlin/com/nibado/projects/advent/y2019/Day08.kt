@@ -6,14 +6,11 @@ import com.nibado.projects.advent.resourceString
 object Day08 : Day {
     private val input = resourceString(2019, 8).map { it - '0' }.toList()
 
-    override fun part1(): Any {
-        //25 x 6
-        val layers = input.chunked(25 * 6)
-        val min = layers.minBy { it.count { it == 0 } }!!
-        return min.count { it == 1 } * min.count { it == 2 }
-    }
+    override fun part1() = input.chunked(25 * 6)
+            .minBy { it.count { it == 0 } }
+            ?.run { count { it == 1 } * count {it == 2}  }!!
 
-    override fun part2(): IntArray {
+    override fun part2(): String {
         val layers = input.chunked(25 * 6)
 
         val grid = IntArray(25 * 6)
@@ -21,27 +18,12 @@ object Day08 : Day {
 
         layers.forEach { layer ->
             layer.forEachIndexed { index, i ->
-                when {
-                    grid[index] == -1 -> grid[index] = i
-                    grid[index] == 2 -> grid[index] = i
+                if(grid[index] in listOf(-1, 2)) {
+                    grid[index] = i
                 }
             }
         }
 
-        (0 until 6).forEach { y ->
-            (0 until 25).forEach { x ->
-                val z = if(grid[y * 25 + x] == 1) 'X' else ' '
-                print(z)
-            }
-            println()
-        }
-
-        return grid
-
+        return grid.map { if(it == 1) 'X' else ' '}.chunked(25).map { it.joinToString("") }.joinToString("\n")
     }
-}
-
-fun main() {
-    println(Day08.part2())
-
 }
