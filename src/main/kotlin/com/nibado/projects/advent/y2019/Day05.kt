@@ -15,15 +15,35 @@ object Day05 : Day {
         val input: MutableList<Int> = mutableListOf(),
         val output: MutableList<Int> = mutableListOf()
     ) {
+        var terminated = false
+        var ip = 0
+
         fun run() {
-            var ip = 0
-            while (true) {
-                val op = values().find { it.op == memory[ip] % 100 } ?: throw IllegalArgumentException()
-                val instruction = Instruction(op,
+            while (!terminated) {
+                step()
+            }
+        }
+
+        fun runInput() {
+            while (!terminated && input.isNotEmpty()) {
+                step()
+            }
+        }
+
+        fun step() {
+            if(terminated) {
+                return
+            }
+            val op = values().find { it.op == memory[ip] % 100 } ?: throw IllegalArgumentException()
+            val instruction = Instruction(op,
                     (1 until op.len).map { memory[ip + it] },
                     (memory[ip] / 100).toString().padStart(op.len - 1, '0').map { it == '1' }.reversed()
-                )
-                ip = instruction.apply(ip, memory, input, output) ?: return
+            )
+            val result = instruction.apply(ip, memory, input, output)
+            if(result == null) {
+                terminated = true
+            } else {
+                ip = result
             }
         }
 
