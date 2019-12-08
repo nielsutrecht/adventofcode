@@ -12,7 +12,7 @@ object Day08 : Day {
 
     override fun part2(): String {
         val layers = input.chunked(25 * 6)
-        val grid = IntArray(25 * 6).apply { fill(-1) }
+        val grid = IntArray(25 * 6) { -1 }
 
         layers.forEach { layer ->
             layer.forEachIndexed { index, i ->
