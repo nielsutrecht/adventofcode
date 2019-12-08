@@ -4,14 +4,12 @@ import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceString
 
 object Day08 : Day {
-    private val input = resourceString(2019, 8).map { it - '0' }.toList()
+    private val layers = resourceString(2019, 8).map { it - '0' }.toList().chunked(25 * 6)
 
-    override fun part1() = input.chunked(25 * 6)
-            .minBy { it.count { it == 0 } }
+    override fun part1() = layers.minBy { it.count { it == 0 } }
             ?.run { count { it == 1 } * count {it == 2}  }!!
 
     override fun part2(): String {
-        val layers = input.chunked(25 * 6)
         val grid = IntArray(25 * 6) { -1 }
 
         layers.forEach { layer ->
