@@ -7,17 +7,17 @@ import java.util.concurrent.LinkedBlockingQueue
 import kotlin.concurrent.thread
 
 object Day07 : Day {
-    private val program = resourceString(2019, 7).split(",").map { it.toInt() }
+    private val program = resourceString(2019, 7).split(",").map { it.toLong() }
 
-    override fun part1() = (0..4).toList().permutations()
+    override fun part1() = (0L..4L).toList().permutations()
             .map { run(program, it) }.max()!!
 
-    override fun part2() = (5..9).toList().permutations()
+    override fun part2() = (5L..9L).toList().permutations()
             .map { run(program, it) }.max()!!
 
 
-    private fun run(program: List<Int>, settings: List<Int>): Int {
-        val queues = settings.map { i -> LinkedBlockingQueue<Int>().also { it.add(i) } }
+    private fun run(program: List<Long>, settings: List<Long>): Long {
+        val queues = settings.map { i -> LinkedBlockingQueue<Long>().also { it.add(i) } }
 
         queues.first().put(0)
 
