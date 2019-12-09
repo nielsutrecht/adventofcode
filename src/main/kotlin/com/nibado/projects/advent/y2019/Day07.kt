@@ -21,7 +21,7 @@ object Day07 : Day {
 
         queues.first().put(0)
 
-        val amps = (0..4).map { i -> IntCode(program.toMutableList(), queues[i], queues[(i + 1) % 5]) }
+        val amps = (0..4).map { i -> IntCode(program, queues[i], queues[(i + 1) % 5]) }
         val threads = amps.map { thread { it.run() } }
 
         threads.forEach { it.join() }

@@ -5,16 +5,23 @@ import com.nibado.projects.advent.y2019.IntCode.Opcode.*
 import java.util.concurrent.BlockingQueue
 
 class IntCode(
-        val memory: MutableList<Long>,
-        val input: BlockingQueue<Long>,
-        val output: BlockingQueue<Long>
+    val memory: Memory,
+    val input: BlockingQueue<Long>,
+    val output: BlockingQueue<Long>
 ) {
     var terminated = false
     var ip = 0
     var rb = 0
 
+    constructor(memory: List<Long>, input: BlockingQueue<Long>, output: BlockingQueue<Long>) :
+            this(Memory(memory.mapIndexed { index, l -> index.toLong() to l }.toMap().toMutableMap()), input, output)
+
     constructor(memory: List<Long>, input: List<Long> = emptyList(), output: List<Long> = emptyList())
-            : this(memory.toMutableList(), input.toBlockingQueue(), output.toBlockingQueue())
+            : this(
+        Memory(memory.mapIndexed { index, l -> index.toLong() to l }.toMap().toMutableMap()),
+        input.toBlockingQueue(),
+        output.toBlockingQueue()
+    )
 
     fun run() {
         while (!terminated) {
@@ -26,10 +33,11 @@ class IntCode(
         if (terminated) {
             return
         }
-        val op = values().find { it.op.toLong() == memory[ip] % 100L } ?: throw IllegalArgumentException()
-        val instruction = Instruction(op,
-                (1 until op.len).map { memory[ip + it] },
-                (memory[ip] / 100).toString().padStart(op.len - 1, '0').map { it - '0' }.reversed()
+        val op = Opcode.from(memory.get(ip))
+        val instruction = Instruction(
+            op,
+            (1 until op.len).map { memory.get(ip + it) },
+            (memory.get(ip) / 100).toString().padStart(op.len - 1, '0').map { it - '0' }.reversed()
         )
         val result = instruction.apply(ip, rb, memory, input, output)
         if (result == null) {
@@ -40,21 +48,39 @@ class IntCode(
         }
     }
 
+    data class Memory(val memory: MutableMap<Long, Long>) {
+        fun get(pos: Int) = get(pos.toLong())
+        fun get(pos: Long) = memory.computeIfAbsent(pos) { 0 }
+        fun set(pos: Long, value: Long) {
+            memory[pos] = value
+        }
+
+        fun set(pos: Int, value: Long) {
+            set(pos.toLong(), value)
+        }
+    }
+
     data class Instruction(val op: Opcode, val params: List<Long>, val modes: List<Int>) {
-        fun apply(ip: Int, rb: Int, memory: MutableList<Long>, input: BlockingQueue<Long>, output: BlockingQueue<Long>): Pair<Int, Int>? {
+        fun apply(
+            ip: Int,
+            rb: Int,
+            memory: Memory,
+            input: BlockingQueue<Long>,
+            output: BlockingQueue<Long>
+        ): Pair<Int, Int>? {
             //fun get(param: Int) = if (modes[param]) params[param] else memory[params[param]]
             var base = rb
-            fun get(param: Int) = when(modes[param]) {
-                0 -> memory[params[param].toInt()]
+            fun get(param: Int) = when (modes[param]) {
+                0 -> memory.get(params[param].toInt())
                 1 -> params[param]
-                2 -> memory[params[param].toInt() + base]
+                2 -> memory.get(params[param].toInt() + base)
                 else -> throw IllegalArgumentException("Invalid param $param")
             }
 
             fun set(param: Int, value: Long) {
-                when(modes[param]) {
-                    0 -> memory[params[param].toInt()] = value
-                    2 -> memory[params[param].toInt() + base] = value
+                when (modes[param]) {
+                    0 -> memory.set(params[param].toInt(), value)
+                    2 -> memory.set(params[param].toInt() + base, value)
                 }
             }
 
@@ -85,6 +111,11 @@ class IntCode(
         LT(7, 4),
         EQ(8, 4),
         REL(9, 2),
-        TERM(99, 1)
+        TERM(99, 1);
+
+        companion object {
+            fun from(opcode: Long) = from(opcode.toInt())
+            fun from(opcode: Int): Opcode = values().find { it.op == opcode % 100 } ?: throw IllegalArgumentException()
+        }
     }
 }

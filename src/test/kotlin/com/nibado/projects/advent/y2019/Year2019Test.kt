@@ -13,7 +13,8 @@ class Year2019Test : YearTest(input()) {
                 TestInput(Day05, 9219874L, 5893654L),
                 TestInput(Day06, 117672, 277),
                 TestInput(Day07, 87138L, 17279674L),
-                TestInput(Day08, 1330, DAY08_P2)
+                TestInput(Day08, 1330, DAY08_P2),
+                TestInput(Day09, 3906448201L, 59785L)
         ).drop(0)
 
         const val DAY08_P2 =
