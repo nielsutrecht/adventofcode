@@ -30,9 +30,6 @@ class IntCode(
     }
 
     private fun step() {
-        if (terminated) {
-            return
-        }
         val op = Opcode.from(memory.get(ip))
         val instruction = Instruction(
             op,
@@ -49,14 +46,9 @@ class IntCode(
     }
 
     data class Memory(val memory: MutableMap<Long, Long>) {
-        fun get(pos: Int) = get(pos.toLong())
-        fun get(pos: Long) = memory.computeIfAbsent(pos) { 0 }
-        fun set(pos: Long, value: Long) {
-            memory[pos] = value
-        }
-
-        fun set(pos: Int, value: Long) {
-            set(pos.toLong(), value)
+        fun get(pos: Number) = memory.computeIfAbsent(pos.toLong()) { 0 }
+        fun set(pos: Number, value: Number) {
+            memory[pos.toLong()] = value.toLong()
         }
     }
 
@@ -68,7 +60,6 @@ class IntCode(
             input: BlockingQueue<Long>,
             output: BlockingQueue<Long>
         ): Pair<Int, Int>? {
-            //fun get(param: Int) = if (modes[param]) params[param] else memory[params[param]]
             var base = rb
             fun get(param: Int) = when (modes[param]) {
                 0 -> memory.get(params[param].toInt())
