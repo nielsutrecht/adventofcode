@@ -23,7 +23,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun manhattan(other: Point) = abs(x - other.x) + Math.abs(y - other.y)
     fun manhattan() = manhattan(Point(0, 0))
 
-    fun distance(other: Point) : Double = sqrt(((other.y - y) * (other.y - y) + (other.x - x) * (other.x - x)).toDouble())
+    fun distance(other: Point) : Double = distance(this, other)
 
     fun angle(target: Point) = atan2((target.x - x).toDouble(), (target.y - y).toDouble())
 
@@ -61,6 +61,9 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
                         ?.groupValues
                         ?.drop(1)
                         ?.let { (x, y) -> Point(x.toInt(), y.toInt()) }
+
+        fun distance(a: Point, b: Point) : Double  =
+            sqrt(((b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x)).toDouble())
 
         fun parse(v: String) = parse(v, DEFAULT_PARSE_REGEX)
         val NEIGHBORS = (-1..1)
