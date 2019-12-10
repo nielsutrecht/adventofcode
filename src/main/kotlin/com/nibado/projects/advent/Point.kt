@@ -1,6 +1,10 @@
 package com.nibado.projects.advent
 
 import com.nibado.projects.advent.Direction.*
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.sqrt
+
 
 data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun plus(x: Int, y: Int) = Point(this.x + x, this.y + y)
@@ -16,8 +20,12 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 
     override fun compareTo(other: Point) = if (y == other.y) x.compareTo(other.x) else y.compareTo(other.y)
 
-    fun manhattan(other: Point) = Math.abs(x - other.x) + Math.abs(y - other.y)
+    fun manhattan(other: Point) = abs(x - other.x) + Math.abs(y - other.y)
     fun manhattan() = manhattan(Point(0, 0))
+
+    fun distance(other: Point) : Double = sqrt(((other.y - y) * (other.y - y) + (other.x - x) * (other.x - x)).toDouble())
+
+    fun angle(target: Point) = atan2((target.x - x).toDouble(), (target.y - y).toDouble())
 
     fun inBound(maxX: Int, maxY: Int) = inBound(0, maxX, 0, maxY)
 
