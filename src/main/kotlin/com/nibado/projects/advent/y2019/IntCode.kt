@@ -29,7 +29,7 @@ class IntCode(
         }
     }
 
-    private fun step() {
+    fun step() {
         val op = Opcode.from(memory.get(ip))
         val instruction = Instruction(
             op,

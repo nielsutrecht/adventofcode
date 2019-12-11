@@ -1,9 +1,7 @@
 package com.nibado.projects.advent
 
 import com.nibado.projects.advent.Direction.*
-import kotlin.math.abs
-import kotlin.math.atan2
-import kotlin.math.sqrt
+import kotlin.math.*
 
 
 data class Point(val x: Int, val y: Int) : Comparable<Point> {
@@ -23,14 +21,14 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun manhattan(other: Point) = abs(x - other.x) + Math.abs(y - other.y)
     fun manhattan() = manhattan(Point(0, 0))
 
-    fun distance(other: Point) : Double = distance(this, other)
+    fun distance(other: Point): Double = distance(this, other)
 
     fun angle(target: Point) = atan2((target.x - x).toDouble(), (target.y - y).toDouble())
 
     fun inBound(maxX: Int, maxY: Int) = inBound(0, maxX, 0, maxY)
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int) =
-            x in minX..maxX && y in minY..maxY
+        x in minX..maxX && y in minY..maxY
 
     fun neighborsHv() = NEIGHBORS_HV.map { Point(it.x + this.x, it.y + this.y) }
     fun neighborsH() = NEIGHBORS_H.map { Point(it.x + this.x, it.y + this.y) }
@@ -54,21 +52,21 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 
     companion object {
         fun parse(v: String, r: Regex) = tryParse(v, r)
-                ?: throw IllegalArgumentException("Can't parse $v with regex ${r.pattern}")
+            ?: throw IllegalArgumentException("Can't parse $v with regex ${r.pattern}")
 
         fun tryParse(v: String, r: Regex) =
-                r.matchEntire(v)
-                        ?.groupValues
-                        ?.drop(1)
-                        ?.let { (x, y) -> Point(x.toInt(), y.toInt()) }
+            r.matchEntire(v)
+                ?.groupValues
+                ?.drop(1)
+                ?.let { (x, y) -> Point(x.toInt(), y.toInt()) }
 
-        fun distance(a: Point, b: Point) : Double  =
+        fun distance(a: Point, b: Point): Double =
             sqrt(((b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x)).toDouble())
 
         fun parse(v: String) = parse(v, DEFAULT_PARSE_REGEX)
         val NEIGHBORS = (-1..1)
-                .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
-                .filterNot { it.x == 0 && it.y == 0 }
+            .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
+            .filterNot { it.x == 0 && it.y == 0 }
 
         val NEIGHBORS_H = listOf(Point(-1, 0), Point(1, 0))
         val NEIGHBORS_V = listOf(Point(0, -1), Point(0, 1))
@@ -79,3 +77,25 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 }
 
 fun Pair<Int, Int>.toPoint() = Point(this.first, this.second)
+fun Collection<Point>.minX() = this.map { it.x }.min()
+fun Collection<Point>.minY() = this.map { it.y }.min()
+fun Collection<Point>.maxX() = this.map { it.x }.max()
+fun Collection<Point>.maxY() = this.map { it.y }.max()
+
+fun Collection<Point>.bounds() =
+    this.fold(listOf(Int.MAX_VALUE, Int.MAX_VALUE, Int.MIN_VALUE, Int.MIN_VALUE)) { list, point ->
+        listOf(
+            min(
+                list[0],
+                point.x
+            ), min(list[1], point.y), max(list[2], point.x), max(list[3], point.y)
+        )
+    }
+        .let { (minX, minY, maxX, maxY) -> Point(minX, minY) to Point(maxX, maxY) }
+
+fun Pair<Point, Point>.points() = (this.first.y..this.second.y)
+    .flatMap { y ->
+        (this.first.x..this.second.x)
+            .map { x -> Point(x, y) }
+    }
+    .asSequence()
