@@ -30,6 +30,9 @@ class IntCode(
     }
 
     fun step() {
+        if(terminated) {
+            return
+        }
         val op = Opcode.from(memory.get(ip))
         val instruction = Instruction(
             op,
