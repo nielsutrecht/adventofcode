@@ -13,7 +13,7 @@ object Day01 : Day {
 
     override fun part2() = values
             .flatMap { a ->
-                values.flatMap { b ->
+                values.filterNot { b -> a + b > 2020 }.flatMap { b ->
                     values.map {c -> listOf(a, b, c) } } }
             .first { it.sum() == 2020 }
             .let { (a, b, c) -> a * b * c }
