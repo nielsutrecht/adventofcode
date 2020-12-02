@@ -12,7 +12,7 @@ object Day02 : Day {
 
     data class Row(val min: Int, val max: Int, val c: Char, val pass: String) {
         fun isMatch1(): Boolean = pass.count { it == c } in min..max
-        fun isMatch2(): Boolean = (pass[min - 1] == c || pass[max - 1] == c) && pass[min - 1] != pass[max - 1]
+        fun isMatch2(): Boolean = (pass[min - 1] == c) xor (pass[max - 1] == c)
     }
 }
 
