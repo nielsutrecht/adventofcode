@@ -6,8 +6,8 @@ import com.nibado.projects.advent.YearTest
 class Year2020Test : YearTest(input()) {
     companion object {
         fun input() = listOf(
-                TestInput(Day01, 838624, 52764180)
-
+                TestInput(Day01, 838624, 52764180),
+                TestInput(Day02, 467, 441)
         ).drop(0)
     }
 }

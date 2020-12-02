@@ -10,7 +10,8 @@ private val HEX_CHARS = "0123456789abcdef".toCharArray()
 fun resource(year: Int, day: Int): InputStream {
     val name = String.format("/%d/day%02d.txt", year, day)
 
-    return String::class.java.getResourceAsStream(name) ?: throw IllegalArgumentException("No resource with name " + name)
+    return String::class.java.getResourceAsStream(name)
+            ?: throw IllegalArgumentException("No resource with name " + name)
 }
 
 fun resourceString(year: Int, day: Int): String {
@@ -20,6 +21,9 @@ fun resourceString(year: Int, day: Int): String {
 fun resourceLines(year: Int, day: Int): List<String> {
     return resource(year, day).bufferedReader().lines().collect(Collectors.toList())
 }
+
+fun resourceRegex(year: Int, day: Int, regex: String): List<List<String>> =
+        resourceRegex(year, day, regex.toRegex())
 
 fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
     val lines = resourceLines(year, day)
@@ -36,9 +40,9 @@ fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
 
 fun resourceRegex(year: Int, day: Int, regex: Map<String, Regex>) = resourceLines(year, day).map { matchRegex(it, regex) }
 
-private fun matchRegex(line: String, regex: Map<String, Regex>) : Pair<String, List<String>> {
+private fun matchRegex(line: String, regex: Map<String, Regex>): Pair<String, List<String>> {
     val matches = regex.entries.map { it.key to it.value.matchEntire(line) }.filter { it.second != null }
-    if(matches.size != 1) {
+    if (matches.size != 1) {
         throw RuntimeException("Wrong number of matchers for '$line': ${matches.size}")
     }
 
@@ -87,7 +91,7 @@ fun List<Int>.toHex(): String {
     val result = StringBuffer()
 
     forEach {
-        if(it > 255) {
+        if (it > 255) {
             throw IllegalArgumentException("$it larger than 255")
         }
         val firstIndex = (it and 0xF0).ushr(4)
@@ -114,9 +118,9 @@ fun <T> rotateRight(list: List<T>, amount: Int): List<T> {
 }
 
 fun <T> swap(list: List<T>, a: Int, b: Int): List<T> {
-    list.indices.map { if(it == a) b else if(it == b) a else it }
+    list.indices.map { if (it == a) b else if (it == b) a else it }
 
-    return list.slice(list.indices.map { if(it == a) b else if(it == b) a else it })
+    return list.slice(list.indices.map { if (it == a) b else if (it == b) a else it })
 }
 
 fun <T> swapByValue(list: List<T>, a: T, b: T) = swap(list, list.indexOf(a), list.indexOf(b))
@@ -140,7 +144,7 @@ fun reverse(list: MutableList<Int>, index: Int, length: Int) {
     indices.forEachIndexed { i, v -> list[v] = subList[i] }
 }
 
-fun xor(list: List<Int>) = list.fold(0, { a, b -> a xor  b })
+fun xor(list: List<Int>) = list.fold(0, { a, b -> a xor b })
 
 fun toBinary(hex: String) = hex.map { it.toString().toInt(16).toString(2).padStart(4, '0') }.joinToString("")
 
@@ -153,7 +157,7 @@ fun List<Any>.parallelMap(threads: Int, func: (a: Any) -> Any): List<Any> {
 
 fun <T> List<T>.toBlockingQueue() = LinkedBlockingQueue<T>().also { q -> forEach { i -> q.put(i) } }
 
-fun combine(ranges: List<LongRange>) : List<LongRange> {
+fun combine(ranges: List<LongRange>): List<LongRange> {
     val list = mutableListOf<LongRange>()
 
     ranges.forEach { r ->
@@ -161,13 +165,13 @@ fun combine(ranges: List<LongRange>) : List<LongRange> {
 
         list.removeAll(others)
         val combined = others + listOf(r)
-        list += combined.map { it.first }.min()!! .. combined.map { it.last }.max()!!
+        list += combined.map { it.first }.min()!!..combined.map { it.last }.max()!!
     }
 
     return list.sortedBy { it.first }
 }
 
-fun overlap(a: LongRange, b: LongRange) : Boolean {
+fun overlap(a: LongRange, b: LongRange): Boolean {
     return a.contains(b.first)
             || a.contains(b.last)
             || b.contains(a.first)
