@@ -1,7 +1,6 @@
 package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.*
-import com.nibado.projects.advent.collect.CharMap
 
 object Day03 : Day {
     private val values = resourceLines(2020, 3)
