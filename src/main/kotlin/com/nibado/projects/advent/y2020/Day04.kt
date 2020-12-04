@@ -22,6 +22,11 @@ object Day04 : Day {
 
     private val passports = read().filter { pass -> fields.keys.all { pass.containsKey(it) } }
 
+    private fun read() : List<Passport> = resourceString(2020, 4).split("\n\n")
+            .map { pass -> pass.split("[ \\n]".toRegex())
+                    .filterNot(String::isBlank)
+                    .map { kv -> kv.split(":").let { (k, v) -> k to v } }.toMap() }
+
     private fun heightValid(hgt: String) : Boolean =
             height.matchEntire(hgt)?.groupValues?.let { (_, a, u) ->
                 if(u == "in") {
@@ -33,22 +38,4 @@ object Day04 : Day {
 
     override fun part1(): Int = passports.size
     override fun part2(): Int = passports.count { pass -> fields.all { (k, f) -> f(pass.getValue(k)) } }
-
-    private fun read(): List<Passport> {
-        val passports = mutableListOf<Passport>()
-        var current = mutableMapOf<String, String>()
-
-        resourceLines(2020, 4).forEach { line ->
-            if (line.isEmpty()) {
-                passports += current
-                current = mutableMapOf()
-            }
-
-            current.putAll(line.split(" ")
-                    .filterNot { it.isBlank() }
-                    .map { it.split(":").let { (k, v) -> k to v } })
-        }
-
-        return passports
-    }
 }
