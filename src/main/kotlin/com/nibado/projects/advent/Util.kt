@@ -19,7 +19,7 @@ fun resourceString(year: Int, day: Int): String {
 }
 
 fun resourceLines(year: Int, day: Int): List<String> {
-    return resource(year, day).bufferedReader().lines().collect(Collectors.toList())
+    return resource(year, day).bufferedReader().readLines()
 }
 
 fun resourceRegex(year: Int, day: Int, regex: String): List<List<String>> =
