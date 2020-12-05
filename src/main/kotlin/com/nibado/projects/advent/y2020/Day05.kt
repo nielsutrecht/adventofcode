@@ -8,13 +8,5 @@ object Day05 : Day {
     override fun part1(): Int = seats.max()!!
     override fun part2(): Int = (seats.min()!!..seats.max()!!).first { !seats.contains(it) }
 
-    private fun seat(pass: String): Int = pass.fold(0..127 to 0..7) { (row, col), c ->
-        when (c) {
-            'F' -> row.split().let { (f, _) -> f } to col
-            'B' -> row.split().let { (_, b) -> b } to col
-            'R' -> row to col.split().let { (_, r) -> r }
-            'L' -> row to col.split().let { (l, _) -> l }
-            else -> row to col
-        }
-    }.let { (row, col) -> row.first * 8 + col.first }
+    private fun seat(pass: String) = pass.fold(0) { n, c -> (n shl 1) + (if (c == 'B' || c == 'R') 1 else 0) }
 }
