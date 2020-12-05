@@ -1,8 +1,6 @@
 package com.nibado.projects.advent.y2020
 
-import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.resourceLines
-import com.nibado.projects.advent.split
+import com.nibado.projects.advent.*
 
 object Day05 : Day {
     private val seats: Set<Int> by lazy { resourceLines(2020, 5).map(::seat).toSet() }
