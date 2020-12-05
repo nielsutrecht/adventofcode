@@ -178,6 +178,10 @@ fun overlap(a: LongRange, b: LongRange): Boolean {
             || b.contains(a.last) || a.last + 1 == b.first || b.last + 1 == a.first
 }
 
+fun IntRange.center() : Int = this.first + (this.last - this.first) / 2
+fun IntRange.split() : Pair<IntRange, IntRange> =
+        this.first .. this.center() to this.center() + 1 .. this.last
+
 fun main(args: Array<String>) {
     val list = (0..5).toList()
 
