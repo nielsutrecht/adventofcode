@@ -5,26 +5,18 @@ import com.nibado.projects.advent.resourceLines
 import com.nibado.projects.advent.split
 
 object Day05 : Day {
-    private val seats = resourceLines(2020, 5).map(::seat).toSet()
+    private val seats: Set<Int> by lazy { resourceLines(2020, 5).map(::seat).toSet() }
 
-    override fun part1() = seats.max()!!
+    override fun part1(): Int = seats.max()!!
+    override fun part2(): Int = (seats.min()!!..seats.max()!!).first { !seats.contains(it) }
 
-    override fun part2() : Long =
-        (seats.min()!! .. seats.max()!!).first { !seats.contains(it) }
-
-    fun seat(pass: String) : Long {
-        var row = 0 .. 127
-        var column = 0 .. 7
-
-        for(c in pass) {
-            when(c) {
-                'F' -> row = row.split().let { (f, _) -> f }
-                'B' -> row = row.split().let { (_, b) -> b }
-                'R' -> column = column.split().let { (_, r) -> r }
-                'L' -> column = column.split().let { (l, _) -> l }
-            }
+    private fun seat(pass: String): Int = pass.fold(0..127 to 0..7) { (row, col), c ->
+        when (c) {
+            'F' -> row.split().let { (f, _) -> f } to col
+            'B' -> row.split().let { (_, b) -> b } to col
+            'R' -> row to col.split().let { (_, r) -> r }
+            'L' -> row to col.split().let { (l, _) -> l }
+            else -> row to col
         }
-
-        return row.first * 8L + column.first
-    }
+    }.let { (row, col) -> row.first * 8 + col.first }
 }
