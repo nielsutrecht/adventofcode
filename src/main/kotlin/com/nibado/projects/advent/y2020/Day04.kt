@@ -22,7 +22,7 @@ object Day04 : Day {
 
     private val passports = read().filter { pass -> fields.keys.all { pass.containsKey(it) } }
 
-    private fun read() : List<Passport> = resourceString(2020, 4).split("\n\n")
+    private fun read() : List<Passport> = resourceStrings(2020, 4)
             .map { pass -> pass.split("[ \\n]".toRegex())
                     .filterNot(String::isBlank)
                     .map { kv -> kv.split(":").let { (k, v) -> k to v } }.toMap() }
