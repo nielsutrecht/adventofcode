@@ -1,8 +1,6 @@
 package com.nibado.projects.advent.y2020
 
-import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.resourceLines
-import com.nibado.projects.advent.resourceString
+import com.nibado.projects.advent.*
 
 object Day06 : Day {
     private val values = resourceString(2020, 6).split("\n\n").map { it.trim() }
