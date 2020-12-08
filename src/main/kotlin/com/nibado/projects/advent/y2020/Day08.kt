@@ -1,17 +1,13 @@
 package com.nibado.projects.advent.y2020
 
-import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.resourceLines
-import com.nibado.projects.advent.resourceRegex
+import com.nibado.projects.advent.*
 
 object Day08 : Day {
-    private val program = resourceRegex(2020, 8, "(nop|acc|jmp) ([+-][0-9]+)")
-            .map { (_, op, v) -> op to v.toInt() }
+    private val program = resourceLines(2020, 8).map { it.split(" ").let { (a, b) -> a to b.toInt() } }
 
     override fun part1() = run(-1).first
-    override fun part2(): Int =
-            program.asSequence().mapIndexedNotNull { i, (inst, v) -> if (inst == "nop" || inst == "jmp") i else null }
-                    .map { run(it) }.first { !it.second }.let { it.first }
+    override fun part2(): Int = program.asSequence().mapIndexedNotNull { i, (inst, _) -> if (inst != "acc") i else null }
+            .map { run(it) }.first { !it.second }.let { it.first }
 
     private fun run(swap: Int): Pair<Int, Boolean> {
         var acc = 0
@@ -32,8 +28,7 @@ object Day08 : Day {
 
             when (inst) {
                 "acc" -> {
-                    acc += program[ip].second
-                    ip++
+                    acc += program[ip].second; ip++
                 }
                 "nop" -> ip++
                 "jmp" -> ip += program[ip].second
