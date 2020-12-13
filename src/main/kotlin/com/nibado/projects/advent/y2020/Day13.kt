@@ -16,22 +16,14 @@ object Day13 : Day {
         val busses = busIds.mapIndexed { i, id -> id to i }
                 .filterNot { it.first == "x" }.map { (a, b) -> a.toInt() to b }
 
-        var subList = busses.take(2)
-
         var time = 0L
-        var increment = subList.first().first.toLong()
+        var increment = 1L
 
-        while(true) {
-            time += increment
-
-            if(subList.all { (time + it.second) % it.first == 0L }) {
-                if(subList.size == busses.size) {
-                    break
-                } else {
-                    increment = subList.map { it.first.toLong() }.reduce { a, b -> a * b }
-                    subList = busses.take(subList.size + 1)
-                }
+        for((id, i) in busses) {
+            while((time + i) % id != 0L) {
+                time += increment
             }
+            increment *= id
         }
 
         return time
