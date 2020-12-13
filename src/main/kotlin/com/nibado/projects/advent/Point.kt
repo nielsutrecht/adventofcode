@@ -64,6 +64,16 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
             sqrt(((b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x)).toDouble())
 
         fun parse(v: String) = parse(v, DEFAULT_PARSE_REGEX)
+
+        fun ray(step: Point) = sequence {
+            var current = step
+
+            while (true) {
+                yield(current)
+                current += step
+            }
+        }
+
         val NEIGHBORS = (-1..1)
             .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
             .filterNot { it.x == 0 && it.y == 0 }
