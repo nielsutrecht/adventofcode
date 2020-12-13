@@ -51,4 +51,15 @@ class PointTest {
         assertThat(t2).isEqualTo(2 point -1)
         assertThat(t3).isEqualTo(1 point 2)
     }
+
+    @Test
+    fun rotate() {
+        val initial = Point(1, 0)
+
+        assertThat(initial.rotate90()).isEqualTo(0 point 1)
+        assertThat(initial.rotate(90)).isEqualTo(0 point 1)
+        assertThat(initial.rotate(180)).isEqualTo(-1 point 0)
+        assertThat(initial.rotate(270)).isEqualTo(0 point -1)
+        assertThat(initial.rotate(360)).isEqualTo(1 point 0)
+    }
 }
