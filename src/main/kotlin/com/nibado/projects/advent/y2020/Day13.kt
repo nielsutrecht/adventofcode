@@ -15,12 +15,11 @@ object Day13 : Day {
     override fun part2(): Long {
         val busses = busIds.mapIndexed { i, id -> id to i }
                 .filterNot { it.first == "x" }.map { (a, b) -> a.toInt() to b }
-                .sortedBy { it.first }
 
         var subList = busses.take(2)
 
         var time = 0L
-        var increment = 7L
+        var increment = subList.first().first.toLong()
 
         while(true) {
             time += increment
