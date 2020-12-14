@@ -19,32 +19,21 @@ object Day14 : Day {
                 else -> throw IllegalArgumentException(line)
             }
 
-    override fun part1(): Long {
-        var mask = ""
-        val registers = mutableMapOf<Int, Long>()
-        for (inst in values) {
+    override fun part1(): Long = values.fold(mutableMapOf<Int, Long>() to "") {(regs, mask), inst ->
             when (inst) {
-                is Mask -> mask = inst.mask
-                is Mem -> registers[inst.index] = mask(mask, inst.value)
+                is Mask -> regs to inst.mask
+                is Mem ->  { regs[inst.index] = mask(mask, inst.value); regs to mask }
+                else -> regs to mask
             }
-        }
+        }.let { (regs) -> regs.values.sum() }
 
-        return registers.values.sum()
-    }
-
-    override fun part2() : Long {
-        var mask = ""
-        val registers = mutableMapOf<Long, Long>()
-
-        for (inst in values) {
+    override fun part2() : Long = values.fold(mutableMapOf<Long, Long>() to "") { (regs, mask), inst ->
             when (inst) {
-                is Mask -> mask = inst.mask
-                is Mem -> addresses(mask, inst.index).forEach { registers[it] = inst.value.toLong() }
+                is Mask -> regs to inst.mask
+                is Mem -> { addresses(mask, inst.index).forEach { regs[it] = inst.value.toLong() }; regs to mask }
+                else -> regs to mask
             }
-        }
-
-        return registers.values.sum()
-    }
+        }.let { (regs) -> regs.values.sum() }
 
     private fun mask(mask: String, value: Int): Long = value
             .toString(2).padStart(36, '0')
