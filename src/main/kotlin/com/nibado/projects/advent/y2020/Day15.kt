@@ -11,19 +11,17 @@ object Day15 : Day {
     override fun part2(): Int = solve(30000000)
 
     private fun solve(turns: Int): Int {
-        val indexMap = mutableMapOf<Int, MutableList<Int>>()
+        val indexArray = Array(turns * 2) { -1 }
 
-        fun add(turn: Int, value: Int) = indexMap
-                .computeIfAbsent(value) { mutableListOf() }.run { if (size > 1) removeAt(0); add(turn) }
-
-        values.forEachIndexed { index, i -> add(index + 1, i) }
+        values.forEachIndexed { index, i -> indexArray[i * 2 + 1] = index + 1 }
 
         var last = values.last()
 
         for (turn in values.size + 1 .. turns) {
-            val indices = indexMap.getValue(last).takeLast(2)
-            last = if (indices.size == 1) 0 else indices[1] - indices[0]
-            add(turn, last)
+            last = if (indexArray[last * 2] == -1) 0 else indexArray[last * 2 + 1] - indexArray[last * 2]
+
+            indexArray[last * 2] = indexArray[last * 2 + 1]
+            indexArray[last * 2 + 1] = turn
         }
 
         return last
