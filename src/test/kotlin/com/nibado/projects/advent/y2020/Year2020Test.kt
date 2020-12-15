@@ -19,7 +19,8 @@ class Year2020Test : YearTest(input()) {
                 TestInput(Day11, 2251, 2019),
                 TestInput(Day12, 1496, 63843),
                 TestInput(Day13, 2382, 906332393333683),
-                TestInput(Day14, 13865835758282, 4195339838136)
+                TestInput(Day14, 13865835758282, 4195339838136),
+                TestInput(Day15, 1025, 129262)
         ).drop(0)
     }
 }
