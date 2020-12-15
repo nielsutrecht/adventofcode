@@ -1,6 +1,7 @@
 package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.Day
+import com.nibado.projects.advent.Timer
 import com.nibado.projects.advent.resourceLines
 
 object Day15 : Day {
@@ -13,21 +14,16 @@ object Day15 : Day {
         val indexMap = mutableMapOf<Int, MutableList<Int>>()
 
         fun add(turn: Int, value: Int) = indexMap
-                .computeIfAbsent(value) { mutableListOf() }
-                .add(turn)
+                .computeIfAbsent(value) { mutableListOf() }.run { if (size > 1) removeAt(0); add(turn) }
 
         values.forEachIndexed { index, i -> add(index + 1, i) }
 
         var last = values.last()
-        var turn = values.size + 1
-        while (turn <= turns) {
+
+        for (turn in values.size + 1 .. turns) {
             val indices = indexMap.getValue(last).takeLast(2)
-
             last = if (indices.size == 1) 0 else indices[1] - indices[0]
-
             add(turn, last)
-
-            turn++
         }
 
         return last
