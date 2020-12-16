@@ -8,21 +8,21 @@ public class AdventOfCode {
     public static void main(String... argv) {
         List<Runnable> solutions = Arrays.asList(
                 new Day01J(),
-                new Day02(),
-                new Day03(),
-                new Day04(),
-                new Day05(),
-                new Day06(),
-                new Day07(),
-                new Day08(),
-                new Day09(),
-                new Day10(),
-                new Day11(),
-                new Day12(),
-                new Day13(),
-                new Day14(),
-                new Day15(),
-                new Day16());
+                new Day02J(),
+                new Day03J(),
+                new Day04J(),
+                new Day05J(),
+                new Day06J(),
+                new Day07J(),
+                new Day08J(),
+                new Day09J(),
+                new Day10J(),
+                new Day11J(),
+                new Day12J(),
+                new Day13J(),
+                new Day14J(),
+                new Day15J(),
+                new Day16J());
 
         solutions.forEach(Runnable::run);
     }

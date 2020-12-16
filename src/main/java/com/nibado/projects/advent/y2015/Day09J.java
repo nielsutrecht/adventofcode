@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day09 implements Runnable {
+public class Day09J implements Runnable {
     private static final Pattern PATTERN = Pattern.compile("([A-Za-z]+) to ([A-Za-z]+) = ([0-9]+)");
     private Map<String, Map<String, Integer>> distances = new HashMap<>();
     private Set<String> cities = new HashSet<>();
@@ -77,7 +77,7 @@ public class Day09 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day09().run();
+        new Day09J().run();
     }
 
 }

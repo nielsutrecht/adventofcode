@@ -11,7 +11,7 @@ import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 import static java.lang.Integer.parseInt;
 
-public class Day15 implements Runnable {
+public class Day15J implements Runnable {
     private static final Pattern PATTERN = Pattern.compile("(?<i>[A-Za-z]+): capacity (?<cap>[-0-9]+), durability (?<dur>[-0-9]+), flavor (?<fla>[-0-9]+), texture (?<tex>[-0-9]+), calories (?<cal>[-0-9]+)");
     @Override
     public void run() {
@@ -56,7 +56,7 @@ public class Day15 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day15().run();
+        new Day15J().run();
     }
 
     public static class Ingredient {

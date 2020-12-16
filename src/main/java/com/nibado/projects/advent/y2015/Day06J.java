@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day06 implements Runnable {
+public class Day06J implements Runnable {
     private static int WIDTH = 1000;
     private static int HEIGHT = 1000;
     private static Map<String, Function<Boolean, Boolean>> BOOL_OPERATIONS = new HashMap<>();
@@ -43,7 +43,7 @@ public class Day06 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day06().run();
+        new Day06J().run();
     }
 
     private static class Action {

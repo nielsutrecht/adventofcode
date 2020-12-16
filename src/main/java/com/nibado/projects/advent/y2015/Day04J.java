@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 
 import static com.nibado.projects.advent.Util.printAnswer;
 
-public class Day04 implements Runnable {
+public class Day04J implements Runnable {
     private MessageDigest md5;
     private byte[] input;
 
@@ -19,7 +19,7 @@ public class Day04 implements Runnable {
     }
 
     public static void main(String... argv) throws Exception {
-        new Day04().run();
+        new Day04J().run();
     }
 
     public int find(int zeroes) {

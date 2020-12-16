@@ -6,10 +6,10 @@ import java.util.Set;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
 
-public class Day03 implements Runnable {
+public class Day03J implements Runnable {
 
     public static void main(String... argv) {
-        new Day03().run();
+        new Day03J().run();
     }
 
     @Override

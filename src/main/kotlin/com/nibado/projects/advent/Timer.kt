@@ -18,7 +18,23 @@ class Timer private constructor(private val duration: Long) {
         fun ofSeconds(seconds: Int) = Timer(seconds * 1000L)
         fun ofMillis(milliseconds: Long) = Timer(milliseconds)
 
-        fun time(runnable: () -> Unit) {
+        fun time(runnable: () -> Unit) : Long {
+            val start = System.currentTimeMillis()
+            run(runnable)
+            val stop = System.currentTimeMillis()
+
+            return stop - start
+        }
+
+        inline fun <reified T> time(runnable: () -> T) : Pair<T, Long> {
+            val start = System.currentTimeMillis()
+            val result = run(runnable)
+            val stop = System.currentTimeMillis()
+
+            return result to stop - start
+        }
+
+        fun print(runnable: () -> Unit) {
             val start = System.currentTimeMillis()
             run(runnable)
             val stop = System.currentTimeMillis()

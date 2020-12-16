@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day13 implements Runnable {
+public class Day13J implements Runnable {
     private static final Pattern INPUT = Pattern.compile("(?<n1>[A-Za-z]+) would (?<lg>lose|gain) (?<h>[0-9]+) happiness units by sitting next to (?<n2>[A-Za-z]+)\\.");
 
     @Override
@@ -31,13 +31,13 @@ public class Day13 implements Runnable {
             happiness.get(m.group("n1")).put(m.group("n2"), value);
         });
 
-        List<List<String>> permutations = Day09.permutations(names);
+        List<List<String>> permutations = Day09J.permutations(names);
 
         printAnswer(permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
 
         names.add("FooBob");
 
-        permutations = Day09.permutations(names);
+        permutations = Day09J.permutations(names);
 
         printAnswer(permutations.stream().map(l -> happiness(happiness, l)).max(Integer::compare).get());
 
@@ -64,6 +64,6 @@ public class Day13 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day13().run();
+        new Day13J().run();
     }
 }

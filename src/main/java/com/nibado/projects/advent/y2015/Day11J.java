@@ -3,7 +3,7 @@ package com.nibado.projects.advent.y2015;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
 
-public class Day11 implements Runnable {
+public class Day11J implements Runnable {
     private static final char[] ILLEGAL = "ilo".toCharArray();
     @Override
     public void run() {
@@ -75,6 +75,6 @@ public class Day11 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day11().run();
+        new Day11J().run();
     }
 }

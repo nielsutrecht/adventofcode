@@ -1,5 +1,6 @@
 package com.nibado.projects.advent
 
+import com.nibado.projects.advent.Timer.Companion.time
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -9,7 +10,7 @@ object Runner {
     private const val SINGLE_ITER = 1
 
     private val dayOfWeek = DateTimeFormatter.ofPattern("EE")
-    private val format = "%6s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"
+    private const val format = "%6s: %${RESULT_WIDTH}s %${RESULT_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s %${TIME_WIDTH}s"
 
     fun run(year: Int, days: List<Day>, day: Int = 0) {
         println(format.format("Day", "Part 1", "Part 2", "Time", "P1", "P2"))
@@ -31,13 +32,11 @@ object Runner {
 
         val date = LocalDate.of(year, 12, dayName)
 
-        val start1 = System.currentTimeMillis()
-        val p1 = day.part1()
-        val dur1 = System.currentTimeMillis() - start1
-        val start2 = System.currentTimeMillis()
-        val p2 = day.part2()
-        val dur2 = System.currentTimeMillis() - start2
+        fun runPart(r: () -> Any) = try { r() } catch (e: NotImplementedError) { "TODO" }
 
-        println(format.format("" + dayName + " " + date.format(dayOfWeek), p1, p2, formatDuration(System.currentTimeMillis() - start1), formatDuration(dur1), (formatDuration(dur2))))
+        val (p1, dur1) = time<Any> { runPart(day::part1) }
+        val (p2, dur2) = time<Any> { runPart(day::part2) }
+
+        println(format.format("" + dayName + " " + date.format(dayOfWeek), p1, p2, formatDuration(dur1 + dur2), formatDuration(dur1), (formatDuration(dur2))))
     }
 }

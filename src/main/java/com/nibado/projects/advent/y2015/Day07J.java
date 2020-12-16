@@ -10,12 +10,12 @@ import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
 
-public class Day07 implements Runnable {
+public class Day07J implements Runnable {
     private static final Pattern GATE = Pattern.compile("^((?<w1>[0-9a-z]{1,3}) )?((?<gate>AND|OR|NOT|RSHIFT|LSHIFT) )?(?<w2>[0-9a-z]{1,5}) -> (?<wO>[a-z]{1,2})$");
     private static final Pattern LITERAL = Pattern.compile("[0-9]{1,5}");
 
     public static void main(String... argv) {
-        new Day07().run();
+        new Day07J().run();
     }
 
     @Override

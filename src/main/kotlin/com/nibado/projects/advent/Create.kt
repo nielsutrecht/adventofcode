@@ -6,8 +6,18 @@ import java.time.LocalDate
 object Create {
     @JvmStatic
     fun main(args: Array<String>) {
+        val year = if(args.isNotEmpty()) args.first().toInt() else LocalDate.now().year
+
+        if(year !in 2015 .. LocalDate.now().year) {
+            throw IllegalArgumentException("$year should be in 2015 .. ${LocalDate.now().year}")
+        }
+
+        createAll(year)
+    }
+
+    private fun createAll(year: Int) {
         val now = LocalDate.now()
-        val days = (1 .. 25).map { LocalDate.of(now.year, 12, it) }.filter { it <= now }
+        val days = (1 .. 25).map { LocalDate.of(year, 12, it) }.filter { it <= now }
 
         days.forEach {
             print("$it ")

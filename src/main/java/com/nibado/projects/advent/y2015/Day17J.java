@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day17 implements Runnable {
+public class Day17J implements Runnable {
     @Override
     public void run() {
         List<Integer> containers = readResource("/2015/day17.txt").stream().map(Integer::parseInt).collect(Collectors.toList());
@@ -56,6 +56,6 @@ public class Day17 implements Runnable {
     }
 
     public void main(String... argv) {
-        new Day17().run();
+        new Day17J().run();
     }
 }

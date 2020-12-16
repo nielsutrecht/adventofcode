@@ -9,7 +9,7 @@ import java.util.function.Function;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsJson;
 
-public class Day12 implements Runnable {
+public class Day12J implements Runnable {
 
     @Override
     public void run() {
@@ -49,6 +49,6 @@ public class Day12 implements Runnable {
     }
 
     public static void main(String[] argv) {
-        new Day12().run();
+        new Day12J().run();
     }
 }

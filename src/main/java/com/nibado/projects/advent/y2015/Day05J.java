@@ -5,7 +5,7 @@ import java.util.*;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day05 implements Runnable {
+public class Day05J implements Runnable {
     private static final Set<Character> VOWELS = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
     private static final String[] BAD = {"ab", "cd", "pq", "xy"};
 
@@ -13,23 +13,23 @@ public class Day05 implements Runnable {
     public void run() {
         List<String> input = readResource("/2015/day05.txt");
         int result1 = (int)input.stream()
-                .filter(Day05::vowelCheck)
-                .filter(Day05::doubleCheck)
-                .filter(Day05::badCheck)
+                .filter(Day05J::vowelCheck)
+                .filter(Day05J::doubleCheck)
+                .filter(Day05J::badCheck)
                 .count();
 
         printAnswer(result1);
 
         int result2 = (int)input.stream()
-                .filter(Day05::doublePairCheck)
-                .filter(Day05::doubleWithBetweenCheck)
+                .filter(Day05J::doublePairCheck)
+                .filter(Day05J::doubleWithBetweenCheck)
                 .count();
 
         printAnswer(result2);
     }
 
     public static void main(String... argv) {
-        new Day05().run();
+        new Day05J().run();
     }
 
     public static boolean vowelCheck(String line) {

@@ -3,7 +3,7 @@ package com.nibado.projects.advent.y2015;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResourceAsString;
 
-public class Day10 implements Runnable {
+public class Day10J implements Runnable {
 
     @Override
     public void run() {
@@ -37,6 +37,6 @@ public class Day10 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day10().run();
+        new Day10J().run();
     }
 }

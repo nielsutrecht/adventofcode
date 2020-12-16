@@ -11,7 +11,7 @@ import static com.nibado.projects.advent.Util.readResource;
 import static java.lang.Integer.compare;
 import static java.lang.Integer.parseInt;
 
-public class Day14 implements Runnable {
+public class Day14J implements Runnable {
     private static final Pattern INPUT = Pattern.compile("(?<n>[A-Za-z]+) can fly (?<s>[0-9]+) km/s for (?<d>[0-9]+) seconds, but then must rest for (?<r>[0-9]+) seconds\\.");
     private static final int SECONDS = 2503;
 
@@ -42,7 +42,7 @@ public class Day14 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day14().run();
+        new Day14J().run();
     }
 
     private static class Reindeer {

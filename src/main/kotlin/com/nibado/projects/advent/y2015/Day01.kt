@@ -12,6 +12,6 @@ object Day01 : Day {
         var idx = 0
         instructions.mapIndexed { index, i -> index to i }.takeWhile { sum += it.second; idx = it.first;sum >= 0 }
 
-        return idx
+        return idx + 1
     }
 }

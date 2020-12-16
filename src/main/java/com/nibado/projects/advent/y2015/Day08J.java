@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day08 implements Runnable {
+public class Day08J implements Runnable {
     @Override
     public void run() {
         List<String> list = readResource("/2015/day08.txt");
@@ -60,6 +60,6 @@ public class Day08 implements Runnable {
     }
 
     public static void main(String... argv) {
-        new Day08().run();
+        new Day08J().run();
     }
 }

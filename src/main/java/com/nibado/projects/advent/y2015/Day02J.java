@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import static com.nibado.projects.advent.Util.printAnswer;
 import static com.nibado.projects.advent.Util.readResource;
 
-public class Day02 implements Runnable {
+public class Day02J implements Runnable {
     @Override
     public void run() {
         List<Dimension> dimensions = readResource("/2015/day02.txt")
@@ -15,17 +15,17 @@ public class Day02 implements Runnable {
                 .collect(Collectors.toList());
 
         int surfaceSum =
-                dimensions.stream().collect(Collectors.summingInt(Day02::surfaceArea));
+                dimensions.stream().collect(Collectors.summingInt(Day02J::surfaceArea));
 
         printAnswer(surfaceSum);
 
-        int ribbonSum = dimensions.stream().collect(Collectors.summingInt(Day02::ribbonLength));
+        int ribbonSum = dimensions.stream().collect(Collectors.summingInt(Day02J::ribbonLength));
 
         printAnswer(ribbonSum);
     }
 
     public static void main(String... argv) {
-        new Day02().run();
+        new Day02J().run();
     }
 
     private static int surfaceArea(Dimension dim) {
