@@ -52,6 +52,9 @@ private fun matchRegex(line: String, regex: Map<String, Regex>): Pair<String, Li
     return matches.map { it.first to it.second!!.groupValues }.first()
 }
 
+fun String.matchGroups(regex: Regex) : List<String> =
+        regex.matchEntire(this)?.groupValues ?: throw IllegalArgumentException("$this does not match ${regex.pattern}")
+
 fun stringToDigits(s: String): List<Int> {
     if (!s.matches(Regex("[0-9]+"))) {
         throw IllegalArgumentException("s does not match [0-9]+")
