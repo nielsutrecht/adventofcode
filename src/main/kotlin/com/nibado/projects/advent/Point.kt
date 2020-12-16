@@ -18,7 +18,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
         WEST -> Point(x - amount, y)
     }
 
-    operator fun times(amount: Int) : Point = Point(x * amount, y * amount)
+    operator fun times(amount: Int): Point = Point(x * amount, y * amount)
 
     override fun compareTo(other: Point) = if (y == other.y) x.compareTo(other.x) else y.compareTo(other.y)
 
@@ -96,6 +96,8 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
         val NEIGHBORS_H = listOf(Point(-1, 0), Point(1, 0))
         val NEIGHBORS_V = listOf(Point(0, -1), Point(0, 1))
         val NEIGHBORS_HV = NEIGHBORS_H + NEIGHBORS_V
+
+        val ORIGIN = Point(0, 0)
 
         private val DEFAULT_PARSE_REGEX = "(-?[0-9]+)[,:; ]+(-?[0-9]+)".toRegex()
     }
