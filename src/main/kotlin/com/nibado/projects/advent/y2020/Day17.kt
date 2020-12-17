@@ -7,11 +7,14 @@ object Day17 : Day {
             .mapIndexed { y, s -> s.mapIndexedNotNull { x, c -> if (c == '#') listOf(x, y, 0) else null } }
             .flatten().toSet()
 
-    override fun part1() = solve(grid, Day17::neighbors3)
-    override fun part2() = solve(grid.map { it + 0 }.toSet(), Day17::neighbors4)
+    override fun part1() = solve(grid)
+    override fun part2() = solve(grid.map { it + 0 }.toSet())
 
-    private fun solve(input: Set<List<Int>>, neighbors: (List<Int>) -> List<List<Int>>): Any {
+    private fun solve(input: Set<List<Int>>): Any {
         var points = input
+        val neighbors = neighbors(points.first().size)
+
+        fun neighbors(list: List<Int>) = neighbors.map { n -> list.mapIndexed { i, v -> n[i] + v }  }
 
         repeat(6) {
             val map = points.flatMap { neighbors(it) }.fold(mutableMapOf<List<Int>, Int>()) { map, p ->
@@ -26,13 +29,7 @@ object Day17 : Day {
         return points.size
     }
 
-    private fun neighbors3(point: List<Int>) =  (-1 .. 1).flatMap { x -> (-1 .. 1).flatMap { y -> (-1 .. 1)
-            .map { z -> listOf(x,y,z) }}}
-            .filterNot { (a,b,c) -> a == 0 && b == 0 && c == 0 }
-            .map { (a,b,c) -> point.let { (x,y,z) -> listOf(a + x, b + y, c + z) } }
-
-    private fun neighbors4(point: List<Int>) =
-            (-1 .. 1).flatMap { x -> (-1 .. 1).flatMap { y -> (-1 .. 1).flatMap { z -> (-1 .. 1).map { listOf(x,y,z,it) } } } }
-                    .filterNot { (a,b,c,d) -> a == 0 && b == 0 && c == 0 && d == 0 }
-                    .map { (a,b,c,d) -> point.let { (x,y,z,zz) -> listOf(a + x, b + y, c + z, d + zz) } }
+    private fun neighbors(dim: Int) = (1 until dim).fold((-1 .. 1).map { listOf(it) }) { points, _ ->
+        points.flatMap { p -> (-1 .. 1).map { p + it  } }
+    }.filterNot { it.all { it == 0 } }
 }
