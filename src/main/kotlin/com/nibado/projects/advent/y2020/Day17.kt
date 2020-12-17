@@ -8,20 +8,19 @@ object Day17 : Day {
             .flatten().toSet()
 
     override fun part1() = solve(grid, Day17::neighbors3)
-    override fun part2() = solve(grid.map { (x, y, z) -> listOf(x, y, z, 0) }.toSet(), Day17::neighbors4)
+    override fun part2() = solve(grid.map { it + 0 }.toSet(), Day17::neighbors4)
 
     private fun solve(input: Set<List<Int>>, neighbors: (List<Int>) -> List<List<Int>>): Any {
         var points = input
 
-        for (i in 1..6) {
+        repeat(6) {
             val map = points.flatMap { neighbors(it) }.fold(mutableMapOf<List<Int>, Int>()) { map, p ->
                 map[p] = map.getOrDefault(p, 0) + 1
                 map
             }
 
-            points = map.filter { (p, c) ->
-                (points.contains(p) && c in 2..3) || (!points.contains(p) && c == 3)
-            }.map { it.key }.toSet()
+            points = map.filter { (p, c) -> (p in points && c in 2..3) || (p !in points && c == 3) }
+                    .map { it.key }.toSet()
         }
 
         return points.size
