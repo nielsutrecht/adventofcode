@@ -5,7 +5,6 @@ import com.nibado.projects.advent.graph.Graph
 import com.nibado.projects.advent.resourceLines
 import kotlin.math.ceil
 
-typealias ReactionGraph = Graph<String, Pair<Int, Int>>
 typealias ElementAmount = Pair<String, Int>
 
 object Day14 : Day {
