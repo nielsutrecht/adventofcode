@@ -1,43 +1,15 @@
 package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.*
-import java.lang.StringBuilder
-import java.util.*
-
+import com.nibado.projects.advent.collect.Stack
 
 object Day18 : Day {
-    private val values = resourceLines(2020, 18)
-
-    override fun part1() = values.map { parse(it) { 1 } }.sum()
-    override fun part2() = values.map { parse(it) { t -> if (t == "+") 2 else 1 } }.sum()
-
-    private fun parse(input: String, precedence: (String) -> Int) : Long {
-        val builder = StringBuilder(input)
-
-        while(true) {
-            val braceIndex = builder.indexOf('(')
-            if (braceIndex >= 0) {
-                var c = 1
-                var otherBrace = braceIndex
-                while (otherBrace < builder.length && c != 0) {
-                    otherBrace++
-                    if (builder[otherBrace] == '(') {
-                        c++
-                    } else if (builder[otherBrace] == ')') {
-                        c--
-                    }
-                }
-                builder.replace(braceIndex, otherBrace + 1,
-                        parse(builder.substring(braceIndex + 1, otherBrace), precedence).toString())
-            } else {
-                break
-            }
-        }
-
-        val tokens = builder.toString().split(" ")
-
-        return eval(shunt(tokens, precedence))
+    private val values = resourceLines(2020, 18).map {
+        it.replace(" ", "").split("").filterNot(String::isBlank)
     }
+
+    override fun part1() = values.map { eval(shunt(it) { 1 } )}.sum()
+    override fun part2() = values.map { eval(shunt(it) { t -> if (t == "+") 2 else 1 } )}.sum()
 
     private fun shunt(tokens: List<String>, precedence: (String) -> Int) : List<String> {
         val output = mutableListOf<String>()
@@ -47,28 +19,36 @@ object Day18 : Day {
             if(token.isInt()) {
                 output += token
             } else if(token == "+" || token == "*") {
-                while(!operatorStack.empty() && precedence(token) <= precedence(operatorStack.peek())) {
+                while(operatorStack.peekOrNull() in setOf("*", "+")
+                        && precedence(token) <= precedence(operatorStack.peek())
+                        && operatorStack.peek() != "(") {
                     output += operatorStack.pop()
                 }
                 operatorStack += token
+            } else if(token == "(") {
+                operatorStack += token
+            } else if(token == ")") {
+                while(operatorStack.peekOrNull() != "(") {
+                    output += operatorStack.pop()
+                }
+                if(operatorStack.peek() == "(") {
+                    operatorStack.pop()
+                }
             }
         }
-        while(!operatorStack.empty()) {
-            output += operatorStack.pop()
-        }
 
-        return output
+        return output + operatorStack
     }
 
     private fun eval(expr: List<String>) : Long {
         val stack = Stack<Long>()
         expr.forEach {
-            if(it.isInt()) {
-                stack += it.toLong()
+            stack += if(it.isInt()) {
+                it.toLong()
             } else {
                 val a = stack.pop()
                 val b = stack.pop()
-                stack += when(it) {
+                when(it) {
                     "+" -> a + b
                     "-" -> a - b
                     "/" -> a / b
