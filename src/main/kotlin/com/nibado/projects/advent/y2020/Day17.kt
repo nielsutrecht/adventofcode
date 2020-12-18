@@ -33,16 +33,3 @@ object Day17 : Day {
         points.flatMap { p -> (-1..1).map { p + it } }
     }.filterNot { it.all { it == 0 } }
 }
-
-fun main() {
-    val list = listOf(1, 2, 3)
-    val sum1 = list.fold(0) { a, i -> a + i }
-    println(sum1)
-    val sum2 = list.foldTailRec(0) { a, i -> a + i }
-    println(sum2)
-}
-
-tailrec fun <A, T> Collection<T>.foldTailRec(acc: A, f: (A, T) -> A): A {
-    if (this.isEmpty()) return acc
-    return this.drop(1).foldTailRec(f(acc, this.first()), f)
-}
