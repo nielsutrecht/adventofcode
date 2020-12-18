@@ -2,6 +2,7 @@
 package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.*
+import java.lang.StringBuilder
 import java.util.*
 
 
@@ -12,84 +13,61 @@ object Day18 : Day {
 
     private fun precedence(token: String, other: String) : Boolean = true
 
-    override fun part1() = TODO()
+    override fun part1() = values.map(::parse).sum() //6923486965641
     override fun part2() = TODO()
 
-    fun shunt(input: String) : List<String> {
-        val output = mutableListOf<String>()
-        val operatorStack = Stack<String>()
+    fun parse(input: String) : Long {
+        //println(input)
+        val builder = StringBuilder(input)
 
-        tokens(input).forEach { token ->
-            if(token.isInt()) {
-                output += token
-            } else if(token in operators) {
-                while(!operatorStack.empty() && precedence(token,operatorStack.peek()) && operatorStack.peek() != "(") {
-                    output += operatorStack.pop()
+        while(true) {
+            val braceIndex = builder.indexOf('(')
+            if (braceIndex >= 0) {
+                var c = 1
+                var otherBrace = braceIndex
+                while (otherBrace < builder.length && c != 0) {
+                    otherBrace++
+                    if (builder[otherBrace] == '(') {
+                        c++
+                    } else if (builder[otherBrace] == ')') {
+                        c--
+                    }
                 }
-                operatorStack += token
-            }
-            else if(token == "(") {
-                operatorStack += token
-            } else if(token == ")") {
-                while(!operatorStack.empty() && operatorStack.peek() != "(") {
-                    output += operatorStack.pop()
-                }
-                if(operatorStack.peek() == "(") {
-                    operatorStack.pop()
-                }
+                builder.replace(braceIndex, otherBrace + 1, parse(builder.substring(braceIndex + 1, otherBrace)).toString())
+            } else {
+                break
             }
         }
-        while(!operatorStack.empty()) {
-            output += operatorStack.pop()
-        }
 
-        return output
-    }
+        val tokens = builder.toString().split(" ")
 
-    fun tokens(input: String) = sequence<String> {
         var i = 0
-        while(i < input.length) {
-            if(input[i].toString() in operators) {
-                yield(input[i].toString())
+        var acc : Long? = null
+        while(i < tokens.size) {
+            if(tokens[i].isInt()) {
+                acc = tokens[i].toLong()
                 i++
-            } else if(input[i].isDigit()){
-                var j = i
-                while(j < input.length && input[j].isDigit()) {
-                    j++
-                }
-                yield(input.substring(i until j))
-                i = j + 1
             } else {
-                i++
-            }
-        }
-    }
-
-    fun eval(expr: List<String>) : Long {
-        val stack = Stack<Long>()
-        println(expr)
-        expr.forEach {
-            if(it.isInt()) {
-                stack += it.toLong()
-            } else {
-                val a = stack.pop()
-                val b = stack.pop()
-                stack += when(it) {
-                    "+" -> a + b
-                    "-" -> a - b
-                    "/" -> a / b
-                    "*" -> a * b
-                    else -> throw IllegalArgumentException(it)
+                val op = tokens[i]
+                val next = tokens[i + 1].toLong()
+                i += 2
+                when(op) {
+                    "*" -> acc = acc!! * next
+                    "/" -> acc = acc!! / next
+                    "+" -> acc = acc!! + next
+                    "-" -> acc = acc!! - next
                 }
             }
         }
 
-        return stack.pop()
+        return acc!!
     }
+
+
 
 }
 
 fun main() {
-    println(Day18.eval(Day18.shunt("2 * 3 + (4 * 5)").toList()))
+    println(Day18.part1())
 
 }
