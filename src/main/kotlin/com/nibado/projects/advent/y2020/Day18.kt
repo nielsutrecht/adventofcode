@@ -11,34 +11,30 @@ object Day18 : Day {
     override fun part1() = values.map { eval(shunt(it) { 1 } )}.sum()
     override fun part2() = values.map { eval(shunt(it) { t -> if (t == "+") 2 else 1 } )}.sum()
 
-    private fun shunt(tokens: List<String>, precedence: (String) -> Int) : List<String> {
-        val output = mutableListOf<String>()
-        val operatorStack = Stack<String>()
-
-        tokens.forEach { token ->
+    private fun shunt(tokens: List<String>, precedence: (String) -> Int) : List<String> =
+        tokens.fold(mutableListOf<String>() to Stack<String>()) { (output, operators), token ->
             if(token.isInt()) {
                 output += token
             } else if(token == "+" || token == "*") {
-                while(operatorStack.peekOrNull() in setOf("*", "+")
-                        && precedence(token) <= precedence(operatorStack.peek())
-                        && operatorStack.peek() != "(") {
-                    output += operatorStack.pop()
+                while(operators.peekOrNull() in setOf("*", "+")
+                        && precedence(token) <= precedence(operators.peek())
+                        && operators.peek() != "(") {
+                    output += operators.pop()
                 }
-                operatorStack += token
+                operators += token
             } else if(token == "(") {
-                operatorStack += token
+                operators += token
             } else if(token == ")") {
-                while(operatorStack.peekOrNull() != "(") {
-                    output += operatorStack.pop()
+                while(operators.peekOrNull() != "(") {
+                    output += operators.pop()
                 }
-                if(operatorStack.peek() == "(") {
-                    operatorStack.pop()
+                if(operators.peek() == "(") {
+                    operators.pop()
                 }
             }
-        }
 
-        return output + operatorStack
-    }
+            output to operators
+        }.let { (output,operators) -> output + operators }
 
     private fun eval(expr: List<String>) : Long = expr.fold(Stack<Long>()) { s, e ->
                 s += when(e) {
@@ -48,5 +44,4 @@ object Day18 : Day {
                 }
             s
         }.pop()
-
 }
