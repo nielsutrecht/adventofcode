@@ -40,24 +40,13 @@ object Day18 : Day {
         return output + operatorStack
     }
 
-    private fun eval(expr: List<String>) : Long {
-        val stack = Stack<Long>()
-        expr.forEach {
-            stack += if(it.isInt()) {
-                it.toLong()
-            } else {
-                val a = stack.pop()
-                val b = stack.pop()
-                when(it) {
-                    "+" -> a + b
-                    "-" -> a - b
-                    "/" -> a / b
-                    "*" -> a * b
-                    else -> throw IllegalArgumentException(it)
+    private fun eval(expr: List<String>) : Long = expr.fold(Stack<Long>()) { s, e ->
+                s += when(e) {
+                    "+" -> s.pop() + s.pop()
+                    "*" -> s.pop() * s.pop()
+                    else -> e.toLong()
                 }
-            }
-        }
+            s
+        }.pop()
 
-        return stack.pop()
-    }
 }
