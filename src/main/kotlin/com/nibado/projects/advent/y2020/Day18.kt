@@ -1,4 +1,3 @@
-
 package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.*
@@ -7,17 +6,12 @@ import java.util.*
 
 
 object Day18 : Day {
-
     private val values = resourceLines(2020, 18)
-    private val operators = setOf("+", "-", "*", "/")
 
-    private fun precedence(token: String, other: String) : Boolean = true
+    override fun part1() = values.map { parse(it) { 1 } }.sum()
+    override fun part2() = values.map { parse(it) { t -> if (t == "+") 2 else 1 } }.sum()
 
-    override fun part1() = values.map(::parse).sum() //6923486965641
-    override fun part2() = TODO()
-
-    fun parse(input: String) : Long {
-        //println(input)
+    private fun parse(input: String, precedence: (String) -> Int) : Long {
         val builder = StringBuilder(input)
 
         while(true) {
@@ -33,7 +27,8 @@ object Day18 : Day {
                         c--
                     }
                 }
-                builder.replace(braceIndex, otherBrace + 1, parse(builder.substring(braceIndex + 1, otherBrace)).toString())
+                builder.replace(braceIndex, otherBrace + 1,
+                        parse(builder.substring(braceIndex + 1, otherBrace), precedence).toString())
             } else {
                 break
             }
@@ -41,33 +36,48 @@ object Day18 : Day {
 
         val tokens = builder.toString().split(" ")
 
-        var i = 0
-        var acc : Long? = null
-        while(i < tokens.size) {
-            if(tokens[i].isInt()) {
-                acc = tokens[i].toLong()
-                i++
+        return eval(shunt(tokens, precedence))
+    }
+
+    private fun shunt(tokens: List<String>, precedence: (String) -> Int) : List<String> {
+        val output = mutableListOf<String>()
+        val operatorStack = Stack<String>()
+
+        tokens.forEach { token ->
+            if(token.isInt()) {
+                output += token
+            } else if(token == "+" || token == "*") {
+                while(!operatorStack.empty() && precedence(token) <= precedence(operatorStack.peek())) {
+                    output += operatorStack.pop()
+                }
+                operatorStack += token
+            }
+        }
+        while(!operatorStack.empty()) {
+            output += operatorStack.pop()
+        }
+
+        return output
+    }
+
+    private fun eval(expr: List<String>) : Long {
+        val stack = Stack<Long>()
+        expr.forEach {
+            if(it.isInt()) {
+                stack += it.toLong()
             } else {
-                val op = tokens[i]
-                val next = tokens[i + 1].toLong()
-                i += 2
-                when(op) {
-                    "*" -> acc = acc!! * next
-                    "/" -> acc = acc!! / next
-                    "+" -> acc = acc!! + next
-                    "-" -> acc = acc!! - next
+                val a = stack.pop()
+                val b = stack.pop()
+                stack += when(it) {
+                    "+" -> a + b
+                    "-" -> a - b
+                    "/" -> a / b
+                    "*" -> a * b
+                    else -> throw IllegalArgumentException(it)
                 }
             }
         }
 
-        return acc!!
+        return stack.pop()
     }
-
-
-
-}
-
-fun main() {
-    println(Day18.part1())
-
 }
