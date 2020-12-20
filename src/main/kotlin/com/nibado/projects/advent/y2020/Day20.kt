@@ -1,9 +1,6 @@
 package com.nibado.projects.advent.y2020
 
-import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.Direction
-import com.nibado.projects.advent.Point
-import com.nibado.projects.advent.resourceStrings
+import com.nibado.projects.advent.*
 
 object Day20 : Day {
     private val values = resourceStrings(2020, 20).map { tile ->
@@ -17,22 +14,11 @@ object Day20 : Day {
         solve(map, values.drop(1))
     }
 
-    override fun part1(): Long = solution.let { result ->
-        val min = Point(result.keys.map { it.x }.min()!!, result.keys.map { it.y }.min()!!)
-        val max = Point(result.keys.map { it.x }.max()!!, result.keys.map { it.y }.max()!!)
+    override fun part1(): Long = solution.keys.bounds()
+                .let { (min, max) -> listOf(min, max, Point(min.x, max.y), Point(max.x, min.y)) }
+                .map { solution[it]!!.tile.id.toLong() }.reduce { a, b -> a * b }
 
-        val corners = listOf(min, max, Point(min.x, max.y), Point(max.x, min.y))
-
-        return corners.map { result[it]!!.tile.id.toLong() }.reduce { a, b -> a * b }
-    }
-
-    fun solve(): Map<Point, TilePosition> {
-        val map = mapOf(Point(0, 0) to TilePosition(values.first(), 0, Point(0, 0)))
-
-        return solve(map, values.drop(1))
-    }
-
-    fun solve(map: Map<Point, TilePosition>, available: List<Tile>): Map<Point, TilePosition> {
+    private fun solve(map: Map<Point, TilePosition>, available: List<Tile>): Map<Point, TilePosition> {
         if (available.isEmpty()) {
             return map
         }
@@ -42,7 +28,7 @@ object Day20 : Day {
             val neighbors = p.neighborsHv().mapNotNull { map[it] }
             for (tile in available) {
                 for (orientation in tile.grids.indices) {
-                    if (neighbors.all { fitsWith(it, p, tile.grids[orientation]) }) {
+                    if (neighbors.all { tile.grids[orientation].fits(it.grid, p.directionTo(it.point)) }) {
                         val result = solve(map + (p to TilePosition(tile, orientation, p)), available - tile)
                         if (result.isNotEmpty()) {
                             return result
@@ -55,86 +41,39 @@ object Day20 : Day {
         return emptyMap()
     }
 
-    fun fitsWith(pos: TilePosition, p: Point, grid: Grid) = grid.fits(pos.grid, p.directionTo(pos.point))
-
-    override fun part2(): Long {
-        val (min, max) = solution.let { result ->
-            val min = Point(result.keys.map { it.x }.min()!!, result.keys.map { it.y }.min()!!)
-            val max = Point(result.keys.map { it.x }.max()!!, result.keys.map { it.y }.max()!!)
-
-            min to max
-        }
+    override fun part2(): Int {
+        val (min, max) = solution.keys.bounds()
 
         val width = values.first().grids.first().grid.size
         val size = (max.x - min.x + 1) * (width - 2)
 
         val largeGrid = Array(size) { Array(size) { ' ' } }
 
-        for(y in min.y .. max.y) {
-            for(x in min.x .. max.x) {
-                val xO = (x - min.x) * (width - 2)
-                val yO = (y - min.y) * (width - 2)
+        (min to max).points().forEach { p ->
+            val xO = (p.x - min.x) * (width - 2)
+            val yO = (p.y - min.y) * (width - 2)
 
-                val grid = solution[Point(x,y)]!!.grid
+            val grid = solution[p]!!.grid
 
-                grid.grid.drop(1).dropLast(1).forEachIndexed { gy, s ->
-                    s.drop(1).dropLast(1).forEachIndexed { gx, c ->
-                        largeGrid[yO + gy][xO + gx] = c
-                    }
+            grid.grid.drop(1).dropLast(1).forEachIndexed { gy, s ->
+                s.drop(1).dropLast(1).forEachIndexed { gx, c ->
+                    largeGrid[yO + gy][xO + gx] = c
                 }
             }
         }
 
+        val (monsterGrid, points) = Grid(largeGrid).rotations().map { grid ->
+            grid to grid.grid.indices.points().filter { p -> SEA_MONSTER.map { it + p }
+                    .all { it.inBound(grid.grid.indices, grid.grid.indices) && grid.grid[it.y][it.x] == '#' }
+            }.toList()
 
-        val monsterPoints = SEA_MONSTER.split("\n").filterNot { it.isBlank() }
-                .mapIndexed { y, s -> s.mapIndexedNotNull { x, c -> if(c == '#') Point(x,y) else null } }.flatten()
+        }.first { it.second.isNotEmpty() }
 
-        fun monsterAt(p: Point, grid: Grid) : Boolean =
-            monsterPoints.map { it + p }.all { it.inBound(grid.grid.indices, grid.grid.indices) &&
-                    grid.grid[it.y][it.x] == '#'
-            }
+        val monsterRough = points.flatMap { p -> SEA_MONSTER.map { it + p } }.toSet()
 
-        val grids = Grid(largeGrid).rotations()
-
-        for(grid in grids) {
-            val monsterLocations = mutableListOf<Point>()
-            for (y in grid.grid.indices) {
-                for (x in grid.grid.indices) {
-                    val p = Point(x, y)
-                    if (monsterAt(p, grid)) {
-                        monsterLocations += p
-                    }
-                }
-            }
-        }
-
-        val gridWithMonsters = grids.map { grid ->
-            val monsterLocations = mutableListOf<Point>()
-            for (y in grid.grid.indices) {
-                for (x in grid.grid.indices) {
-                    val p = Point(x, y)
-                    if (monsterAt(p, grid)) {
-                        monsterLocations += p
-                    }
-                }
-
-
-
-            }
-            grid to monsterLocations.toList()
-        }.filter { it.second.isNotEmpty() }.first()
-
-        val (monsterGrid, points) = gridWithMonsters
-
-        val monsterRough = points.flatMap { p -> monsterPoints.map { it + p } }.toSet()
-
-        val count = monsterGrid.grid.mapIndexed { y, s -> s.mapIndexedNotNull {x, c -> if(c == '#') Point(x, y) else null } }
+        return monsterGrid.grid.mapIndexed { y, s -> s.mapIndexedNotNull {x, c -> if(c == '#') Point(x, y) else null } }
                 .flatten()
                 .count { !monsterRough.contains(it) }
-
-
-
-        return count.toLong()
     }
 
     data class Tile(val id: Int, val grids: List<Grid>) {
@@ -142,18 +81,12 @@ object Day20 : Day {
     }
 
     data class Grid(val grid: List<String>) {
-        constructor(vararg grid: String) : this(grid.toList())
         constructor(grid: Array<Array<Char>>) : this(grid.map { it.joinToString("") })
-        init {
-            if (grid.any { it.length != grid.size }) {
-                throw IllegalArgumentException("Grid should be square")
-            }
-        }
 
-        val edgeTop = grid.first()
-        val edgeBottom = grid.last()
-        val edgeLeft = grid.map { it.first() }.joinToString("")
-        val edgeRight = grid.map { it.last() }.joinToString("")
+        private val edgeTop = grid.first()
+        private val edgeBottom = grid.last()
+        private val edgeLeft = grid.map { it.first() }.joinToString("")
+        private val edgeRight = grid.map { it.last() }.joinToString("")
 
         fun fits(other: Grid, dir: Direction): Boolean =
                 when (dir) {
@@ -170,11 +103,9 @@ object Day20 : Day {
             var input = grid
             val array = Array(input.size) { Array(input.size) { '0' } }
 
-            for (i in 0 until times) {
-                for (y in input.indices) {
-                    for (x in input.indices) {
-                        array[y][x] = input[input.size - x - 1][y]
-                    }
+            repeat(times) {
+                input.indices.points().forEach { (x,y) ->
+                    array[y][x] = input[input.size - x - 1][y]
                 }
                 input = array.map { it.joinToString("") }
             }
@@ -189,22 +120,16 @@ object Day20 : Day {
                 flipV(),
                 rotate(1).flipH(),
                 rotate(1).flipV()).toList()
-
-        override fun toString() = grid.joinToString("\n")
     }
 
     data class TilePosition(val tile: Tile, val or: Int, val point: Point) {
         val grid = tile.grids[or]
     }
 
-    const val SEA_MONSTER = """
+    private val SEA_MONSTER = """
                   # 
 #    ##    ##    ###
  #  #  #  #  #  #
-    """
+    """.split("\n").filterNot { it.isBlank() }
+            .mapIndexed { y, s -> s.mapIndexedNotNull { x, c -> if(c == '#') Point(x,y) else null } }.flatten()
 }
-
-fun main() {
-    println(Day20.part2())
-}
-

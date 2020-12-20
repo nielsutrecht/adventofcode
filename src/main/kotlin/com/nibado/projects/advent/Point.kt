@@ -104,6 +104,10 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 }
 
 fun Pair<Int, Int>.toPoint() = Point(this.first, this.second)
+
+fun IntRange.points(yRange: IntRange) = yRange.flatMap { y -> this.map { x -> Point(x, y) } }.asSequence()
+fun IntRange.points() = points(this)
+
 fun Collection<Point>.minX() = this.map { it.x }.min()
 fun Collection<Point>.minY() = this.map { it.y }.min()
 fun Collection<Point>.maxX() = this.map { it.x }.max()
