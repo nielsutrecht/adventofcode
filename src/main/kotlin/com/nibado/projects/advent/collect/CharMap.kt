@@ -2,6 +2,7 @@ package com.nibado.projects.advent.collect
 
 import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.Rectangle
+import javax.swing.text.html.HTML.Attribute.N
 
 class CharMap private constructor(
         val width: Int,
@@ -89,6 +90,49 @@ class CharMap private constructor(
     override fun toString() = toString(Point(0, 0), Point(width - 1, height - 1))
 
     fun clone() = CharMap(width, height, pen, chars.clone())
+
+    fun rotate90() : CharMap {
+        val newMap = clone()
+
+        for (i in 0 until width) {
+            for (j in 0 until width) {
+                newMap[j, width - i - 1] = this[i, j]
+            }
+        }
+
+        return newMap
+    }
+
+    fun row(row: Int) : List<Char> = (0 until width).map { this[it, row] }
+    fun rowFirst() = row(0)
+    fun rowLast() = row(height - 1)
+    fun column(column: Int) : List<Char> = (0 until height).map { this[column, it] }
+    fun columnFirst() = column(0)
+    fun columnLast() = column(width - 1)
+
+    fun flipH() : CharMap {
+        val new = clone()
+
+        for(y in 0 until height) {
+            for(x in 0 until width) {
+                new[x, y] = this[width - x - 1, y]
+            }
+        }
+
+        return new
+    }
+
+    fun flipV() : CharMap {
+        val new = clone()
+
+        for(y in 0 until height) {
+            for(x in 0 until width) {
+                new[x, y] = this[x, height - y - 1]
+            }
+        }
+
+        return new
+    }
 
     companion object {
         fun from(lines: List<String>) : CharMap {

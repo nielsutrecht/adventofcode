@@ -29,4 +29,19 @@ internal class CharMapTest {
             ##
         """.trimIndent())
     }
+
+    @Test
+    fun testRotate() {
+        val map = CharMap(5, 5, '.')
+        map[0,0] = '#'
+        map[1,0] = '#'
+        map[0,1] = '#'
+        map[1,1] = '#'
+
+        println(map.toString())
+        println(map.rotate90().toString())
+        println(map.rotate90().rotate90().toString())
+        println(map.rotate90().rotate90().rotate90().toString())
+        println(map.rotate90().rotate90().rotate90().rotate90().toString())
+    }
 }
