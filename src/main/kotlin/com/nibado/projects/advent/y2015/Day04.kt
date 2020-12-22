@@ -28,6 +28,6 @@ object Day04 : Day {
         }
     }
 
-    override fun part1() = find(5)
-    override fun part2() = find(6)
+    override fun part1() = find(5).second
+    override fun part2() = find(6).second
 }
