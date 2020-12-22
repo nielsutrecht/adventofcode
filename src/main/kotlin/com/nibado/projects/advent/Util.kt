@@ -1,5 +1,6 @@
 package com.nibado.projects.advent
 
+import java.io.File
 import java.io.InputStream
 import java.time.Duration
 import java.util.concurrent.LinkedBlockingQueue
@@ -11,7 +12,17 @@ fun resource(year: Int, day: Int): InputStream {
     val name = String.format("/%d/day%02d.txt", year, day)
 
     return String::class.java.getResourceAsStream(name)
-            ?: throw IllegalArgumentException("No resource with name " + name)
+            ?: fileResource(name)
+}
+
+private fun fileResource(name: String) : InputStream {
+    val file = File("./src/main/resources/$name")
+
+    if(!file.exists()) {
+        throw IllegalArgumentException("File $file does not exist")
+    }
+
+    return file.inputStream()
 }
 
 fun resourceString(year: Int, day: Int): String {
