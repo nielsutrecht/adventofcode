@@ -2,6 +2,10 @@ package com.nibado.projects.advent.y2020
 
 import com.nibado.projects.advent.Day
 import com.nibado.projects.advent.resourceLines
+import java.time.Duration
+import java.time.LocalDate
+import java.time.Period
+import javax.xml.datatype.DatatypeConstants.DAYS
 
 object Day01 : Day {
     private val values = resourceLines(2020, 1).map { it.toInt() }

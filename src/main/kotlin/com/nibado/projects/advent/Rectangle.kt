@@ -50,5 +50,8 @@ data class Rectangle(val left: Point, val right: Point) {
 
         fun of(left: Point, right: Point) =
                 Rectangle(left, right)
+
+        fun parse(left: String, right: String) =
+                Rectangle(Point.parse(left), Point.parse(right))
     }
 }
