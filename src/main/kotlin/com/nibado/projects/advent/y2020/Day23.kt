@@ -1,52 +1,48 @@
 
 package com.nibado.projects.advent.y2020
 
-import com.nibado.projects.advent.*
-import com.nibado.projects.advent.collect.CircularList
+import com.nibado.projects.advent.Day
+import com.nibado.projects.advent.collect.Link
 
 object Day23 : Day {
-    //ex: 389125467
-    //input: 589174263
-    private val input = "589174263".split("").filterNot { it.isBlank() }.map { it.toInt() }
+    private val input = "589174263".map { it - '0' }
 
     override fun part1() : Int {
-        val game = runGame(CircularList(input), 100)
+        val game = runGame(input, 100)
 
-        val indexOfOne = game.indexOf(1)
-
-        val result = (1 .. game.size - 1).joinToString("") { game.get(indexOfOne + it).toString() }
-
-        return result.toInt()
+        return game.linkSequence().first { it.value == 1 }.drop(1)
+                .joinToString("") { it.toString() }.toInt()
     }
-    override fun part2() : Int = TODO()
 
-    private fun runGame(game: CircularList<Int>, repeats: Int) : CircularList<Int> {
-        repeat(repeats) {
+    override fun part2() : Long {
+        val game = runGame(input + (10 .. 1_000_000), 10_000_000)
+        val one = game.linkSequence().first { it.value == 1 }
 
-            val selected = game.current()
-            val next = game.next(4)
-            game.right(1)
+        return one.next().value.toLong() * one.next().next().value.toLong()
+    }
 
-            val taken = game.remove(3)
+    private fun runGame(input: List<Int>, repeats: Int) : Link<Int> {
+        var selected = Link.of(input)
+        selected.lastLink().next = selected
+        val index = selected.linkSequence().map { it.value to it }.toMap()
+        val max = index.keys.max()!!
+        repeat(repeats) { move ->
+            val removed = selected.remove(3)
 
+            val next = selected.next()
 
-            val available = game.toList().sorted()
-            val find = available[(available.size + available.indexOf(selected) - 1) % available.size].let {
-                it to game.indexOf(it)
-            }
+            var dest = selected.value
+            do {
+                dest--
+                if(dest < 1) dest = max
+            } while(dest in removed)
 
+            index[dest]!!.addNext(removed)
 
-            game.seek(find.second)
-            game.insertAfter(taken)
-            game.seek(game.indexOf(next))
+            selected = next
         }
 
-        return game
+        return selected
     }
-}
-
-fun main() {
-    println(Day23.part1()) //43896725
-    //println(Day23.part2())
 }
     
