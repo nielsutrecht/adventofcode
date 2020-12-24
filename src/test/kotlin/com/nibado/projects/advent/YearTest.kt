@@ -1,12 +1,17 @@
 package com.nibado.projects.advent
 
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.DynamicContainer.dynamicContainer
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import kotlin.system.measureTimeMillis
 
 abstract class YearTest(private val input: List<TestInput>) {
     @TestFactory
+    @Execution(ExecutionMode.CONCURRENT)
     fun tests() = input.flatMap(::map)
 
     private fun map(ti: TestInput): List<DynamicTest> {
@@ -15,6 +20,7 @@ abstract class YearTest(private val input: List<TestInput>) {
 
         return listOf(
                 DynamicTest.dynamicTest("$year $day part 1") {
+                    println(Thread.currentThread().name)
                     if (ti.expected1 != null) {
                         val time = measureTimeMillis { Assertions.assertThat(ti.day.part1()).isEqualTo(ti.expected1) }
                         println("$year $day p1: $time ms")
