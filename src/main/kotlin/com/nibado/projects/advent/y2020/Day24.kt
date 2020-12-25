@@ -3,9 +3,8 @@ package com.nibado.projects.advent.y2020
 import com.nibado.projects.advent.*
 
 object Day24 : Day {
-
     private val values = resourceLines(2020, 24).map(::parse)
-    private val points = listOf("e", "w", "se", "sw", "ne", "nw").map { toPoint(it) }
+    private val points = Hex.Direction.values().map { it.point}
 
     private val initial: Map<Point3D, Boolean> by lazy {
         val start = Point3D(0, 0, 0)
@@ -14,60 +13,33 @@ object Day24 : Day {
         for (t in values) {
             var current = start
             t.forEach { dir ->
-                current = current + dir
-                hexes.computeIfAbsent(current) { false }
+                current += dir
             }
             hexes[current] = !hexes.getOrDefault(current, false)
-            points.map { it + current }.forEach { hexes.computeIfAbsent(it) { false } }
         }
         hexes
     }
 
     private fun parse(line: String): List<Point3D> {
         var i = 0
-        val list = mutableListOf<String>()
+        val list = mutableListOf<Point3D>()
 
         while (i < line.length) {
-            when {
-                line.substring(i).startsWith("e") -> {
-                    list.add("e");i += 1
-                }
-                line.substring(i).startsWith("w") -> {
-                    list.add("w");i += 1
-                }
-                line.substring(i).startsWith("se") -> {
-                    list.add("se");i += 2
-                }
-                line.substring(i).startsWith("sw") -> {
-                    list.add("sw");i += 2
-                }
-                line.substring(i).startsWith("ne") -> {
-                    list.add("ne");i += 2
-                }
-                line.substring(i).startsWith("nw") -> {
-                    list.add("nw");i += 2
-                }
-            }
+            val found = Hex.Direction.values().first { line.substring(i).startsWith(it.name, true) }
+            list += found.point
+            i += found.name.length
         }
 
-        return list.map { toPoint(it) }
+        return list
     }
 
-    fun toPoint(dir: String) = when (dir) {
-        "e" -> Point3D(1, -1, 0)
-        "w" -> Point3D(-1, 1, 0)
-        "se" -> Point3D(0, -1, +1)
-        "sw" -> Point3D(-1, 0, 1)
-        "ne" -> Point3D(1, 0, -1)
-        "nw" -> Point3D(0, 1, -1)
-        else -> throw IllegalArgumentException(dir)
-    }
 
     override fun part1(): Int = initial.values.count { it }
 
     override fun part2() : Int {
         val hexes = initial.toMutableMap()
-        repeat(100) { day ->
+        hexes.keys.flatMap { Hex.neighbors(it) }.forEach { hexes.computeIfAbsent(it) { false} }
+        repeat(100) {
             val toFlip = hexes.filter { (point, black) ->
                 val blackNeighbors = points.count { off -> hexes.getOrDefault(point + off, false) }
 
@@ -78,10 +50,8 @@ object Day24 : Day {
             toFlip.forEach {
                 hexes[it] = !hexes.getOrDefault(it, false)
             }
-            toFlip.flatMap { p -> points.map { p + it } }.forEach { hexes.computeIfAbsent(it) { false } }
 
-            print("${day + 1}: ")
-            println(hexes.values.count { it })
+            toFlip.flatMap { p -> Hex.neighbors(p) }.forEach { hexes.computeIfAbsent(it) { false } }
         }
 
         return hexes.values.count { it }
