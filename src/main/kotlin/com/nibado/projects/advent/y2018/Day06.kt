@@ -14,7 +14,7 @@ object Day06 : Day {
             .filterNot { rect.onEdge(it.first) || it.second == null }
             .groupBy { it.second }
             .map { it.key!! to it.value.size }
-            .maxBy { it.second }!!.second
+            .maxByOrNull { it.second }!!.second
 
     override fun part2() = rect.points().count { distanceSum(it) < 10000 }
 

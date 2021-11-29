@@ -45,8 +45,8 @@ object Day22 : Day {
     private fun solve(iterations: Int, dir: (State, Direction) -> Direction, state: (State) -> State): String {
         val points = input.toMutableMap()
 
-        val min = Point(points.keys.minBy { it.x }!!.x, points.keys.minBy { it.y }!!.y)
-        val max = Point(points.keys.maxBy { it.x }!!.x, points.keys.maxBy { it.y }!!.y)
+        val min = Point(points.keys.minByOrNull { it.x }!!.x, points.keys.minByOrNull { it.y }!!.y)
+        val max = Point(points.keys.maxByOrNull { it.x }!!.x, points.keys.maxByOrNull { it.y }!!.y)
 
         var current = Point(min.x + (max.x - min.x) / 2, min.y + (max.y - min.y) / 2)
         var direction = Direction.NORTH

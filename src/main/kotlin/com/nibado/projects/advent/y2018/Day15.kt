@@ -42,7 +42,7 @@ object Day15 : Day {
                 log(grid.toString(paths.map { it.first }.toSet(), '@'))
 
                 if(paths.isNotEmpty()) {
-                    val minDistance = paths.minBy { it.second.size }!!.second.size
+                    val minDistance = paths.minByOrNull { it.second.size }!!.second.size
 
                     val closest = paths.filter { it.second.size == minDistance }
 

@@ -12,7 +12,7 @@ object Day05 : Day {
             ('a' .. 'z')
                 .map { c -> c to input.filter { it.toLowerCase() != c } }
                 .map { it.first to react(it.second) }
-                .minBy { it.second }!!.second
+                .minByOrNull { it.second }!!.second
 
     private fun react(inp: String) : Int {
         val poly = StringBuilder(inp)

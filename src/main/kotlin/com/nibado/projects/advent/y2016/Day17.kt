@@ -18,7 +18,7 @@ object Day17 : Day {
 
         search("", Point(0, 0), solutions)
 
-        return solutions.minBy { it.length }!! to solutions.maxBy { it.length }!!
+        return solutions.minByOrNull { it.length }!! to solutions.maxByOrNull { it.length }!!
     }
 
     private fun search(path: String, current: Point, solutions: MutableList<String>) {

@@ -18,7 +18,7 @@ object Day06 : Day {
             seen.add(banks.toList())
 
             cycle++
-            var (index, value) = banks.withIndex().maxBy { it.value }!!
+            var (index, value) = banks.withIndex().maxByOrNull { it.value }!!
 
             banks[index] = 0
 

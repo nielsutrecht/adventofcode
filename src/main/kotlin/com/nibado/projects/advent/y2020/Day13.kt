@@ -9,7 +9,7 @@ object Day13 : Day {
 
     override fun part1(): Int = busIds.filterNot { it == "x" }.map { it.toInt() }
             .map { it to timeStamp - (timeStamp % it) + it }
-            .minBy { it.second - timeStamp }!!
+            .minByOrNull { it.second - timeStamp }!!
             .let { it.first * (it.second - timeStamp) }
 
     override fun part2(): Long {

@@ -14,7 +14,7 @@ object Day07 : Day {
 
 fun walk(tree: Tree): Int {
     if (!tree.balanced()) {
-        val result = tree.children().map { walk(it) }.max()
+        val result = tree.children().map { walk(it) }.maxOrNull()
         if (tree.children().map { it.balanced() }.count { it } == tree.children().size) {
             val groups = tree.children().groupBy { it.sum() }
             val wrongTree = groups.values.first { it.size == 1 }.first()

@@ -24,8 +24,8 @@ object Day03 : Day {
         return points
     }
 
-    override fun part1() = intersections.map { it.manhattan() }.min()!!
+    override fun part1() = intersections.map { it.manhattan() }.minOrNull()!!
     override fun part2() = pointLists
         .map { list -> list.mapIndexed { dist, point ->  point to dist + 1 }.filter { intersections.contains(it.first) }.toMap() }
-        .let { (first, second) -> first.map { it.value + second.getValue(it.key) }.min()!! }
+        .let { (first, second) -> first.map { it.value + second.getValue(it.key) }.minOrNull()!! }
 }

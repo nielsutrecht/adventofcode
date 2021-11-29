@@ -10,10 +10,10 @@ object Day07 : Day {
     private val program = resourceString(2019, 7).split(",").map { it.toLong() }
 
     override fun part1() = (0L..4L).toList().permutations()
-            .map { run(program, it) }.max()!!
+            .map { run(program, it) }.maxOrNull()!!
 
     override fun part2() = (5L..9L).toList().permutations()
-            .map { run(program, it) }.max()!!
+            .map { run(program, it) }.maxOrNull()!!
 
 
     private fun run(program: List<Long>, settings: List<Long>): Long {

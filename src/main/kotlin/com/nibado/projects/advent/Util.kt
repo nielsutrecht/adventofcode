@@ -182,7 +182,7 @@ fun combine(ranges: List<LongRange>): List<LongRange> {
 
         list.removeAll(others)
         val combined = others + listOf(r)
-        list += combined.map { it.first }.min()!!..combined.map { it.last }.max()!!
+        list += combined.map { it.first }.minOrNull()!!..combined.map { it.last }.maxOrNull()!!
     }
 
     return list.sortedBy { it.first }

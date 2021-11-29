@@ -25,7 +25,7 @@ object Day23 : Day {
         var selected = Link.of(input)
         selected.lastLink().next = selected
         val index = selected.linkSequence().map { it.value to it }.toMap()
-        val max = index.keys.max()!!
+        val max = index.keys.maxOrNull()!!
         repeat(repeats) { move ->
             val removed = selected.remove(3)
 

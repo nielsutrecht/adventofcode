@@ -34,7 +34,7 @@ object Day09 : Day {
             }
         }
 
-        return scores.max()!!
+        return scores.maxOrNull()!!
     }
 
     override fun part1() = game(459, 71320)

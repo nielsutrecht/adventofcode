@@ -20,7 +20,7 @@ class FreqMap : Map<Char, Int> {
         map[key] = map.computeIfAbsent(key, {0}) + 1
     }
 
-    fun max() = entries.maxBy { it.value }?.key
-    fun min() = entries.minBy { it.value }?.key
+    fun max() = entries.maxByOrNull { it.value }?.key
+    fun min() = entries.minByOrNull { it.value }?.key
 
 }

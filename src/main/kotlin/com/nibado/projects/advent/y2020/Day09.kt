@@ -26,7 +26,7 @@ object Day09 : Day {
             }
         }
 
-        return ranges.maxBy { (a,b) -> b - a }!!.let { (a, b) -> numbers.subList(a, b).min()!! + numbers.subList(a,b).max()!! }
+        return ranges.maxByOrNull { (a,b) -> b - a }!!.let { (a, b) -> numbers.subList(a, b).minOrNull()!! + numbers.subList(a,b).maxOrNull()!! }
     }
 
     private fun pairs(list: List<Long>): List<Pair<Long, Long>> = list.indices

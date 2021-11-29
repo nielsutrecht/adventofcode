@@ -35,7 +35,7 @@ object Day08 : Day {
     private fun parse(lines: List<List<String>>) = lines
             .map { Instruction(it[1], if (it[2] == "inc") { a, b -> a + b } else { a, b -> a - b }, it[3].toInt(), it[4], tests[it[5]]!!, it[6].toInt()) }
 
-    override fun part1() = registers.entries.filter { !it.key.startsWith("_") }.map { it.value }.max().toString()
+    override fun part1() = registers.entries.filter { !it.key.startsWith("_") }.map { it.value }.maxOrNull().toString()
     override fun part2() = registers["_max"]!!.toString()
 
     data class Instruction(val reg: String, val op: (a: Int, b: Int) -> Int, val amount: Int, val testReg: String, val eq: (Int, Int) -> Boolean, val testVal: Int)

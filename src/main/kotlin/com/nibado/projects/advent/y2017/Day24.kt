@@ -9,7 +9,7 @@ object Day24 : Day {
 
     override fun part1() = solution.last().map { it.first + it.second }.sum().toString()
     override fun part2(): String {
-        val maxLength = solution.maxBy { it.size }!!.size
+        val maxLength = solution.maxByOrNull { it.size }!!.size
 
         return solution.last { it.size == maxLength }.map { it.first + it.second }.sum().toString()
     }

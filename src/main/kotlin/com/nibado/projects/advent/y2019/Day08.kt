@@ -6,7 +6,7 @@ import com.nibado.projects.advent.resourceString
 object Day08 : Day {
     private val layers = resourceString(2019, 8).map { it - '0' }.toList().chunked(25 * 6)
 
-    override fun part1() = layers.minBy { it.count { it == 0 } }
+    override fun part1() = layers.minByOrNull { it.count { it == 0 } }
             ?.run { count { it == 1 } * count {it == 2}  }!!
 
     override fun part2(): String {

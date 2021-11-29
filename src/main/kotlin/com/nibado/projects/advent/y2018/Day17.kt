@@ -101,7 +101,7 @@ object Day17 : Day {
     }
 
     private fun CharMap.canPlace(p: Point) = inBounds(p) && this[p] == '.'
-    private fun CharMap.minY() = map.points { c -> c == '#' }.minBy { it.y }!!.y
+    private fun CharMap.minY() = map.points { c -> c == '#' }.minByOrNull { it.y }!!.y
 
     override fun part1() = map.minY().let { minY -> map.points { it == '~' || it == '|'}.count { it.y >= minY } }
     override fun part2() = map.minY().let { minY -> map.points { it == '~'}.count { it.y >= minY } }

@@ -13,7 +13,7 @@ object Day10 : Day {
     }
 
     private val laser: Pair<Point, Int> by lazy {
-        points.map { it to visible(it) }.maxBy { it.second }!!
+        points.map { it to visible(it) }.maxByOrNull { it.second }!!
     }
 
     private fun visible(p: Point): Int = points.filterNot { it == p }.map { it.angle(p) }.distinct().size
