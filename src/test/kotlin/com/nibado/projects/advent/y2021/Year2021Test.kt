@@ -7,6 +7,7 @@ class Year2021Test : YearTest(input()) {
     companion object {
         fun input() = listOf(
                 TestInput(Day01, 1624, 1653),
+            TestInput(Day02, 1989014L, 2006917119L),
         ).drop(0)
     }
 }
