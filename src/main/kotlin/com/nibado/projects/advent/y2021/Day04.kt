@@ -9,7 +9,14 @@ object Day04 : Day {
     private val numbers = values.first().split(',').map { it.toInt() }
     private val boards = values.asSequence().drop(1).filterNot { it.trim().isBlank() }.chunked(5) {
         Board(it.map { it.trim().split("\\s+".toRegex()).map { it.toInt() } })
-    }.toList()
+    }.toMutableList()
+
+    private val wins = numbers.flatMap { n ->
+        boards.forEach { it.mark(n) }
+        val won = boards.filter { it.win() }
+        boards.removeIf { it.win() }
+        won.map { it to n }
+    }
 
     data class Board(val grid: List<List<Int>>, val marked: MutableSet<Point> = mutableSetOf()) {
         fun mark(number: Int) {
@@ -24,42 +31,6 @@ object Day04 : Day {
         fun unmarkedSum() = points().filterNot { marked.contains(it) }.map { grid[it.y][it.x] }.sum()
     }
 
-    override fun part1() : Any {
-        for(n in numbers) {
-            boards.forEach {
-                it.mark(n)
-            }
-            val wins = boards.filter { it.win() }
-            if(wins.isNotEmpty()) {
-                wins.forEach { println(it)  }
-                return wins.first().unmarkedSum().toLong() * n
-            }
-        }
-        throw IllegalStateException()
-    }
-
-    override fun part2() : Any {
-        boards.forEach { it.marked.clear() }
-
-        val notWon = boards.toMutableList()
-
-        val seq = numbers.toMutableList()
-        var lastNumber = 0
-        while(notWon.size > 1) {
-            lastNumber = seq.removeFirst()
-            notWon.forEach {
-                it.mark(lastNumber)
-            }
-            notWon.removeIf { it.win() }
-            notWon.size > 1
-        }
-
-        val last = notWon.first()
-        while(!last.win()) {
-            lastNumber = seq.removeFirst()
-            last.mark(lastNumber)
-        }
-
-        return lastNumber.toLong() * last.unmarkedSum()
-    }
+    override fun part1() = wins.first().let { (board, num) -> board.unmarkedSum() * num }
+    override fun part2() = wins.last().let { (board, num) -> board.unmarkedSum() * num }
 }
