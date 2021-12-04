@@ -13,32 +13,11 @@ object Day04 : Day {
 
     data class Board(val grid: List<List<Int>>, val marked: MutableSet<Point> = mutableSetOf()) {
         fun mark(number: Int) {
-            points().forEach { p ->
-                if(grid[p.y][p.x] == number) {
-                    marked += p
-                }
-            }
+            marked += points().filter { (x, y) -> grid[y][x] == number}
         }
 
-        fun rowWin() : Boolean {
-            for(y in grid.indices) {
-                val count = grid[y].indices.map { x -> Point(x, y) }.count { marked.contains(it) }
-                if(count == grid.size) {
-                    return true
-                }
-            }
-            return false
-        }
-        fun colWin() :Boolean {
-            for(x in grid.first().indices) {
-                val count = grid.indices.map { y -> Point(x, y) }.count { marked.contains(it) }
-
-                if(count == grid.size) {
-                    return true
-                }
-            }
-            return false
-        }
+        fun rowWin() : Boolean  = grid.indices.any { y -> grid[y].indices.all { x -> marked.contains(Point(x,y)) } }
+        fun colWin() :Boolean = grid.first().indices.any { x -> grid.indices.all { y -> marked.contains(Point(x, y)) } }
         fun win() = rowWin() or colWin()
 
         fun points() = grid.indices.flatMap { y -> grid.first().indices.map { x -> Point(x, y) } }
@@ -53,13 +32,10 @@ object Day04 : Day {
             val wins = boards.filter { it.win() }
             if(wins.isNotEmpty()) {
                 wins.forEach { println(it)  }
-                val w = wins.first()
                 return wins.first().unmarkedSum().toLong() * n
             }
-
         }
-
-        return ""
+        throw IllegalStateException()
     }
 
     override fun part2() : Any {

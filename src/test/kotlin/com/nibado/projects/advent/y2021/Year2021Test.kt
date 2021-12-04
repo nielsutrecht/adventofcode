@@ -8,7 +8,8 @@ class Year2021Test : YearTest(input()) {
         fun input() = listOf(
             TestInput(Day01, 1624, 1653),
             TestInput(Day02, 1989014L, 2006917119L),
-            TestInput(Day03, 1997414L, 1032597L)
+            TestInput(Day03, 1997414L, 1032597L),
+            TestInput(Day04, 55770L, 2980L)
         ).drop(0)
     }
 }
