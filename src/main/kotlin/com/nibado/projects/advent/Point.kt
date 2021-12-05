@@ -27,7 +27,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 
     fun distance(other: Point): Double = distance(this, other)
 
-    fun angle(target: Point) = atan2((target.x - x).toDouble(), (target.y - y).toDouble())
+    fun angle(target: Point) = atan2((target.y - y).toDouble(), (target.x - x).toDouble())
 
     fun inBound(maxX: Int, maxY: Int) = inBound(0, maxX, 0, maxY)
 
