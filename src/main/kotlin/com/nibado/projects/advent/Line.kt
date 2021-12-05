@@ -6,6 +6,9 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 data class Line(val a: Point, val b: Point) {
+
+    constructor(x1: Int, y1: Int, x2: Int, y2: Int) : this(Point(x1, y1), Point(x2, y2))
+
     fun manhattan(): Int = a.manhattan(b)
     fun reversed() = Line(b, a)
     fun angle() = a.angle(b)
