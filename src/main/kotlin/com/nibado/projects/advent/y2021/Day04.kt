@@ -1,8 +1,6 @@
 package com.nibado.projects.advent.y2021
 
-import com.nibado.projects.advent.Day
-import com.nibado.projects.advent.Point
-import com.nibado.projects.advent.resourceLines
+import com.nibado.projects.advent.*
 
 object Day04 : Day {
     private val values = resourceLines(2021, 4)
@@ -20,11 +18,11 @@ object Day04 : Day {
 
     data class Board(val grid: List<List<Int>>, val marked: MutableSet<Point> = mutableSetOf()) {
         fun mark(number: Int) {
-            marked += points().filter { (x, y) -> grid[y][x] == number}
+            marked += points().filter { (x, y) -> grid[y][x] == number }
         }
 
-        fun rowWin() : Boolean  = grid.indices.any { y -> grid[y].indices.all { x -> marked.contains(Point(x,y)) } }
-        fun colWin() :Boolean = grid.first().indices.any { x -> grid.indices.all { y -> marked.contains(Point(x, y)) } }
+        fun rowWin(): Boolean = grid.indices.any { y -> grid[y].indices.all { x -> marked.contains(Point(x, y)) } }
+        fun colWin(): Boolean = grid.first().indices.any { x -> grid.indices.all { y -> marked.contains(Point(x, y)) } }
         fun win() = rowWin() or colWin()
 
         fun points() = grid.indices.flatMap { y -> grid.first().indices.map { x -> Point(x, y) } }
