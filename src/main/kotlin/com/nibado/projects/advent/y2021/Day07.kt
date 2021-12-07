@@ -11,6 +11,6 @@ object Day07 : Day {
     }.minByOrNull { it.second }!!.second
 
     override fun part2() = (values.minOrNull()!! .. values.maxOrNull()!!).map { pos ->
-        pos to values.map { (0 .. (it - pos).absoluteValue).sum() }.sum()
+        pos to values.map { (it - pos).absoluteValue.let { it * (it + 1) / 2 } }.sum()
     }.minByOrNull { it.second }!!.second
 }
