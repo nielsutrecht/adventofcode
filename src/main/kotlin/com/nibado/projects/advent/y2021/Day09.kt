@@ -1,7 +1,6 @@
 package com.nibado.projects.advent.y2021
 
 import com.nibado.projects.advent.*
-import java.util.*
 
 object Day09 : Day {
     private val values = resourceLines(2021, 9).map { it.toCharArray().map { it.digitToInt() } }
@@ -14,7 +13,7 @@ object Day09 : Day {
 
     override fun part2() : Int {
         val consider = points.filterNot { (x, y) -> values[y][x] == 9 }.toMutableSet()
-        val sizes = TreeSet<Int>()
+        val sizes = mutableListOf<Int>()
 
         while(consider.isNotEmpty()) {
             var area = 0
@@ -28,6 +27,6 @@ object Day09 : Day {
             sizes += area
         }
 
-        return sizes.toList().takeLast(3).let { (a,b,c) -> a * b * c }
+        return sizes.sorted().takeLast(3).let { (a,b,c) -> a * b * c }
     }
 }
