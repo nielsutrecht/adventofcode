@@ -30,7 +30,13 @@ object Images {
         return img
     }
 
+    fun create(width: Int, heigth: Int) = BufferedImage(width, heigth, BufferedImage.TYPE_INT_RGB)
+
     fun write(img: BufferedImage, file: File) {
         ImageIO.write(img, file.extension, file)
     }
+}
+
+fun BufferedImage.write(file: File) {
+    Images.write(this, file)
 }
