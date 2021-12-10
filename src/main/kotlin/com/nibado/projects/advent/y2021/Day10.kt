@@ -18,14 +18,12 @@ object Day10 : Day {
             }
         }
 
-        val score = stack.map { when(it) {
+        return 0 to stack.map { when(it) {
             '(' -> 1L
             '[' -> 2L
             '{' -> 3L
             else -> 4L
         } }.fold(0L) { acc, e -> acc * 5 + e }
-
-        return 0 to score
     }
 
     override fun part1() = values.sumOf { it.first }
