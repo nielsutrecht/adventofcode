@@ -8,19 +8,20 @@ import java.io.File
 object Year2021Day09 {
     private val values = resourceLines(2021, 9).map { it.toCharArray().map { it.digitToInt() } }
     private val points = values.indices.flatMap { y -> values[0].indices.map { x -> Point(x, y) } }
-    val gif = AnimatedGif(0, 10)
+    val gif = AnimatedGif(0, 1)
     fun part1() = points.map { it to values[it.y][it.x] }.filter {
         val neighbors = it.first.neighborsHv().filter { it.inBound(values[0].size - 1, values.size - 1) }
         neighbors.all { n -> values[n.y][n.x] > it.second }
     }.sumOf { it.second + 1 }
 
-    fun part2() : Int {
+    fun part2(startLowest: Boolean = false) : Int {
         val consider = points.filterNot { (x, y) -> values[y][x] == 9 }.toMutableSet()
         val sizes = mutableListOf<Int>()
 
         while(consider.isNotEmpty()) {
             var area = 0
-            var frontier = setOf(consider.first())
+            val start = if(startLowest) consider.sortedBy { values[it.y][it.x] }.first() else consider.first()
+            var frontier = setOf(start)
 
             while(frontier.isNotEmpty()) {
                 area += frontier.size
