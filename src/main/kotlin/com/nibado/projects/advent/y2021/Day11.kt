@@ -1,41 +1,36 @@
 package com.nibado.projects.advent.y2021
 
 import com.nibado.projects.advent.*
+import com.nibado.projects.advent.collect.NumberGrid
 
 object Day11 : Day {
-    private val grid = resourceLines(2021, 11).map { it.map { it.digitToInt() } }.map { it.toMutableList() }
-    private val points = grid.indices.flatMap { y -> grid[0].indices.map { x -> Point(x, y) } }
+    private val grid = resourceLines(2021, 11).let { NumberGrid.from<Int>(it) }
     private val solution = solve()
 
     fun solve(): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         var step = 1
-        while (true) {
+        while (grid.elements.any { it != 0 }) {
             val flashed = mutableSetOf<Point>()
-            points.forEach { p ->
-                grid[p.y][p.x] += 1
-                if (grid[p.y][p.x] > 9) {
-                    flash(grid, p, flashed)
+            grid.points.forEach { p ->
+                grid[p] += 1
+                if (grid[p] > 9) {
+                    flash(p, flashed)
                 }
             }
-            flashed.forEach { (x, y) -> grid[y][x] = 0 }
-            result += step to flashed.size
-            if (flashed.size == grid.size * grid[0].size) {
-                break
-            }
-            step++
+            flashed.forEach { p -> grid[p] = 0 }
+            result += step++ to flashed.size
         }
         return result
     }
 
-    private fun flash(grid: List<MutableList<Int>>, p: Point, flashed: MutableSet<Point>) {
+    private fun flash(p: Point, flashed: MutableSet<Point>) {
         flashed += p
-        grid[p.y][p.x] = 0
-        val neighbors = p.neighbors().filter { it.inBound(grid[0].size - 1, grid.size - 1) }
-        neighbors.map { n ->
-            grid[n.y][n.x] += 1
-            if (grid[n.y][n.x] > 9 && n !in flashed) {
-                flash(grid, n, flashed)
+        grid[p] = 0
+        p.neighbors().filter(grid::inBound).forEach { n ->
+            grid[n] += 1
+            if (grid[n] > 9 && n !in flashed) {
+                flash(n, flashed)
             }
         }
     }

@@ -18,7 +18,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
         WEST -> Point(x - amount, y)
     }
 
-    operator fun times(amount: Int) : Point = Point(x * amount, y * amount)
+    operator fun times(amount: Int): Point = Point(x * amount, y * amount)
 
     override fun compareTo(other: Point) = if (y == other.y) x.compareTo(other.x) else y.compareTo(other.y)
 
@@ -32,7 +32,9 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun inBound(maxX: Int, maxY: Int) = inBound(0, maxX, 0, maxY)
 
     fun inBound(minX: Int, maxX: Int, minY: Int, maxY: Int) =
-            x in minX..maxX && y in minY..maxY
+        x in minX..maxX && y in minY..maxY
+
+    fun inBound(rectangle: Rectangle) = rectangle.let { (min, max) -> inBound(min.x, min.y, max.x, max.y) }
 
     fun inBound(xRange: IntRange, yRange: IntRange) = x in xRange && y in yRange
 
@@ -68,17 +70,18 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
     fun right(amount: Int = 1) = copy(x = x + amount)
 
     companion object {
+        val ORIGIN = Point(0, 0)
         fun parse(v: String, r: Regex) = tryParse(v, r)
-                ?: throw IllegalArgumentException("Can't parse $v with regex ${r.pattern}")
+            ?: throw IllegalArgumentException("Can't parse $v with regex ${r.pattern}")
 
         fun tryParse(v: String, r: Regex) =
-                r.matchEntire(v)
-                        ?.groupValues
-                        ?.drop(1)
-                        ?.let { (x, y) -> Point(x.toInt(), y.toInt()) }
+            r.matchEntire(v)
+                ?.groupValues
+                ?.drop(1)
+                ?.let { (x, y) -> Point(x.toInt(), y.toInt()) }
 
         fun distance(a: Point, b: Point): Double =
-                sqrt(((b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x)).toDouble())
+            sqrt(((b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x)).toDouble())
 
         fun parse(v: String) = parse(v, DEFAULT_PARSE_REGEX)
 
@@ -92,8 +95,8 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
         }
 
         val NEIGHBORS = (-1..1)
-                .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
-                .filterNot { it.x == 0 && it.y == 0 }
+            .flatMap { x -> (-1..1).map { y -> Point(x, y) } }
+            .filterNot { it.x == 0 && it.y == 0 }
 
         val NEIGHBORS_H = listOf(Point(-1, 0), Point(1, 0))
         val NEIGHBORS_V = listOf(Point(0, -1), Point(0, 1))
@@ -114,19 +117,19 @@ fun Collection<Point>.maxX() = this.map { it.x }.maxOrNull()
 fun Collection<Point>.maxY() = this.map { it.y }.maxOrNull()
 
 fun Collection<Point>.bounds() =
-        this.fold(listOf(Int.MAX_VALUE, Int.MAX_VALUE, Int.MIN_VALUE, Int.MIN_VALUE)) { list, point ->
-            listOf(
-                    min(
-                            list[0],
-                            point.x
-                    ), min(list[1], point.y), max(list[2], point.x), max(list[3], point.y)
-            )
-        }
-                .let { (minX, minY, maxX, maxY) -> Point(minX, minY) to Point(maxX, maxY) }
+    this.fold(listOf(Int.MAX_VALUE, Int.MAX_VALUE, Int.MIN_VALUE, Int.MIN_VALUE)) { list, point ->
+        listOf(
+            min(
+                list[0],
+                point.x
+            ), min(list[1], point.y), max(list[2], point.x), max(list[3], point.y)
+        )
+    }
+        .let { (minX, minY, maxX, maxY) -> Point(minX, minY) to Point(maxX, maxY) }
 
 fun Pair<Point, Point>.points() = (this.first.y..this.second.y)
-        .flatMap { y ->
-            (this.first.x..this.second.x)
-                    .map { x -> Point(x, y) }
-        }
-        .asSequence()
+    .flatMap { y ->
+        (this.first.x..this.second.x)
+            .map { x -> Point(x, y) }
+    }
+    .asSequence()
