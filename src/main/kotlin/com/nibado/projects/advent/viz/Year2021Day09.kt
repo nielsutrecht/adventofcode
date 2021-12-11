@@ -8,7 +8,8 @@ import java.io.File
 object Year2021Day09 {
     private val values = resourceLines(2021, 9).map { it.toCharArray().map { it.digitToInt() } }
     private val points = values.indices.flatMap { y -> values[0].indices.map { x -> Point(x, y) } }
-    val gif = AnimatedGif(0, 1)
+    private val gif = AnimatedGif(0, 1)
+
     fun part1() = points.map { it to values[it.y][it.x] }.filter {
         val neighbors = it.first.neighborsHv().filter { it.inBound(values[0].size - 1, values.size - 1) }
         neighbors.all { n -> values[n.y][n.x] > it.second }
@@ -55,11 +56,15 @@ object Year2021Day09 {
         gif += img
     }
 
+    fun write(file: File) {
+        gif.encodeTo(file)
+    }
+
     private val COLOR_MAP = (0..9).map { it to 100 + it * 15 }.associate { (i, c) -> i to Color(c, c, c) }
     private const val CELL_WIDTH = 4
 }
 
 fun main() {
     Year2021Day09.part2()
-    Year2021Day09.gif.encodeTo(File("target/ani.gif"))
+    Year2021Day09.write(File("target/aniY2021D09.gif"))
 }
