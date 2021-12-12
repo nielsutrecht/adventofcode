@@ -13,7 +13,6 @@ class Graph<N, E> : Collection<N> {
 
     constructor(graph: Graph<N, E>) : this(graph.nodes.toMap().toMutableMap(), graph.nodeToEdge.toMap().toMutableMap())
 
-
     override val size: Int
         get() = nodes.size
 
@@ -35,6 +34,34 @@ class Graph<N, E> : Collection<N> {
         }
 
         return fromNode
+    }
+
+    fun paths(
+        from: N,
+        to: N,
+        strategy: SearchStrategy = SearchStrategy.DEPTH_FIRST,
+        nodeFilter: (Node<N>, Map<Node<N>, Int>) -> Boolean) : List<List<Node<N>>>  =
+        when(strategy) {
+            SearchStrategy.DEPTH_FIRST -> mutableListOf<List<Node<N>>>().also { depthFirst(this[from], this[to], emptyMap(), emptyList(), it, nodeFilter) }
+        }
+
+    private fun depthFirst(
+        from: Node<N>,
+        to: Node<N>,
+        visited: Map<Node<N>, Int>,
+        path: List<Node<N>>,
+        paths: MutableList<List<Node<N>>>,
+        nodeFilter: (Node<N>, Map<Node<N>, Int>) -> Boolean)  {
+        if (from == to) {
+            paths += path
+            return
+        }
+
+        val newVisited = visited + (from to visited.getOrDefault(from, 0) + 1)
+
+        nodes(from).filter { nodeFilter(it, newVisited) }.forEach {
+            depthFirst(it, to, newVisited, path + it, paths, nodeFilter)
+        }
     }
 
     private fun setEdge(from: N, to: N, e: E): Edge<N, E> {
@@ -61,5 +88,9 @@ class Graph<N, E> : Collection<N> {
         fun <T> node(value: T) = Node(value)
         fun <E, N> edge(value: E, node: Node<N>) = Edge(value, node)
         fun <E, N> edge(value: E, node: N) = Edge(value, node(node))
+    }
+
+    enum class SearchStrategy {
+        DEPTH_FIRST
     }
 }
