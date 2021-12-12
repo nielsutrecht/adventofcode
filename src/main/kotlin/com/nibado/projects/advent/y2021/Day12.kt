@@ -34,8 +34,5 @@ object Day12 : Day {
         }
     }
 
-    data class Cave(val id: String, val big: Boolean = id.uppercase() == id) {
-        override fun hashCode(): Int = id.hashCode()
-        override fun equals(other: Any?) = if (other !is Cave) false else other.id == id
-    }
+    data class Cave(val id: String, val big: Boolean = id.uppercase() == id)
 }
