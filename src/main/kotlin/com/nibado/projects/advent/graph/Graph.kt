@@ -11,6 +11,9 @@ class Graph<N, E> : Collection<N> {
 
     constructor() : this(mutableMapOf<N, Node<N>>(), mutableMapOf<N, MutableSet<Edge<N, E>>>())
 
+    /**
+     * Copy constructor
+     */
     constructor(graph: Graph<N, E>) : this(graph.nodes.toMap().toMutableMap(), graph.nodeToEdge.toMap().toMutableMap())
 
     override val size: Int
@@ -19,8 +22,14 @@ class Graph<N, E> : Collection<N> {
     data class Node<N>(val key: N)
     data class Edge<N, E>(val value: E, val to: Node<N>)
 
-    fun addAll(vararg pairs: Pair<N, N>, edge: E) {
-        pairs.forEach { (a, b) -> add(a, b, edge) }
+    fun addAll(vararg pairs: Pair<N, N>, edge: E, bidirectional: Boolean = false) : Graph<N, E>  {
+        pairs.forEach { (a, b) -> add(a, b, edge, bidirectional) }
+        return this
+    }
+
+    fun addAll(pairs: Collection<Pair<N, N>>, edge: E, bidirectional: Boolean = false) : Graph<N, E>  {
+        pairs.forEach { (a, b) -> add(a, b, edge, bidirectional) }
+        return this
     }
 
     fun add(from: N, to: N, edge: E, bidirectional: Boolean = false): Node<N> {
@@ -36,6 +45,11 @@ class Graph<N, E> : Collection<N> {
         return fromNode
     }
 
+    /**
+     * Searches for all paths from 'from' to 'to' using the provided strategy and a provided node filter.
+     *
+     * See Year 2021 Day 12 for usage.
+     */
     fun paths(
         from: N,
         to: N,
@@ -45,6 +59,7 @@ class Graph<N, E> : Collection<N> {
             SearchStrategy.DEPTH_FIRST -> mutableListOf<List<Node<N>>>().also { depthFirst(this[from], this[to], emptyMap(), emptyList(), it, nodeFilter) }
         }
 
+    //TODO: Implement with stack instead of recursion.
     private fun depthFirst(
         from: Node<N>,
         to: Node<N>,

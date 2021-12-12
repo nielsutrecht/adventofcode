@@ -5,7 +5,7 @@ import com.nibado.projects.advent.graph.Graph
 
 object Day12 : Day {
     private val graph = resourceLines(2021, 12).map { it.split('-').let { (a, b) -> Cave(a) to Cave(b) } }
-        .fold(Graph<Cave, Int>()) { graph, (from, to) -> graph.add(from, to, 0, true);graph }
+        .let { Graph<Cave, Int>().addAll(it, 0, true) }
 
     override fun part1() = graph.paths(Cave("start"), Cave("end")) { node, visited ->
         node.key.big || visited.getOrDefault(node, 0) < 1 }.size
