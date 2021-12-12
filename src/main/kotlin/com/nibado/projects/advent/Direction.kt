@@ -1,7 +1,5 @@
 package com.nibado.projects.advent
 
-import java.lang.IllegalArgumentException
-
 enum class Direction {
     NORTH,
     EAST,
@@ -24,7 +22,7 @@ enum class Direction {
 
     companion object {
         fun from(s: String) : Direction = from(s.first())
-        fun from(char: Char) : Direction = when(char.toUpperCase()) {
+        fun from(char: Char) : Direction = when(char.uppercaseChar()) {
             'N' -> NORTH
             'S' -> SOUTH
             'E' -> EAST

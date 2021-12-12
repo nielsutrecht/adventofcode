@@ -27,6 +27,9 @@ interface Grid<T> : Iterable<Pair<Point, T>>{
     fun apply(map: (Point, T) -> T)
     fun apply(map: (Int, Int, T) -> T)
 
+    fun row(r: Int) = (0 until width).map { this[it, r] }
+    fun column(c: Int) = (0 until height).map { this[c, it] }
+
     operator fun get(p: Point) : T = elements[toIndex(p.x, p.y)]
     operator fun get(x: Int, y: Int) : T = elements[toIndex(x, y)]
     operator fun set(p: Point, value: T)

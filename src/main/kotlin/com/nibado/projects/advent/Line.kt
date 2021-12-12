@@ -1,11 +1,9 @@
 package com.nibado.projects.advent
 
-import kotlin.math.cos
-import kotlin.math.roundToInt
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
-data class Line(val a: Point, val b: Point) {
+data class Line(val a: Point, val b: Point) : Collection<Point> {
+    val set: Set<Point> by lazy { points().toSet() }
 
     constructor(x1: Int, y1: Int, x2: Int, y2: Int) : this(Point(x1, y1), Point(x2, y2))
 
@@ -13,13 +11,13 @@ data class Line(val a: Point, val b: Point) {
     fun reversed() = Line(b, a)
     fun angle() = a.angle(b)
 
-    fun points() : Sequence<Point> =
+    fun points(): Sequence<Point> =
         sequence {
             var current = a
 
             val vector = vector()
             yield(current)
-            while(current != b) {
+            while (current != b) {
                 current += vector
                 yield(current)
             }
@@ -27,7 +25,7 @@ data class Line(val a: Point, val b: Point) {
 
     fun vector() = angle().let { angle -> Point(cos(angle).roundToInt(), sin(angle).roundToInt()) }
 
-    fun direction() : Direction? = when {
+    fun direction(): Direction? = when {
         b.x == a.x && b.y < a.y -> Direction.NORTH
         b.x == a.x && b.y > a.y -> Direction.SOUTH
         b.y == a.y && b.x < a.x -> Direction.WEST
@@ -38,7 +36,7 @@ data class Line(val a: Point, val b: Point) {
     fun distanceTo(p: Point) = distance(p, this)
 
     companion object {
-        fun distance(p: Point, line: Line) : Double {
+        fun distance(p: Point, line: Line): Double {
             val ab = Point.distance(p, line.a)
             val bc = Point.distance(line.a, line.b)
             val ac = Point.distance(p, line.b)
@@ -50,4 +48,14 @@ data class Line(val a: Point, val b: Point) {
         }
     }
 
+    override val size: Int
+        get() = set.size
+
+    override fun contains(element: Point): Boolean = set.contains(element)
+
+    override fun containsAll(elements: Collection<Point>): Boolean = set.containsAll(elements)
+
+    override fun isEmpty(): Boolean = set.isEmpty()
+
+    override fun iterator(): Iterator<Point> = points().iterator()
 }

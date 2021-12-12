@@ -1,8 +1,18 @@
 package com.nibado.projects.advent.graph
 
 class Graph<N, E> : Collection<N> {
-    private val nodes = mutableMapOf<N, Node<N>>()
-    private val nodeToEdge = mutableMapOf<N, MutableSet<Edge<N, E>>>()
+    private val nodes: MutableMap<N, Node<N>>
+    private val nodeToEdge : MutableMap<N, MutableSet<Edge<N, E>>>
+
+    private constructor(nodes: MutableMap<N, Node<N>>, nodeToEdge: MutableMap<N, MutableSet<Edge<N, E>>>) {
+        this.nodes = nodes
+        this.nodeToEdge = nodeToEdge
+    }
+
+    constructor() : this(mutableMapOf<N, Node<N>>(), mutableMapOf<N, MutableSet<Edge<N, E>>>())
+
+    constructor(graph: Graph<N, E>) : this(graph.nodes.toMap().toMutableMap(), graph.nodeToEdge.toMap().toMutableMap())
+
 
     override val size: Int
         get() = nodes.size
