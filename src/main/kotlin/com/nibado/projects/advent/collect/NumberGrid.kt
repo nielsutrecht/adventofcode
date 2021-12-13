@@ -8,6 +8,8 @@ class NumberGrid<N : Number>(
 
     private val grid = numbers.toMutableList()
 
+    constructor(width: Int, height: Int, fill: N) : this(width, height, (0 until  width * height).map { fill })
+
     override val elements: List<N>
         get() = grid
 
