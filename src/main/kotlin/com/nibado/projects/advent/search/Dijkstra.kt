@@ -2,16 +2,49 @@ package com.nibado.projects.advent.search
 
 import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.collect.NumberGrid
-import com.nibado.projects.advent.graph.*
+import com.nibado.projects.advent.graph.Graph
 
-object Dijkstra : GraphShortestPath {
-    override fun <N, E : Number> search(graph: Graph<N, E>, from: N, to: N): List<N> {
-        TODO("Unfinished")
+object Dijkstra : GraphShortestPath, GridShortestPath {
+    override fun <N, E : Number> shortestPath(graph: Graph<N, E>, from: N, to: N): List<N> {
+        val distances = graph.nodes().associateWith { Double.POSITIVE_INFINITY }.toMutableMap()
+        val unvisitedSet = graph.nodes().toMutableSet()
+        val adjacency = mutableMapOf<N, N>()
+        distances[from] = 0.0
+        var current = from
+        val frontier = mutableSetOf<N>()
 
-        return emptyList()
+        while(unvisitedSet.isNotEmpty() && unvisitedSet.contains(to)) {
+            val neighbors = graph.edges(current).filter { unvisitedSet.contains(it.to.key) }
+            neighbors.forEach { (d, node) ->
+                val distance = d.toDouble()
+                val next = node.key
+                if (distances[current]!! + distance < distances[next]!!) {
+                    distances[next] = distances[current]!! + distance
+                    adjacency[next] = current
+                }
+                frontier += next
+            }
+
+            unvisitedSet -= current
+            frontier -= current
+
+            if (current == to) {
+                break
+            }
+
+            if (frontier.isNotEmpty()) {
+                current = frontier.minByOrNull { distances[it]!! }!!
+            }
+        }
+        val path = mutableListOf(to)
+        while(adjacency.containsKey(path.last())) {
+            path += adjacency[path.last()]!!
+        }
+
+        return path.reversed()
     }
 
-    fun <N: Number> search(grid: NumberGrid<N>, from: Point, to: Point) : List<Point> {
+    override fun <N: Number> shortestPath(grid: NumberGrid<N>, from: Point, to: Point) : List<Point> {
         val unvisitedSet = grid.points.toMutableSet()
         val distances = grid.points.map { it to Double.POSITIVE_INFINITY }.toMap().toMutableMap()
         val adjacency = mutableMapOf<Point, Point>()

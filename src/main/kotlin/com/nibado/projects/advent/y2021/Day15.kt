@@ -7,7 +7,7 @@ import com.nibado.projects.advent.search.Dijkstra
 object Day15 : Day {
     private val grid = resourceLines(2021, 15).let { NumberGrid.from<Int>(it) }
 
-    private fun search(grid: NumberGrid<Int>) = Dijkstra.search(grid, grid.bounds.left, grid.bounds.right)
+    private fun search(grid: NumberGrid<Int>) = Dijkstra.shortestPath(grid, grid.bounds.left, grid.bounds.right)
         .sumOf { grid[it] } - grid[Point.ORIGIN]
 
     override fun part1() =  search(grid)

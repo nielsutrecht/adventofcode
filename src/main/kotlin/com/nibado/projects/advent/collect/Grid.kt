@@ -19,7 +19,13 @@ interface Grid<T> : Iterable<Pair<Point, T>>{
     val points: Sequence<Point>
         get() = indices.map { (x, y) -> Point(x, y) }
 
-    fun toIndex(x: Int, y: Int) = width * y + x
+    fun toIndex(x: Int, y: Int) : Int {
+        val index = width * y + x
+        if(index < 0 || index >= elements.size) {
+            throw IndexOutOfBoundsException("Index $x, $y out of bounds 0..${width - 1}, 0..${height - 1}")
+        }
+        return index
+    }
     fun toPoint(index: Int) = Point(index % width, index / width)
 
     fun inBound(p: Point): Boolean = p.x >= 0 && p.y >= 0 && p.x < width && p.y < height

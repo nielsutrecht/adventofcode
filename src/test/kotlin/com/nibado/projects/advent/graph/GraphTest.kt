@@ -1,8 +1,8 @@
 package com.nibado.projects.advent.graph
 
+import com.nibado.projects.advent.collect.NumberGrid
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 
 internal class GraphTest {
     @Test
@@ -39,5 +39,14 @@ internal class GraphTest {
         val ex = assertThrows<NoSuchElementException> { graph["X"] }
 
         assertThat(ex.message).isEqualTo("No node with key 'X'")
+    }
+
+    @Test
+    fun `Should be able to convert from NumberGrid`() {
+        val grid = listOf("1234", "2345", "3456", "4567").let { NumberGrid.from<Int>(it) }
+        assertThat(grid[0,0]).isEqualTo(1)
+        assertThat(grid[0,0]).isEqualTo(1)
+        assertThat(grid[0,0]).isEqualTo(1)
+        assertThat(grid[0,0]).isEqualTo(1)
     }
 }

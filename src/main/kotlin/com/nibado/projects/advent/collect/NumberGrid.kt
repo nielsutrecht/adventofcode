@@ -1,6 +1,7 @@
 package com.nibado.projects.advent.collect
 
 import com.nibado.projects.advent.Point
+import com.nibado.projects.advent.graph.Graph
 
 class NumberGrid<N : Number>(
     override val width: Int,
@@ -30,6 +31,20 @@ class NumberGrid<N : Number>(
 
     override fun set(x: Int, y: Int, value: N) {
         grid[toIndex(x, y)] = value
+    }
+
+    fun toGraph(neighbors: (Point) -> Collection<Point> = Point::neighborsHv) : Graph<Point, N> {
+        val graph = Graph<Point, N>()
+
+        points.forEach { from ->
+            val neighbors = neighbors(from).filter { n -> inBound(n) }
+            neighbors.forEach { to ->
+                graph.add(from, to, this[to], false)
+                graph.add(to, from, this[from], false)
+            }
+        }
+
+        return graph
     }
 
     companion object {

@@ -88,11 +88,16 @@ class Graph<N, E> : Collection<N> {
     }
 
     operator fun get(key: N) = nodes[key] ?: throw NoSuchElementException("No node with key '$key'")
+    operator fun get(from: N, to: N) = edges(from).first { it.to.key == to }
+    fun getOrNull(from: N, to: N) =  edges(from).firstOrNull { it.to.key == to }
 
     fun edges(key: N): Set<Edge<N, E>> = nodeToEdge[key] ?: emptySet()
     fun edges(node: Node<N>) = edges(node.key)
     fun nodes(key: N) = edges(key).map { it.to }
     fun nodes(node: Node<N>) = edges(node).map { it.to }
+    fun nodes() : Set<N> = nodes.keys
+
+    fun hasEdge(from: N, to: N) : Boolean = edges(from).any { it.to.key == to }
 
     override fun contains(element: N) = nodes.keys.contains(element)
     override fun containsAll(elements: Collection<N>) = nodes.keys.containsAll(elements)
