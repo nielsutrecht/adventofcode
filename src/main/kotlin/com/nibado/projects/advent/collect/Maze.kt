@@ -19,8 +19,16 @@ class Maze(val width: Int, val height: Int) {
         array[index(x, y)] = value
     }
 
+    fun set(point: Point, value: Float) {
+        array[index(point.x, point.y)] = value
+    }
+
     fun set(x: Int, y: Int, wall: Boolean) {
-        set(x, y, if(wall) IMPASSIBLE else UNIT)
+        set(x, y, if (wall) IMPASSIBLE else UNIT)
+    }
+
+    fun set(point: Point, wall: Boolean) {
+        set(point.x, point.y, if (wall) IMPASSIBLE else UNIT)
     }
 
     fun isWall(x: Int, y: Int) = get(x, y) == IMPASSIBLE
@@ -28,19 +36,19 @@ class Maze(val width: Int, val height: Int) {
 
     private fun assertInBounds(vararg points: Point) {
         points.forEach {
-            if(!inBound(it)) {
+            if (!inBound(it)) {
                 throw IllegalArgumentException("Point $it not in bounds $width, $height")
             }
         }
     }
 
-    fun dfs(from: Point, to: Point) : List<Point> {
+    fun dfs(from: Point, to: Point): List<Point> {
         assertInBounds(from, to)
         return dfs(to, from, mutableSetOf())
     }
 
-    private fun dfs(to: Point, current: Point, visited: MutableSet<Point>) : List<Point> {
-        if(current == to) {
+    private fun dfs(to: Point, current: Point, visited: MutableSet<Point>): List<Point> {
+        if (current == to) {
             return listOf(current)
         }
 
@@ -48,7 +56,7 @@ class Maze(val width: Int, val height: Int) {
 
         neighbors(current).filterNot { isWall(it) }.filterNot { visited.contains(it) }.forEach {
             val result = dfs(to, it, visited)
-            if(result.isNotEmpty()) {
+            if (result.isNotEmpty()) {
                 return listOf(current) + result
             }
         }
@@ -66,9 +74,9 @@ class Maze(val width: Int, val height: Int) {
     fun inBound(x: Int, y: Int) = Point(x, y).inBound(width - 1, height - 1)
 
     fun print(path: Set<Point> = setOf()) {
-        for(y in 0 until height) {
+        for (y in 0 until height) {
             for (x in 0 until width) {
-                if(path.contains(Point(x, y))) {
+                if (path.contains(Point(x, y))) {
                     print('O')
                 } else {
                     print(if (array[index(x, y)] == IMPASSIBLE) '#' else '.')

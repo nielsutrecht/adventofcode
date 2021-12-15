@@ -18,6 +18,7 @@ object BreadthFirst : MazePath {
                     .filter { maze.inBound(it) }
                     .filterNot { cameFrom.containsKey(it) }
                     .filterNot { maze.isWall(it) }
+                    .sortedBy { maze.get(it) }
 
             frontier += next
             next.forEach { cameFrom[it] = current }
