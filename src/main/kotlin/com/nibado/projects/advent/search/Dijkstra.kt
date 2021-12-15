@@ -3,6 +3,7 @@ package com.nibado.projects.advent.search
 import com.nibado.projects.advent.Point
 import com.nibado.projects.advent.collect.NumberGrid
 import com.nibado.projects.advent.graph.Graph
+import java.util.*
 
 object Dijkstra : GraphShortestPath, GridShortestPath {
     override fun <N, E : Number> shortestPath(graph: Graph<N, E>, from: N, to: N): List<N> {
@@ -11,7 +12,7 @@ object Dijkstra : GraphShortestPath, GridShortestPath {
         val adjacency = mutableMapOf<N, N>()
         distances[from] = 0.0
         var current = from
-        val frontier = mutableSetOf<N>()
+        val frontier = PriorityQueue<Pair<N, Double>> { a, b -> a.second.compareTo(b.second) }
 
         while(unvisitedSet.isNotEmpty() && unvisitedSet.contains(to)) {
             val neighbors = graph.edges(current).filter { unvisitedSet.contains(it.to.key) }
@@ -22,18 +23,19 @@ object Dijkstra : GraphShortestPath, GridShortestPath {
                     distances[next] = distances[current]!! + distance
                     adjacency[next] = current
                 }
-                frontier += next
+                frontier.add(next to distances[next]!!)
             }
 
             unvisitedSet -= current
-            frontier -= current
+            frontier.removeIf { it.first == current }
 
             if (current == to) {
                 break
             }
 
+
             if (frontier.isNotEmpty()) {
-                current = frontier.minByOrNull { distances[it]!! }!!
+                current = frontier.poll().first
             }
         }
         val path = mutableListOf(to)
@@ -44,43 +46,6 @@ object Dijkstra : GraphShortestPath, GridShortestPath {
         return path.reversed()
     }
 
-    override fun <N: Number> shortestPath(grid: NumberGrid<N>, from: Point, to: Point) : List<Point> {
-        val unvisitedSet = grid.points.toMutableSet()
-        val distances = grid.points.map { it to Double.POSITIVE_INFINITY }.toMap().toMutableMap()
-        val adjacency = mutableMapOf<Point, Point>()
-        distances[from] = 0.0
-
-        val frontier = mutableSetOf<Point>()
-        var current = from
-
-        while (unvisitedSet.isNotEmpty() && unvisitedSet.contains(to)) {
-            val neighbors = current.neighborsHv().filter { grid.inBound(it) && unvisitedSet.contains(it) }
-            neighbors.forEach { adjacent ->
-                val distance = grid[adjacent].toDouble()
-                if (distances[current]!! + distance < distances[adjacent]!!) {
-                    distances[adjacent] = distances[current]!! + distance
-                    adjacency[adjacent] = current
-                }
-            }
-            frontier += neighbors
-
-            unvisitedSet -= current
-            frontier -= current
-
-            if (current == to) {
-                break
-            }
-
-            if (frontier.isNotEmpty()) {
-                current = frontier.minByOrNull { distances[it]!! }!!
-            }
-        }
-
-        val path = mutableListOf(to)
-        while(adjacency.containsKey(path.last())) {
-            path += adjacency[path.last()]!!
-        }
-
-        return path
-    }
+    override fun <N: Number> shortestPath(grid: NumberGrid<N>, from: Point, to: Point) : List<Point> =
+        shortestPath(grid.toGraph(), from, to)
 }
