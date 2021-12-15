@@ -8,41 +8,46 @@ object Dijkstra : GraphShortestPath {
     override fun <N, E : Number> search(graph: Graph<N, E>, from: N, to: N): List<N> {
         TODO("Unfinished")
 
-
-
         return emptyList()
     }
 
-    fun <N: Number> search(grid: NumberGrid<N>, from: Point, to: Point) : Map<Point, Pair<List<Point>, Double>> {
+    fun <N: Number> search(grid: NumberGrid<N>, from: Point, to: Point) : List<Point> {
         val unvisitedSet = grid.points.toMutableSet()
         val distances = grid.points.map { it to Double.POSITIVE_INFINITY }.toMap().toMutableMap()
-        val paths = mutableMapOf<Point, List<Point>>()
+        val adjacency = mutableMapOf<Point, Point>()
         distances[from] = 0.0
 
+        val frontier = mutableSetOf<Point>()
         var current = from
 
         while (unvisitedSet.isNotEmpty() && unvisitedSet.contains(to)) {
-            current.neighborsHv().filter { grid.inBound(it) }.forEach { adjacent ->
+            val neighbors = current.neighborsHv().filter { grid.inBound(it) && unvisitedSet.contains(it) }
+            neighbors.forEach { adjacent ->
                 val distance = grid[adjacent].toDouble()
                 if (distances[current]!! + distance < distances[adjacent]!!) {
                     distances[adjacent] = distances[current]!! + distance
-                    paths[adjacent] = paths.getOrDefault(current, listOf(current)) + listOf(adjacent)
+                    adjacency[adjacent] = current
                 }
             }
+            frontier += neighbors
 
-            unvisitedSet.remove(current)
-            if(unvisitedSet.size % 100 == 0) {
-                println(unvisitedSet.size)
-            }
-            if (current == to || unvisitedSet.all { distances[it]!!.isInfinite() }) {
+            unvisitedSet -= current
+            frontier -= current
+
+            if (current == to) {
                 break
             }
 
-            if (unvisitedSet.isNotEmpty()) {
-                current = unvisitedSet.minByOrNull { distances[it]!! }!!
+            if (frontier.isNotEmpty()) {
+                current = frontier.minByOrNull { distances[it]!! }!!
             }
         }
 
-        return paths.mapValues { entry -> entry.value to distances[entry.key]!! }
+        val path = mutableListOf(to)
+        while(adjacency.containsKey(path.last())) {
+            path += adjacency[path.last()]!!
+        }
+
+        return path
     }
 }
