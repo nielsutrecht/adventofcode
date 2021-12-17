@@ -1,17 +1,26 @@
 package com.nibado.projects.advent
 
-data class Rectangle(val left: Point, val right: Point) {
-    val width: Int
-        get() = right.x - left.x
+import kotlin.math.*
 
-    val height: Int
-        get() = right.y - left.y
+data class Rectangle(val left: Point, val right: Point) {
+
+    constructor(minX: Int, minY: Int, maxX:Int, maxY:Int) : this(Point(minX, minY), Point(maxX, maxY))
+
+    val width = right.x - left.x
+    val height = right.y - left.y
+
+    val minY = min(right.y, left.y)
+    val minX = min(right.x, left.x)
+    val maxY = max(right.y, left.y)
+    val maxX = max(right.x, left.x)
 
     fun points() : Sequence<Point> = (left.x .. right.x).flatMap { x -> (left.y .. right.y).map { y -> Point(x, y) } }.asSequence()
 
     fun area() : Int {
         return Math.abs(right.x - left.x) * Math.abs(right.y - left.y)
     }
+
+    fun inBounds(p: Point) = p.x in minX..maxX && p.y in minY .. maxY
 
     fun onEdge(p: Point) = p.x == left.x || p.y == left.y || p.x == right.x || p.y == right.y
 
