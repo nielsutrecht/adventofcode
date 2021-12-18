@@ -22,7 +22,8 @@ class Year2021Test : YearTest(input()) {
             TestInput(Day15, 790, 2998),
             TestInput(Day16, 945, 10637009915279L),
             TestInput(Day17, 5995, 3202),
-        ).drop(16)
+            TestInput(Day18, 3654, 4578),
+        ).drop(17)
     }
 }
 
